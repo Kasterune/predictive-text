@@ -1,11 +1,12 @@
 # predictive-text
 Team Assignment, Data Structures
 
-* **Interim submission** Friday 11th March 2022, 10pm. Please store in the Files section of your Team in 
+**Interim submission** Friday 11th March 2022, 10pm. Please store in the Files section of your Team in 
 your Team’s private channel on MSTeams (we’ll set these up after Teams have been finalised).
 
-• **Main submission** (code, JAR file, report, documentation): Wednesday 30th March 2022 (10pm).
-• **Video demonstration** of your program., Friday 1st April 2022 (6 pm).
+**Main submission** (code, JAR file, report, documentation): Wednesday 30th March 2022 (10pm).
+
+**Video demonstration** of your program., Friday 1st April 2022 (6 pm).
 
 
 Minimum requirements:
