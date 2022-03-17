@@ -17,6 +17,7 @@ public class Dictionary
 	{
 		// Set the root to be a blank node not referring to any other word nodes yet
 		root = new WordNode();
+		root.setLetters("_ROOT_");
 	}
 	
 	/**
@@ -78,6 +79,7 @@ public class Dictionary
 			{
 				if (currentNode.getIsWord())
 					currentNode.setFrequency(currentNode.getFrequency() + 1);
+				System.out.println("NOTE: Frequency of word '" + prefix + "' increased.\n");
 				return;
 			}
 			
@@ -100,6 +102,7 @@ public class Dictionary
 			{
 				newNode.setIsWord(true);
 				newNode.setFrequency(1);
+				System.out.println("NOTE: Finished adding word '" + prefix + "'.\n");
 				return;
 			}
 			
@@ -110,5 +113,46 @@ public class Dictionary
 		}
 	}
 	
+	/**
+	 * Method to print out one of the word nodes in the trie
+	 * @param node  The node to be printed out
+	 */
+	public void printWordNode(WordNode node)
+	{
+		// Print the information stored in the node;
+		System.out.println(node.printInfo());
+		
+		// Print the child nodes
+		if (node.getNextNodes().isEmpty())
+		{
+			System.out.println("Node '" + node.getLetters() + "' has no child nodes.\n");
+		}
+		else
+		{
+			System.out.println("Child nodes of " + node.getLetters() + ": ");
+			for (String prefix : node.getNextNodes().keySet())
+			{
+				System.out.print(prefix + " ");
+			}
+			System.out.println("\n");
+		}
+	}
+	
+	/**
+	 * Method to print the dictionary trie from the current node down
+	 * @param currentNode  The top node to start the printout from
+	 */
+	public void printDictionary(WordNode currentNode)
+	{
+		this.printWordNode(currentNode);
+		
+		if (!currentNode.getNextNodes().isEmpty())
+		{
+			for (String prefix : currentNode.getNextNodes().keySet())
+			{
+				this.printDictionary(currentNode.getNextNodes().get(prefix));		
+			}
+		}
+	}
 	
 }
