@@ -52,7 +52,7 @@ public class Tester
 		dictionary.addWord("I");
 		dictionary.addWord("in");
 		dictionary.addWord("inn");
-		dictionary.printDictionary(root);
+		// dictionary.printDictionary(root);
 	}
 	
 
