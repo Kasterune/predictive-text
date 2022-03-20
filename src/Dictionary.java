@@ -17,7 +17,6 @@ public class Dictionary
 	{
 		// Set the root to be a blank node not referring to any other word nodes yet
 		root = new WordNode();
-		root.setLetters("_ROOT_");
 	}
 	
 	/**
@@ -93,7 +92,7 @@ public class Dictionary
 		while (wordPosition <= word.length())
 		{
 			// Create a new word node and add the prefix
-			newNode = new WordNode(prefix, false, 0);
+			newNode = new WordNode(false, 0);
 			nextNodeMap.put(prefix, newNode);
 			System.out.println("NOTE: Added: " + prefix);
 			

@@ -12,7 +12,6 @@ public class WordNode
 {
 
 	// Define class variables/fields
-	private String  letters;	// Letters in the word prefix
 	private boolean isWord;		// Are the characters in the letters field a proper word? 
 	private int     frequency;	// Number of times word has been used (if isWord is true)
 	
@@ -25,7 +24,6 @@ public class WordNode
 	public WordNode()
 	{
 		// Initialise field values
-		letters    = "";
 		isWord     = false;
 		frequency  = 0;
 		
@@ -35,29 +33,17 @@ public class WordNode
 	
 	/**
 	 * Alternative constructor to set fields to given values.
-	 * @param letters The word prefix letters stored in the node
 	 * @param isWord  Do the letters make a proper word
 	 * @param frequency  The number of times this word has been used (if isWord is true)
 	 */
-	public WordNode(String letters, boolean isWord, int frequency)
+	public WordNode(boolean isWord, int frequency)
 	{
 		// Set data value to value provided       
-		this.letters = letters;
 		this.frequency = frequency;
 		this.isWord = isWord;
 		
 		// Initialise the hash map for the next nodes
 		nextNodes  = new HashMap<String, WordNode>();
-	}
-
-	
-	/**
-	 * Method to get the letters in the node
-	 * @return letters The letters in the node
-	 */
-	public String getLetters()
-	{
-		return this.letters;
 	}
 
 	/**
@@ -85,15 +71,6 @@ public class WordNode
 	public Map<String, WordNode> getNextNodes()
 	{
 		return this.nextNodes;
-	}
-	
-	/**
-	 * Method to set the letters for the node
-	 * @param letters  The new letters for the node
-	 */
-	public void setLetters(String letters)
-	{
-		this.letters = letters;
 	}
 
 	/**
@@ -130,8 +107,7 @@ public class WordNode
 	public String printInfo()
 	{
 		String printInfo = "";
-		printInfo = "Letters: " + this.letters + 
-					", IsWord: " + this.isWord + 
+		printInfo = ", IsWord: " + this.isWord +
 					", Frequency: " + this.frequency;	
 		return printInfo;
 	}
