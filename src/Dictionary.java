@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -18,6 +23,8 @@ public class Dictionary
 		// Set the root to be a blank node not referring to any other word nodes yet
 		root = new WordNode();
 		root.setLetters("_ROOT_");
+
+		loadWords();
 	}
 	
 	/**
@@ -39,6 +46,62 @@ public class Dictionary
 	{
 		this.root = newRoot;
 	}
+
+
+	public void loadWords()
+	{
+		File tempFile = new File("Saved_Dictionary.txt");
+		boolean exists = tempFile.exists();
+
+		FileReader fileReader = null;
+	    BufferedReader bufferedReader = null;
+	    String nextLine;
+		String fileName = "words.txt";
+		
+		if(exists == false)
+		{
+			try {
+				fileReader = new FileReader(fileName);
+			
+				bufferedReader = new BufferedReader(fileReader);
+	        
+				nextLine = bufferedReader.readLine();
+				while (nextLine != null) {
+					addWord(nextLine);
+					nextLine = bufferedReader.readLine();
+				}
+	        }
+	        
+	        catch (FileNotFoundException e)
+	        {
+	            System.out.println("Sorry, your file was not found.");
+	        }
+	        
+	        catch (IOException e)
+	        {
+	            System.out.println("Sorry, there has been a problem opening or reading from the file");
+	        }
+	        
+	        finally
+	        {
+	            // if the file was opened
+	            if (bufferedReader != null)
+	            {
+	                try 
+	                {
+	                    // try to close it
+	                    bufferedReader.close();
+	                }
+	                catch (IOException e)
+	                {
+	                    // warn user file wasn't properly closed
+	                    System.out.println("Sorry, there has been a problem closing the file");
+	                }
+	            }
+	        }
+		}
+	}
+
 
 	/**
 	 * Method to add a word to the dictionary
