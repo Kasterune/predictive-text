@@ -42,9 +42,8 @@ public class Dictionary
 	/**
 	 * Method to add a word to the dictionary
 	 * 
-	 * This method splits the word up into all of its prefixes and 
-	 * adds each prefix to the trie if it doesn't already exist in the trie
-	 * If the word already exists, the frequency count is incremented by 1
+	 * This method adds any intermediate nodes required and then sets isWord to true
+	 * for the end node.
 	 * 
 	 * NOTE: This method does not check that the input word is a proper word
 	 * 
@@ -52,64 +51,31 @@ public class Dictionary
 	 */
 	public void addWord(String word)
 	{
-		// Remove any leading or trailing spaces from the word
-		word = word.trim();
-		
-		// Make sure the word contains some letters
+		// Remove any leading or trailing spaces from the word and convert to lowercase
+		word = word.trim().toLowerCase();
+
+		addWord(word, root);
+	}
+
+	private void addWord(String word, WordNode node)
+	{
+		// Make sure the word contains some letters, or if fully recursed set word to true, and exit
 		if (word.length() == 0)
 		{
-			System.out.println("NOTE: Word is empty, so cannot add it to the dictionary.");
+			if (node != root)
+			{
+				node.setIsWord(true);
+			}
 			return;
 		}
-		
-		// Check each prefix of the word, and add it to the dictionary if it doesn't already exist
-		WordNode currentNode = root;
-		Map<String, WordNode> nextNodeMap = root.getNextNodes();
-		int wordPosition = 1;
-		String prefix = word.substring(0, wordPosition);
-			
-		// Skip through the nodes where the prefixes already exist in the trie
-		while (nextNodeMap.containsKey(prefix))
+
+		// Add prefix node to the dictionary if it doesn't already exist
+		if (!node.getNextNodes().containsKey(word.substring(0, 1)))
 		{
-			currentNode = nextNodeMap.get(prefix);
-			
-			// The word already exists in the trie so increment its frequency by 1
-			if (wordPosition == word.length()) 
-			{
-				if (currentNode.getIsWord())
-					currentNode.setFrequency(currentNode.getFrequency() + 1);
-				System.out.println("NOTE: Frequency of word '" + prefix + "' increased.\n");
-				return;
-			}
-			
-			wordPosition++;
-			prefix = word.substring(0, wordPosition);			
-			nextNodeMap = currentNode.getNextNodes();
+			node.getNextNodes().put(word.substring(0, 1), new WordNode());
 		}
-		
-		// Add nodes for the remaining prefixes and the word itself to the dictionary trie
-		WordNode newNode;
-		while (wordPosition <= word.length())
-		{
-			// Create a new word node and add the prefix
-			newNode = new WordNode(false, 0);
-			nextNodeMap.put(prefix, newNode);
-			System.out.println("NOTE: Added: " + prefix);
-			
-			// Set the isWord and frequency for the full word
-			if (wordPosition == word.length())
-			{
-				newNode.setIsWord(true);
-				newNode.setFrequency(1);
-				System.out.println("NOTE: Finished adding word '" + prefix + "'.\n");
-				return;
-			}
-			
-			// Get the next prefix to add
-			wordPosition++;
-			prefix = word.substring(0, wordPosition);			
-			nextNodeMap = newNode.getNextNodes();
-		}
+
+		addWord(word.substring(1), node.getNextNodes().get(word.substring(0, 1)));
 	}
 	
 	/**
