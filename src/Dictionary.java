@@ -211,7 +211,63 @@ public class Dictionary
 	// 	}
 	// }
 	
-	public void findNode(String word, WordNode currentNode)
+	public void findNode(String word, WordNode node)
+	{
+		String tempWord = word;
+		Map<String, WordNode> nextNodeMap = node.getNextNodes();
+
+		while(nextNodeMap.containsKey(word.substring(0, 1)))
+		{
+			node = nextNodeMap.get(word.substring(0, 1));
+			word = word.substring(1);
+
+			if (word.length() == 0)
+			{
+				if (node.getIsWord())
+				{
+					System.out.println("Word Exists In the Dictionary");
+					System.out.println("Word - " + tempWord);
+					System.out.println("Is It A Real Word - " + node.getIsWord());
+					System.out.println("Times Word Has Been Used - " + node.getFrequency() + " Times");
+					return;
+				}
+				System.out.println("Word Does Not Exist In the Dictionary");
+				return;
+			}
+			nextNodeMap = node.getNextNodes();
+		}
+		System.out.println("Word Does Not Exist In the Dictionary");
+	}
+
+	public void deleteNode(String word, WordNode node)
+	{
+
+		String tempWord = word;
+		Map<String, WordNode> nextNodeMap = node.getNextNodes();
+
+		while(nextNodeMap.containsKey(word.substring(0, 1)))
+		{
+			node = nextNodeMap.get(word.substring(0, 1));
+			word = word.substring(1);
+
+			if (word.length() == 0)
+			{
+				if (node.getIsWord())
+				{
+					node.setIsWord(false);
+					node.setFrequency(0);
+					System.out.println(tempWord + " Has Been Removed From The Dictionary");
+					return;
+				}
+				System.out.println("Word Does Not Exist In the Dictionary");
+				return;
+			}
+			nextNodeMap = node.getNextNodes();
+		}
+		System.out.println("Word Does Not Exist In the Dictionary");
+	}
+
+	public boolean wordEnteredIsNull(String word)
 	{
 		// Remove any leading or trailing spaces from the word
 		word = word.trim();
@@ -219,76 +275,10 @@ public class Dictionary
 		// Make sure the word contains some letters
 		if (word.length() == 0)
 		{
-			System.out.println("NOTE: Word is empty, so cannot add it to the dictionary.");
-			return;
+			System.out.println("Word Entered Is Null");
+			return true;
 		}
-
-		Map<String, WordNode> nextNodeMap = currentNode.getNextNodes();
-		int wordPosition = 1;
-		String prefix = word.substring(0, wordPosition);
-
-		while(nextNodeMap.containsKey(prefix))
-		{
-			currentNode = nextNodeMap.get(prefix);
-
-			if(word.equals(currentNode.getLetters())){
-				if(currentNode.getIsWord() == true){
-					System.out.println("Word Exists In the Dictionary");
-					System.out.println("Word - " + word);
-					System.out.println("Is It A Real Word - " + currentNode.getIsWord());
-					System.out.println("Times Word Has Been Used - " + currentNode.getFrequency() + " Times");
-					return;
-				}
-				else{
-					System.out.println("Word Does Not Exist In the Dictionary");
-					return;
-				}
-				
-			}	
-			else if(!word.equals(currentNode.getLetters())){
-				nextNodeMap = currentNode.getNextNodes();
-				wordPosition++;
-				prefix = word.substring(0, wordPosition);
-			}
-		}
-
-		System.out.println("Word Does Not Exist In the Dictionary");
-
+		return false;
 	}
 
-	public void deleteNode(String word, WordNode currentNode){
-
-		// Remove any leading or trailing spaces from the word
-		word = word.trim();
-		
-		// Make sure the word contains some letters
-		if (word.length() == 0)
-		{
-			System.out.println("NOTE: Word is empty, so cannot add it to the dictionary.");
-			return;
-		}
-
-		Map<String, WordNode> nextNodeMap = currentNode.getNextNodes();
-		int wordPosition = 1;
-		String prefix = word.substring(0, wordPosition);
-
-		while(nextNodeMap.containsKey(prefix))
-		{
-			currentNode = nextNodeMap.get(prefix);
-
-			if(word.equals(currentNode.getLetters())){
-				currentNode.setIsWord(false);
-				System.out.println("Word Has Been Removed From The Dictionary");
-				return;
-			}	
-			else if(!word.equals(currentNode.getLetters())){
-				nextNodeMap = currentNode.getNextNodes();
-				wordPosition++;
-				prefix = word.substring(0, wordPosition);
-			}
-		}
-
-		System.out.println("Word Does Not Exist In the Dictionary");
-
-	}
 }

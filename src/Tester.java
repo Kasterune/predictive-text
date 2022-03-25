@@ -58,8 +58,16 @@ public class Tester
 		Scanner s = new Scanner(System.in);
 		System.out.println("Enter A Word");
 		String word = s.nextLine();
-		dictionary.deleteNode(word, root);
-		dictionary.findNode(word, root);
+		if(dictionary.wordEnteredIsNull(word))
+		{
+			System.out.println("\n");
+		}
+		else
+		{
+			dictionary.deleteNode(word, root);
+			dictionary.findNode(word, root);
+		}
+
 
 	}
 	
