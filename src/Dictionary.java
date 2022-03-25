@@ -40,6 +40,34 @@ public class Dictionary
 	}
 
 	/**
+	 * Method to check if a word is in the dictionary
+	 * @param word String to search for in the dictionary
+	 * @return True if the word is in the dictionary, else false
+	 */
+	public boolean isInDictionary(String word)
+	{
+		return isInDictionary(word, root);
+	}
+
+	private boolean isInDictionary(String word, WordNode node)
+	{
+		if (word.length() == 0)
+		{
+			if (node.getIsWord())
+			{
+				return true;
+			}
+			return false;
+		}
+
+		if (node.getNextNodes().containsKey(word.substring(0, 1)))
+		{
+			return isInDictionary(word.substring(1), node.getNextNodes().get(word.substring(0, 1)));
+		}
+		return false;
+	}
+
+	/**
 	 * Method to add a word to the dictionary
 	 * 
 	 * This method adds any intermediate nodes required and then sets isWord to true
