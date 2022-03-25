@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -17,6 +22,8 @@ public class Dictionary
 	{
 		// Set the root to be a blank node not referring to any other word nodes yet
 		root = new WordNode();
+
+		loadWords();
 	}
 	
 	/**
@@ -38,6 +45,62 @@ public class Dictionary
 	{
 		this.root = newRoot;
 	}
+
+
+	public void loadWords()
+	{
+		File tempFile = new File("Saved_Dictionary.txt");
+		boolean exists = tempFile.exists();
+
+		FileReader fileReader = null;
+	    BufferedReader bufferedReader = null;
+	    String nextLine;
+		String fileName = "words.txt";
+		
+		if(exists == false)
+		{
+			try {
+				fileReader = new FileReader(fileName);
+			
+				bufferedReader = new BufferedReader(fileReader);
+	        
+				nextLine = bufferedReader.readLine();
+				while (nextLine != null) {
+					addWord(nextLine);
+					nextLine = bufferedReader.readLine();
+				}
+	        }
+	        
+	        catch (FileNotFoundException e)
+	        {
+	            System.out.println("Sorry, your file was not found.");
+	        }
+	        
+	        catch (IOException e)
+	        {
+	            System.out.println("Sorry, there has been a problem opening or reading from the file");
+	        }
+	        
+	        finally
+	        {
+	            // if the file was opened
+	            if (bufferedReader != null)
+	            {
+	                try 
+	                {
+	                    // try to close it
+	                    bufferedReader.close();
+	                }
+	                catch (IOException e)
+	                {
+	                    // warn user file wasn't properly closed
+	                    System.out.println("Sorry, there has been a problem closing the file");
+	                }
+	            }
+	        }
+		}
+	}
+
 
 	/**
 	 * Method to check if a word is in the dictionary
@@ -148,4 +211,84 @@ public class Dictionary
 	// 	}
 	// }
 	
+	public void findNode(String word, WordNode currentNode)
+	{
+		// Remove any leading or trailing spaces from the word
+		word = word.trim();
+		
+		// Make sure the word contains some letters
+		if (word.length() == 0)
+		{
+			System.out.println("NOTE: Word is empty, so cannot add it to the dictionary.");
+			return;
+		}
+
+		Map<String, WordNode> nextNodeMap = currentNode.getNextNodes();
+		int wordPosition = 1;
+		String prefix = word.substring(0, wordPosition);
+
+		while(nextNodeMap.containsKey(prefix))
+		{
+			currentNode = nextNodeMap.get(prefix);
+
+			if(word.equals(currentNode.getLetters())){
+				if(currentNode.getIsWord() == true){
+					System.out.println("Word Exists In the Dictionary");
+					System.out.println("Word - " + word);
+					System.out.println("Is It A Real Word - " + currentNode.getIsWord());
+					System.out.println("Times Word Has Been Used - " + currentNode.getFrequency() + " Times");
+					return;
+				}
+				else{
+					System.out.println("Word Does Not Exist In the Dictionary");
+					return;
+				}
+				
+			}	
+			else if(!word.equals(currentNode.getLetters())){
+				nextNodeMap = currentNode.getNextNodes();
+				wordPosition++;
+				prefix = word.substring(0, wordPosition);
+			}
+		}
+
+		System.out.println("Word Does Not Exist In the Dictionary");
+
+	}
+
+	public void deleteNode(String word, WordNode currentNode){
+
+		// Remove any leading or trailing spaces from the word
+		word = word.trim();
+		
+		// Make sure the word contains some letters
+		if (word.length() == 0)
+		{
+			System.out.println("NOTE: Word is empty, so cannot add it to the dictionary.");
+			return;
+		}
+
+		Map<String, WordNode> nextNodeMap = currentNode.getNextNodes();
+		int wordPosition = 1;
+		String prefix = word.substring(0, wordPosition);
+
+		while(nextNodeMap.containsKey(prefix))
+		{
+			currentNode = nextNodeMap.get(prefix);
+
+			if(word.equals(currentNode.getLetters())){
+				currentNode.setIsWord(false);
+				System.out.println("Word Has Been Removed From The Dictionary");
+				return;
+			}	
+			else if(!word.equals(currentNode.getLetters())){
+				nextNodeMap = currentNode.getNextNodes();
+				wordPosition++;
+				prefix = word.substring(0, wordPosition);
+			}
+		}
+
+		System.out.println("Word Does Not Exist In the Dictionary");
+
+	}
 }

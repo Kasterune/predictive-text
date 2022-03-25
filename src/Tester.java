@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /**
  * This class runs tests on the Dictionary class
  * 
@@ -53,6 +55,12 @@ public class Tester
 		dictionary.addWord("in");
 		dictionary.addWord("inn");
 		// dictionary.printDictionary(root);
+		Scanner s = new Scanner(System.in);
+		System.out.println("Enter A Word");
+		String word = s.nextLine();
+		dictionary.deleteNode(word, root);
+		dictionary.findNode(word, root);
+
 	}
 	
 
