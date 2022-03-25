@@ -4,8 +4,8 @@ import java.util.Map;
 /**
  * This class stores the data for a node in the dictionary Trie
  * 
- * @author Becky Tyler (2461535)
- * @version 1.0 (16 March 2022)
+ * @author Becky Tyler (2461535), Joshua Price (2481545)
+ * @version 2.0 (16 March 2022)
  */
 
 public class WordNode

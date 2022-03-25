@@ -2,8 +2,8 @@ import java.util.Map;
 
 /**
  * This is the dictionary class which is represented by a Trie of words
- * @author Becky Tyler (2461535)
- * @version 1.0 (16 March 2022)
+ * @author Becky Tyler (2461535), Joshua Price (2481545)
+ * @version 2.0 (25 March 2022)
  */
 public class Dictionary
 {
