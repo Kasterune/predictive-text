@@ -54,7 +54,7 @@ public class Tester
 		dictionary.addWord("I");
 		dictionary.addWord("in");
 		dictionary.addWord("inn");
-		dictionary.printDictionary(root);
+		// dictionary.printDictionary(root);
 		Scanner s = new Scanner(System.in);
 		System.out.println("Enter A Word");
 		String word = s.nextLine();
