@@ -10,6 +10,7 @@ public class Tester
 {
 	// Create a dictionary field
 	Dictionary dictionary;
+	Prediction prediction;
 	
 	
 	/**
@@ -19,6 +20,7 @@ public class Tester
 	{
 		// Create a new dictionary trie
 		dictionary = new Dictionary();
+		prediction = new Prediction();
 	}
 	
 	/**
@@ -43,18 +45,19 @@ public class Tester
 //		dictionary.printDictionary(root);
 		
 		// Add a word to the dictionary and print the trie
-		dictionary.addWord("to");
+		//dictionary.addWord("to");
 //		dictionary.printDictionary(root);
 		
 		// Add some more words - these are the words from the Wikipedia trie example
-		dictionary.addWord("tea");
-		dictionary.addWord("ted");
-		dictionary.addWord("ten");
-		dictionary.addWord("A");
-		dictionary.addWord("I");
-		dictionary.addWord("in");
-		dictionary.addWord("inn");
+		//dictionary.addWord("tea");
+		//dictionary.addWord("ted");
+		//dictionary.addWord("ten");
+		//dictionary.addWord("A");
+		//dictionary.addWord("I");
+		//dictionary.addWord("in");
+		//dictionary.addWord("inn");
 		// dictionary.printDictionary(root);
+		enterSentence();
 		Scanner s = new Scanner(System.in);
 		System.out.println("Enter A Word");
 		String word = s.nextLine();
@@ -68,6 +71,19 @@ public class Tester
 			dictionary.findNode(word, root);
 		}
 
+
+	}
+
+	public void enterSentence()
+	{
+		Scanner s = new Scanner(System.in);
+		System.out.println("Enter A Word");
+		String textToComplete = s.nextLine();
+
+		WordNode foundTextNode = dictionary.findNode(textToComplete, dictionary.getRoot());
+
+		prediction.predictText(foundTextNode, textToComplete);
+		prediction.getCompletions();
 
 	}
 	

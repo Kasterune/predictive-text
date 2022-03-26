@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,10 @@ public class Prediction
 	
 	// The maximum number of completions to be predicted
 	private int maxCompletions;
+
+	private ArrayList<WordNode> completions;
+
+	private	ArrayList<String> words;
 	
 	/**
 	 * Default constructor
@@ -25,7 +30,9 @@ public class Prediction
 	{
 		addWord = false;
 		language = "English";
-		maxCompletions = 10;
+		maxCompletions = 7;
+		completions = new ArrayList<WordNode>();
+		words = new ArrayList<String>();
 	}
 	
 	/**
@@ -82,13 +89,68 @@ public class Prediction
 		this.maxCompletions = maxComp;
 	}
 	
+
+	public void predictText(WordNode foundTextNode, String textToComplete)
+	{
+		//WordNode foundTextNode = dictionary.findNode(textToComplete, node);
+
+		if(foundTextNode.getNextNodes() != null)
+		{
+			Map<String, WordNode> nextNodeMap = foundTextNode.getNextNodes();
+		
+			for (String letter : nextNodeMap.keySet())
+			{
+				predictText(nextNodeMap.get(letter), textToComplete + letter);
+			}
+		}
+
+		if (foundTextNode.getIsWord() == true)
+		{
+			completions.add(foundTextNode);
+			words.add(textToComplete);
+		}
+
+	}
+
+
+	public void getCompletions()
+	{
+		ArrayList<Integer> frequency = new ArrayList<Integer>();
+		int pos = 0;
+
+		for(WordNode node : completions)
+		{
+			frequency.add(Integer.valueOf(node.getFrequency()));
+		}
+
+		for(int i = 0; i < maxCompletions; i++)
+		{
+			int currentMax = frequency.get(0);
+			for(int v = 0 ; v <= frequency.size()-1 ; v++)
+			{
+				if(currentMax < frequency.get(v))
+				{
+					currentMax = frequency.get(v);
+					pos = v;
+				}
+			}
+
+			System.out.println(words.get(pos));
+			completions.remove(pos);
+			words.remove(pos);
+			frequency.remove(pos);
+
+		}	
+	}
+
+
 	/**
 	 * Method to predict the possible word(s) the user has started to enter
 	 * @param dictionary The current dictionary object reference
 	 * @param textToComplete The text to be completed/predicted
 	 * @return A map of possible completions & their frequencies as a HashMap
 	 */
-	public Map<String, Integer> predictText(Dictionary dictionary, String textToComplete)
+	public Map<String, Integer> predictTex(Dictionary dictionary, String textToComplete)
 	{
 		// Find the node at the end of the word in the trie
 		WordNode foundTextNode = dictionary.findNode(textToComplete,dictionary.getRoot());
@@ -113,7 +175,7 @@ public class Prediction
 			for (String letter : foundTextNode.getNextNodes().keySet())
 			{
 				// Get the completions for that node, storing it in a temporary hash map
-				tempMap = this.predictText(dictionary, textToComplete + letter);
+				//tempMap = this.predictText(dictionary, textToComplete + letter);
 				
 				// Add the words from the temporary map into the final map of completions
 				if (tempMap != null)

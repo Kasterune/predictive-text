@@ -197,6 +197,7 @@ public class Dictionary
 	/**
 	 * Method to print the dictionary trie from the current node down
 	 * @param currentNode  The top node to start the printout from
+	 * @return 
 	 */
 	// public void printDictionary(WordNode currentNode)
 	// {
@@ -211,9 +212,9 @@ public class Dictionary
 	// 	}
 	// }
 	
-	public void findNode(String word, WordNode node)
+	public WordNode findNode(String word, WordNode node)
 	{
-		String tempWord = word;
+		//String tempWord = word;
 		Map<String, WordNode> nextNodeMap = node.getNextNodes();
 
 		while(nextNodeMap.containsKey(word.substring(0, 1)))
@@ -225,18 +226,18 @@ public class Dictionary
 			{
 				if (node.getIsWord())
 				{
-					System.out.println("Word Exists In the Dictionary");
-					System.out.println("Word - " + tempWord);
-					System.out.println("Is It A Real Word - " + node.getIsWord());
-					System.out.println("Times Word Has Been Used - " + node.getFrequency() + " Times");
-					return;
+					//System.out.println("Word Exists In the Dictionary");
+					//System.out.println("Word - " + tempWord);
+					//System.out.println("Is It A Real Word - " + node.getIsWord());
+					//System.out.println("Times Word Has Been Used - " + node.getFrequency() + " Times");
+					return node;
 				}
-				System.out.println("Word Does Not Exist In the Dictionary");
-				return;
+				break;
 			}
 			nextNodeMap = node.getNextNodes();
 		}
 		System.out.println("Word Does Not Exist In the Dictionary");
+		return null;
 	}
 
 	public void deleteNode(String word, WordNode node)
