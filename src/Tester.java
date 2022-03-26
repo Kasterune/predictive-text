@@ -1,3 +1,4 @@
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -49,7 +50,7 @@ public class Tester
 //		tester.predictTestv1("t");
 //		tester.predictTestv1("i");
 		
-		enterSentence();
+		tester.enterSentence();
 
 	}
 	
@@ -117,8 +118,8 @@ public class Tester
 		}
 		else
 		{
-			dictionary.deleteNode(word, root);
-			dictionary.findNode(word, root);
+			dictionary.deleteNode(word, dictionary.getRoot());
+			dictionary.findNode(word, dictionary.getRoot());
 		}
 	}
 
