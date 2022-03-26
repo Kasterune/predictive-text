@@ -149,8 +149,9 @@ public class Prediction
 	 * @param dictionary The current dictionary object reference
 	 * @param textToComplete The text to be completed/predicted
 	 * @return A map of possible completions & their frequencies as a HashMap
+	 * @author Becky Tyler (2461535)
 	 */
-	public Map<String, Integer> predictTex(Dictionary dictionary, String textToComplete)
+	public Map<String, Integer> predictTextv1(Dictionary dictionary, String textToComplete)
 	{
 		// Find the node at the end of the word in the trie
 		WordNode foundTextNode = dictionary.findNode(textToComplete,dictionary.getRoot());
