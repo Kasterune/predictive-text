@@ -10,9 +10,8 @@ import java.util.Map;
 
 public class WordNode
 {
-
 	// Define class variables/fields
-	private boolean isWord;		// Are the characters in the letters field a proper word? 
+	private boolean isWord;		// Is the current node the end of a proper word? 
 	private int     frequency;	// Number of times word has been used (if isWord is true)
 	
 	// Define a map to hold the references to the child nodes, indexed on the letters
@@ -103,12 +102,23 @@ public class WordNode
 	/**
 	 * Method to get the information about the node ready for printing
 	 * @return String containing the letters, if these are a word, and the frequency
+	 * @author Becky Tyler (2461535)
 	 */
 	public String printInfo()
 	{
 		String printInfo = "";
-		printInfo = ", IsWord: " + this.isWord +
-					", Frequency: " + this.frequency;	
+		printInfo = "IsWord: " + this.isWord +
+			    ", Frequency: " + this.frequency +
+			    ", Next Nodes:";
+		if (!this.nextNodes.isEmpty())
+		{
+			for (String letter : this.nextNodes.keySet())
+			{
+				printInfo = printInfo + " " + letter;
+			}
+		}
+		else
+			printInfo = printInfo + " null";
 		return printInfo;
 	}
 }
