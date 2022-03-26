@@ -245,6 +245,33 @@ public class Dictionary
 		}
 	}
 	
+	/**
+	 * Method to display the words in the dictionary from the current node down
+	 * @param currentNode  The node to start the display from
+	 * @param nodeName The word prefix represented by the current node
+	 * @author Becky Tyler (2461535)
+	 */
+	public void displayDictionary(WordNode currentNode, String nodeName)
+	{
+		// Print the information stored in the node;
+		if (currentNode.getIsWord() == true)
+		{
+			int freq = currentNode.getFrequency();
+			if (freq <= 1)
+				System.out.println(nodeName);
+			else
+				System.out.println(nodeName + " (" + freq + ")");
+		}
+		
+		if (!currentNode.getNextNodes().isEmpty())
+		{
+			for (String letter : currentNode.getNextNodes().keySet())
+			{
+				this.displayDictionary(currentNode.getNextNodes().get(letter), nodeName + letter);		
+			}
+		}
+	}
+	
 	public WordNode findNode(String word, WordNode node)
 	{
 		//String tempWord = word;
