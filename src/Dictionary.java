@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * This is the dictionary class which is represented by a Trie of words
- * @author Becky Tyler (2461535), Joshua Price (2481545)
+ * @author Becky Tyler (2461535), Joshua Price (2481545), Oliver Shearer (2455913)
  * @version 2.0 (25 March 2022)
  */
 public class Dictionary
@@ -38,7 +38,6 @@ public class Dictionary
 
 	/**
 	 * Set the root of the tree to the given node
-	 * 
 	 * @param newRoot WordNode reference to the node which will be the root of the trie. 
 	 */
 	public void setRoot(WordNode newRoot)
@@ -132,85 +131,119 @@ public class Dictionary
 
 	/**
 	 * Method to add a word to the dictionary
-	 * 
 	 * This method adds any intermediate nodes required and then sets isWord to true
 	 * for the end node.
-	 * 
 	 * NOTE: This method does not check that the input word is a proper word
-	 * 
 	 * @param word The word to add to the dictionary trie
+	 * @author Original version by Becky Tyler (2461535), updated by Joshua Price (2481545)
 	 */
 	public void addWord(String word)
 	{
-		// Remove any leading or trailing spaces from the word and convert to lowercase
+		// Remove any leading or trailing spaces from the word and convert to lower case
 		word = word.trim().toLowerCase();
 
-		addWord(word, root);
+		// Add the word starting at the root of the dictionary trie
+		addWord(word, this.root);
 	}
 
+	/**
+	 * Method to add a word starting at the given word node
+	 * @param word  The word to add
+	 * @param node  The starting node where the word is to be added
+	 * @author Original version by Becky Tyler (2461535), updated by Joshua Price (2481545)
+	 */
 	private void addWord(String word, WordNode node)
 	{
 		// Make sure the word contains some letters, or if fully recursed set word to true, and exit
 		if (word.length() == 0)
 		{
-			if (node != root)
+			if (node != this.root)
 			{
 				node.setIsWord(true);
 			}
 			return;
 		}
 
-		// Add prefix node to the dictionary if it doesn't already exist
+		// Add a new node to the dictionary for the first letter of the word if it doesn't already exist
 		if (!node.getNextNodes().containsKey(word.substring(0, 1)))
 		{
 			node.getNextNodes().put(word.substring(0, 1), new WordNode());
 		}
 
+		// Add node(s) for the remaining letters in the word
 		addWord(word.substring(1), node.getNextNodes().get(word.substring(0, 1)));
+	}
+
+	/**
+	 * Method to update the frequency for a word in the trie
+	 * @param word The word in the dictionary to update the frequency for
+	 * @param upNo The amount to update the frequency by
+	 * @return true if frequency was updated, otherwise false
+	 * @author Becky Tyler (2461535)
+	 */
+	public boolean updateFrequency(String word, int upNo)
+	{
+		// Remove any leading or trailing spaces from the word and convert to lower case
+		word = word.trim().toLowerCase();
+		
+		// Find the node for the end of the word
+		WordNode foundNode = this.findNode(word, root);
+
+		// If the node exists, update the frequency
+		if (foundNode != null)
+		{
+			foundNode.setFrequency(foundNode.getFrequency() + upNo);
+			return true;
+		}
+		
+		// Node not found so frequency not updated
+		else
+			return false;
 	}
 	
 	/**
 	 * Method to print out one of the word nodes in the trie
+	 * This is just for testing and debugging purposes
 	 * @param node  The node to be printed out
+	 * @param prefix The name or word prefix for the current node
+	 * @author Becky Tyler (2461535)
 	 */
-	// public void printWordNode(WordNode node)
-	// {
-	// 	// Print the information stored in the node;
-	// 	System.out.println(node.printInfo());
-		
-	// 	// Print the child nodes
-	// 	if (node.getNextNodes().isEmpty())
-	// 	{
-	// 		System.out.println("Node '" + node.getLetters() + "' has no child nodes.\n");
-	// 	}
-	// 	else
-	// 	{
-	// 		System.out.println("Child nodes of " + node.getLetters() + ": ");
-	// 		for (String prefix : node.getNextNodes().keySet())
-	// 		{
-	// 			System.out.print(prefix + " ");
-	// 		}
-	// 		System.out.println("\n");
-	// 	}
-	// }
+	public void printWordNode(WordNode node, String prefix)
+	{		 
+		// Print out the prefix for the node
+		if ((node == this.root) && (prefix.equals("")))
+			System.out.println("Node: *ROOT*");
+		else
+			System.out.println("Node: " + prefix);
+
+		// Print the information stored in the node;
+		System.out.println(node.printInfo() + "\n");
+	}
 	
 	/**
 	 * Method to print the dictionary trie from the current node down
+	 * This is just for testing and debugging purposes
 	 * @param currentNode  The top node to start the printout from
-	 * @return 
+	 * @param nodeName The name or word prefix for the current node
+	 * @author Becky Tyler (2461535)
 	 */
-	// public void printDictionary(WordNode currentNode)
-	// {
-	// 	this.printWordNode(currentNode);
-		
-	// 	if (!currentNode.getNextNodes().isEmpty())
-	// 	{
-	// 		for (String prefix : currentNode.getNextNodes().keySet())
-	// 		{
-	// 			this.printDictionary(currentNode.getNextNodes().get(prefix));
-	// 		}
-	// 	}
-	// }
+	public void printDictionary(WordNode currentNode, String nodeName)
+	{
+		if (currentNode == this.root)
+			nodeName = "";
+
+		// Print the current node
+		this.printWordNode(currentNode, nodeName);
+
+		// Get the child nodes and print them if not null
+		if (!currentNode.getNextNodes().isEmpty())
+		{
+			for (String prefix : currentNode.getNextNodes().keySet())
+			{
+				this.printDictionary(currentNode.getNextNodes().get(prefix), nodeName + prefix);
+			}
+		}
+	}
 	
 	public WordNode findNode(String word, WordNode node)
 	{
