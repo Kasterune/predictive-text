@@ -3,16 +3,17 @@ import java.util.Scanner;
 /**
  * This class runs tests on the Dictionary class
  * 
- * @author Becky Tyler (2461535)
+ * @author Becky Tyler (2461535), Oliver Shearer (2455913)
  * @version 1.0 (17 March 2022)
  */
 public class Tester
 {
-	// Create a dictionary field
+	// Create object reference to the dictionary
 	Dictionary dictionary;
+	
+	// Object reference to the prediction
 	Prediction prediction;
-	
-	
+		
 	/**
 	 * Default constructor
 	 */
@@ -20,6 +21,8 @@ public class Tester
 	{
 		// Create a new dictionary trie
 		dictionary = new Dictionary();
+		
+		// Create a new prediction
 		prediction = new Prediction();
 	}
 	
@@ -28,9 +31,26 @@ public class Tester
 	 */
 	public static void main(String[] args)
 	{
-
 		Tester tester = new Tester();
+		
+		// Test adding words to the dictionary trie
 		tester.runAddTests();
+				
+		// Test displaying the dictionary
+		tester.displayTest();
+		
+		// Test finding a word
+//		tester.findTest("ten");
+		
+		// Test deleting a word from the dictionary entered by the user
+//		tester.deleteUserEnteredWord();
+		
+		// Test the prediction to get some completions
+//		tester.predictTestv1("t");
+//		tester.predictTestv1("i");
+		
+		enterSentence();
+
 	}
 	
 	/**
@@ -38,26 +58,56 @@ public class Tester
 	 */
 	public void runAddTests()
 	{
-		// Get the root of the trie
+		System.out.println("TESTING: Adding words to the dictionary");
+		System.out.println("=======================================");
+		
+		// Get the root of the dictionary trie
 		WordNode root = dictionary.getRoot();
 		
-		// Print an empty dictionary
-//		dictionary.printDictionary(root);
+		// Try printing an empty dictionary
+		System.out.println("\nPRINTING AN EMPTY DICTIONARY TRIE:");
+		dictionary.printDictionary(root, "");
 		
 		// Add a word to the dictionary and print the trie
-		//dictionary.addWord("to");
-//		dictionary.printDictionary(root);
+		System.out.println("\nADDING WORD 'to' TO THE DICTIONARY TRIE:");
+		dictionary.addWord("to");
+		dictionary.printDictionary(root, "");
 		
 		// Add some more words - these are the words from the Wikipedia trie example
-		//dictionary.addWord("tea");
-		//dictionary.addWord("ted");
-		//dictionary.addWord("ten");
-		//dictionary.addWord("A");
-		//dictionary.addWord("I");
-		//dictionary.addWord("in");
-		//dictionary.addWord("inn");
-		// dictionary.printDictionary(root);
-		enterSentence();
+		System.out.println("\nADDING MORE WORDS TO THE DICTIONARY TRIE:");
+		dictionary.addWord("tea");
+		dictionary.addWord("ted");
+		dictionary.addWord("ten");
+		dictionary.addWord("A");
+		dictionary.addWord("I");
+		dictionary.addWord("in");
+		dictionary.addWord("inn");
+		dictionary.printDictionary(root, "");
+		
+		// Test deleting a node and adding it back in again
+		System.out.println("\nDELETING THE WORD 'in' FROM THE DICTIONARY TRIE:");
+		WordNode inNode = dictionary.findNode("in", root);
+		dictionary.deleteNode("in", root);
+		dictionary.printDictionary(inNode, "in");
+		System.out.println("\nADDING THE WORD 'in' BACK INTO THE DICTIONARY TRIE:");
+		dictionary.addWord("in");
+		dictionary.printDictionary(inNode, "in");
+		
+		// Test updating the frequency for a word
+		System.out.println("\nINCREASING THE FREQUENCY OF 'in' BY 4:");
+		dictionary.updateFrequency("in", 4);
+		dictionary.printDictionary(inNode, "in");
+		System.out.println("\nINCREASING THE FREQUENCY OF 'in' BY ANOTHER 3:");
+		dictionary.updateFrequency("in", 3);
+		dictionary.printDictionary(inNode, "in");		
+	}
+	
+	/**
+	 * Method to test deleting a word entered by the user
+	 * @author Oliver Shearer (2455913)
+	 */
+	public void deleteUserEnteredWord()
+	{
 		Scanner s = new Scanner(System.in);
 		System.out.println("Enter A Word");
 		String word = s.nextLine();
@@ -70,10 +120,59 @@ public class Tester
 			dictionary.deleteNode(word, root);
 			dictionary.findNode(word, root);
 		}
-
-
 	}
 
+	/**
+	 * Method to display the full dictionary trie from the root node
+	 */
+	public void displayTest()
+	{
+		System.out.println("DISPLAYING THE FULL DICTIONARY:");
+		System.out.println("===============================");
+		dictionary.displayDictionary(dictionary.getRoot(), "");
+		System.out.println("===============================");
+		System.out.println();		
+	}
+
+	/**
+	 * Method to test the findNode method to search for a word and its node
+	 * @param wordToFind The word to find
+	 */
+	public void findTest(String wordToFind)
+	{
+		// Search for a word
+		System.out.println("SEARCHING FOR THE WORD: " + wordToFind);
+		System.out.println("=======================");
+		WordNode foundNode = dictionary.findNode(wordToFind,dictionary.getRoot());
+		if (foundNode == null)
+			System.out.println("Node '" + wordToFind + "' not found.");
+		else
+			System.out.println("Node '" + wordToFind + "' found!\n" + foundNode.printInfo());
+		System.out.println();
+	}
+	
+	/**
+	 * Method to test the prediction method
+	 * @param textToComplete The text to predict/complete
+	 */
+	public void predictTestv1(String textToComplete)
+	{
+		System.out.println("\nPREDICTING THE TEXT: " + textToComplete);
+		System.out.println("====================");
+		Map<String, Integer> completions = 
+				prediction.predictTextv1(dictionary, textToComplete);
+		if (completions != null)
+		{
+			System.out.println("Possible completions for " + textToComplete + ":");
+			for (String text : completions.keySet())
+			{
+				System.out.println(text + " (" + completions.get(text) + ")");
+			}
+			System.out.println();
+		}
+	}
+
+	
 	public void enterSentence()
 	{
 		Scanner s = new Scanner(System.in);
@@ -87,5 +186,4 @@ public class Tester
 
 	}
 	
-
 }
