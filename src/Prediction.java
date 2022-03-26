@@ -176,7 +176,7 @@ public class Prediction
 			for (String letter : foundTextNode.getNextNodes().keySet())
 			{
 				// Get the completions for that node, storing it in a temporary hash map
-				//tempMap = this.predictText(dictionary, textToComplete + letter);
+				tempMap = this.predictTextv1(dictionary, textToComplete + letter);
 				
 				// Add the words from the temporary map into the final map of completions
 				if (tempMap != null)
