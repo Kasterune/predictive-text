@@ -292,7 +292,8 @@ public class Dictionary
 					//System.out.println("Times Word Has Been Used - " + node.getFrequency() + " Times");
 					return node;
 				}
-				break;
+				//break;
+				return node;  // Return the node even if it isn't a full word (needed for prediction)
 			}
 			nextNodeMap = node.getNextNodes();
 		}
