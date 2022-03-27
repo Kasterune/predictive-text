@@ -18,12 +18,19 @@ public class Dictionary
 	/**
 	 * Default constructor
 	 */
-	public Dictionary()
+	public Dictionary(String language)
 	{
 		// Set the root to be a blank node not referring to any other word nodes yet
 		root = new WordNode();
 
-		loadWords();
+		if(language.equals("English"))
+		{
+			loadWords("English");
+		}
+		else
+		{
+			loadWords("Italian");
+		}
 	}
 	
 	/**
@@ -46,15 +53,25 @@ public class Dictionary
 	}
 
 
-	public void loadWords()
+	public void loadWords(String language)
 	{
-		File tempFile = new File("Saved_Dictionary.txt");
-		boolean exists = tempFile.exists();
-
+		File tempFile;
+		String fileName;
 		FileReader fileReader = null;
 	    BufferedReader bufferedReader = null;
 	    String nextLine;
-		String fileName = "words.txt";
+
+		if(language.equals("English"))
+		{
+			tempFile = new File("Saved_DictionaryE.txt");
+			fileName = "words.txt";
+		}
+		else
+		{
+			tempFile = new File("Saved_DictionaryI.txt");
+			fileName = "Italian_word_file.txt";
+		}
+		boolean exists = tempFile.exists();
 		
 		if(exists == false)
 		{

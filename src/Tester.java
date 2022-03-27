@@ -11,6 +11,7 @@ public class Tester
 {
 	// Create object reference to the dictionary
 	Dictionary dictionary;
+	Dictionary dictionaryI;
 	
 	// Object reference to the prediction
 	Prediction prediction;
@@ -21,7 +22,8 @@ public class Tester
 	public Tester()
 	{
 		// Create a new dictionary trie
-		dictionary = new Dictionary();
+		dictionary = new Dictionary("English");
+		dictionaryI = new Dictionary("Italian");
 		
 		// Create a new prediction
 		prediction = new Prediction();
@@ -33,7 +35,8 @@ public class Tester
 	public static void main(String[] args)
 	{
 		Tester tester = new Tester();
-		
+		tester.processUserInput();
+
 		// Test adding words to the dictionary trie
 		//tester.runAddTests();
 				
@@ -50,10 +53,122 @@ public class Tester
 //		tester.predictTestv1("t");
 //		tester.predictTestv1("i");
 		
-		tester.enterSentence();
+		//tester.enterSentence();
 
 	}
 	
+
+	/**
+	 * Displays the menu to the user and asks them what option they would like to do and validates it and sends it to be processed
+	 * 
+	 * @return userChoice which is an integer representing the option that the user chose
+	 */
+	private int displayMenu() {
+		
+		boolean validChoiceProvided = false;
+        int userChoice = 0;
+
+        while (!validChoiceProvided) {
+        	
+        	System.out.println("\n----------MENU----------");
+    		System.out.println("\n1. Enter A Word Or Phrase");
+    		System.out.println("\n2. Change Limit Of Word Suggestions");
+			System.out.println("\n3. Add Unrecognised Words To The Dictionary Setting");
+			System.out.println("\n4. Change Language");
+			System.out.println("\n5. Remove Word From Dictionary");
+			System.out.println("\n6. Display The Dictionary");
+			System.out.println("\n7. Save Dictionary");
+    		System.out.println("\n8. Exit");
+    		userChoice = getInt("\nEnter The Number Of The Option You Would Like To Choose: ");
+    		
+    		if ((userChoice >= 1) && (userChoice <= 3))
+            {
+                validChoiceProvided = true;  
+            }
+            else
+            {
+                System.out.println("\nSorry, that is not a valid choice");
+            }
+        	
+        }
+        	
+        return userChoice;
+	
+	}
+
+	private void processUserInput()
+	{
+
+		boolean exitChoiceSelected = false;
+			
+		while (!exitChoiceSelected) {
+				
+			Scanner s = new Scanner(System.in);
+		    int userChoice = 0;
+			userChoice = displayMenu();
+				
+			switch(userChoice) {
+				
+			case 1:
+				enterSentence();
+				break;
+
+			case 2:
+				updateWordLimit();
+				break;
+					
+			case 3:
+				if(prediction.getAddWord() == false)
+				{
+					prediction.setAddWord(true);
+					System.out.println("\nAdd Word Setting Has Been Turned ON");
+				}
+				else
+				{
+					prediction.setAddWord(false);
+					System.out.println("\nAdd Word Setting Has Been Turned OFF");
+				}
+				break;
+
+			case 4:
+				if(prediction.getLanguage().equals("English"))
+				{
+					prediction.setLanguage("Italian");
+					System.out.println("\nLanguage Has Been Switched To Italian");
+				}
+				else
+				{
+					prediction.setLanguage("English");
+					System.out.println("\nLanguage Has Been Switched To English");
+				}
+				break;
+				
+			case 5:
+				deleteUserEnteredWord();
+				break;
+
+			case 6:
+				displayTest();
+				break;
+
+			case 7:
+				
+				break;
+
+			case 8:
+				exitChoiceSelected = true;
+				break;
+				
+			default:
+				System.out.println("\nInvalid Input, Try Again");
+				displayMenu();
+				
+			}
+		}
+			
+	}
+
+
 	/**
 	 * Method to run tests to add words to the dictionary trie
 	 */
@@ -206,4 +321,38 @@ public class Tester
 
 	}
 	
+
+	public void updateWordLimit()
+	{
+		Scanner s = new Scanner(System.in);
+		System.out.println("Enter The New Limit Of Word Suggestions");
+		int limit = s.nextInt();
+
+		if(limit < 1 || limit > 100)
+		{
+			System.out.println("Number Entered Is Out Of Range");
+		}
+		else
+		{
+			prediction.setMaxCompletions(limit);
+		}
+	}
+
+
+	public int getInt(String userPrompt)
+	{
+		Scanner s = new Scanner(System.in);
+		
+		System.out.print(userPrompt);
+		while (!s.hasNextInt())
+		{
+			s.next();
+			System.out.print(userPrompt);
+		}
+		
+		int num = s.nextInt();
+		return num;
+	}
+
+
 }
