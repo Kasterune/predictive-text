@@ -116,15 +116,17 @@ public class Prediction
 	public void getCompletions()
 	{
 		ArrayList<Integer> frequency = new ArrayList<Integer>();
-		int pos = 0;
 
 		for(WordNode node : completions)
 		{
 			frequency.add(Integer.valueOf(node.getFrequency()));
 		}
+		
+		int numCompletions = completions.size();
 
-		for(int i = 0; i < maxCompletions; i++)
+		for(int i = 0; i < Math.min(maxCompletions, numCompletions); i++)
 		{
+			int pos = 0;
 			int currentMax = frequency.get(0);
 			for(int v = 0 ; v <= frequency.size()-1 ; v++)
 			{
