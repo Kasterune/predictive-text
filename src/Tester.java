@@ -35,10 +35,10 @@ public class Tester
 		Tester tester = new Tester();
 		
 		// Test adding words to the dictionary trie
-		tester.runAddTests();
+		//tester.runAddTests();
 				
 		// Test displaying the dictionary
-		tester.displayTest();
+		//tester.displayTest();
 		
 		// Test finding a word
 //		tester.findTest("ten");
@@ -179,6 +179,13 @@ public class Tester
 		Scanner s = new Scanner(System.in);
 		System.out.println("Enter A Word");
 		String textToComplete = s.nextLine();
+
+		boolean empty = dictionary.wordEnteredIsNull(textToComplete);
+
+		if(empty == true)
+		{
+			return;
+		}
 
 		String[] sentence = textToComplete.split(" ");
 		
