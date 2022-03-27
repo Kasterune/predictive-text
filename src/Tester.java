@@ -180,10 +180,22 @@ public class Tester
 		System.out.println("Enter A Word");
 		String textToComplete = s.nextLine();
 
-		WordNode foundTextNode = dictionary.findNode(textToComplete, dictionary.getRoot());
+		String[] sentence = textToComplete.split(" ");
+		
+		for(int i = 0 ; i < sentence.length; i++)
+		{
+			if(sentence.length - 1 == i)
+			{
+				WordNode foundTextNode = dictionary.findNode(sentence[i], dictionary.getRoot());
 
-		prediction.predictText(foundTextNode, textToComplete);
-		prediction.getCompletions();
+				prediction.predictText(foundTextNode, textToComplete);
+				prediction.getCompletions();
+			}
+			else
+			{
+				dictionary.updateFrequency(sentence[i], 1);
+			}
+		}
 
 	}
 	
