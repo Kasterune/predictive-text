@@ -257,19 +257,8 @@ public class Menu extends JPanel implements ActionListener
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(900,600);
 
-        JMenu menu = new JMenu("Options");
-        JMenuItem changeLanguage = new JMenuItem("Change Language");
-        JMenuItem addWordSetting = new JMenuItem("Toggle Add New Word");
-        JMenuBar mb = new JMenuBar();
-        menu.add(changeLanguage);
-        menu.add(addWordSetting);
-        mb.add(menu);
-        frame.setJMenuBar(mb);
-
         frame.add(new Menu(), BorderLayout.CENTER);
         frame.setVisible(true);
-
-        //reminder to update with change language and toggle functions
     }
 
     @Override
