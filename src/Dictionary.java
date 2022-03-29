@@ -64,12 +64,12 @@ public class Dictionary
 		if(language.equals("English"))
 		{
 			tempFile = new File("Saved_DictionaryE.txt");
-			fileName = "words.txt";
+			fileName = "EnglishUK.txt";
 		}
 		else
 		{
 			tempFile = new File("Saved_DictionaryI.txt");
-			fileName = "Italian_word_file.txt";
+			fileName = "ItalianItaly.txt";
 		}
 		boolean exists = tempFile.exists();
 		
@@ -270,16 +270,17 @@ public class Dictionary
 	 */
 	public void displayDictionary(WordNode currentNode, String nodeName)
 	{
-		// Print the information stored in the node;
+		// Print the information stored in the current node;
 		if (currentNode.getIsWord() == true)
 		{
 			int freq = currentNode.getFrequency();
-			if (freq <= 1)
+			if (freq <= 0)
 				System.out.println(nodeName);
 			else
 				System.out.println(nodeName + " (" + freq + ")");
 		}
 		
+		// Use recursion to print the information stored in the next nodes
 		if (!currentNode.getNextNodes().isEmpty())
 		{
 			for (String letter : currentNode.getNextNodes().keySet())
@@ -310,7 +311,7 @@ public class Dictionary
 					return node;
 				}
 				//break;
-				return node;  // Return the node even if it isn't a full word (needed for prediction)
+				return node;  // FIX by BT: Return the node even if it isn't a full word (needed for prediction)
 			}
 			nextNodeMap = node.getNextNodes();
 		}
