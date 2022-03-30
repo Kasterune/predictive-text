@@ -278,7 +278,7 @@ public class Tester
 		else
 		{
 			dictionary.deleteNode(word, dictionary.getRoot());
-			dictionary.findNode(word, dictionary.getRoot());
+			// dictionary.findNode(word, dictionary.getRoot());
 		}
 	}
 
@@ -445,7 +445,7 @@ public class Tester
 		Scanner s = new Scanner(System.in);
 		System.out.print("\n" + userPrompt);
 		String userInput = s.nextLine();
-		return userInput.trim().toLowerCase();
+		return userInput.trim();
 	}
 
 	
