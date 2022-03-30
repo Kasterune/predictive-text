@@ -173,34 +173,6 @@ public class Dictionary
 	}
 
 	/**
-	 * Method to add a word starting at the given word node
-	 * @param word  The word to add
-	 * @param node  The starting node where the word is to be added
-	 * @author Original version by Becky Tyler (2461535), updated by Joshua Price (2481545)
-	 */
-	private void addWord(String word, WordNode node)
-	{
-		// Make sure the word contains some letters, or if fully recursed set word to true, and exit
-		if (word.length() == 0)
-		{
-			if (node != this.root)
-			{
-				node.setIsWord(true);
-			}
-			return;
-		}
-
-		// Add a new node to the dictionary for the first letter of the word if it doesn't already exist
-		if (!node.getNextNodes().containsKey(word.substring(0, 1)))
-		{
-			node.getNextNodes().put(word.substring(0, 1), new WordNode());
-		}
-
-		// Add node(s) for the remaining letters in the word
-		addWord(word.substring(1), node.getNextNodes().get(word.substring(0, 1)));
-	}
-
-	/**
 	 * Method to update the frequency for a word in the trie
 	 * @param word The word in the dictionary to update the frequency for
 	 * @param upNo The amount to update the frequency by
