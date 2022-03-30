@@ -159,8 +159,17 @@ public class Dictionary
 		// Remove any leading or trailing spaces from the word and convert to lower case
 		word = word.trim().toLowerCase();
 
-		// Add the word starting at the root of the dictionary trie
-		addWord(word, this.root);
+		WordNode node = root;
+		// Add a new node to the dictionary for each letter of word if it doesn't already exist
+		for (int i = 0; i < word.length(); i++) {
+			node.getNextNodes().putIfAbsent(word.substring(i, i+1), new WordNode());
+			node = node.getNextNodes().get(word.substring(i, i+1));
+		}
+
+		// If word is empty then node will still be the root
+		if (node != root) {
+			node.setIsWord(true);
+		}
 	}
 
 	/**
