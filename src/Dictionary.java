@@ -276,6 +276,9 @@ public class Dictionary
 		//String tempWord = word;
 		Map<String, WordNode> nextNodeMap = node.getNextNodes();
 
+		// Convert word to lower case - FIX by BT 30/3/22
+		word = word.toLowerCase();
+		
 		while(nextNodeMap.containsKey(word.substring(0, 1)))
 		{
 			node = nextNodeMap.get(word.substring(0, 1));
@@ -296,7 +299,7 @@ public class Dictionary
 			}
 			nextNodeMap = node.getNextNodes();
 		}
-		System.out.println("Word Does Not Exist In the Dictionary");
+		// System.out.println("Word Does Not Exist In the Dictionary");
 		return null;
 	}
 
