@@ -15,6 +15,11 @@ public class Dictionary
 	// Define field to hold the reference to the root of the tree
 	private WordNode root;
 
+	enum Language {
+		ENGLISH,
+		ITALIAN
+	}
+
 	/**
 	 * Default constructor
 	 */
