@@ -64,12 +64,12 @@ public class Dictionary
 		if(language.equals("English"))
 		{
 			tempFile = new File("Saved_DictionaryE.txt");
-			fileName = "words.txt";
+			fileName = "EnglishUK.txt";
 		}
 		else
 		{
 			tempFile = new File("Saved_DictionaryI.txt");
-			fileName = "Italian_word_file.txt";
+			fileName = "ItalianItaly.txt";
 		}
 		boolean exists = tempFile.exists();
 		
@@ -159,36 +159,17 @@ public class Dictionary
 		// Remove any leading or trailing spaces from the word and convert to lower case
 		word = word.trim().toLowerCase();
 
-		// Add the word starting at the root of the dictionary trie
-		addWord(word, this.root);
-	}
-
-	/**
-	 * Method to add a word starting at the given word node
-	 * @param word  The word to add
-	 * @param node  The starting node where the word is to be added
-	 * @author Original version by Becky Tyler (2461535), updated by Joshua Price (2481545)
-	 */
-	private void addWord(String word, WordNode node)
-	{
-		// Make sure the word contains some letters, or if fully recursed set word to true, and exit
-		if (word.length() == 0)
-		{
-			if (node != this.root)
-			{
-				node.setIsWord(true);
-			}
-			return;
+		WordNode node = root;
+		// Add a new node to the dictionary for each letter of word if it doesn't already exist
+		for (int i = 0; i < word.length(); i++) {
+			node.getNextNodes().putIfAbsent(word.substring(i, i+1), new WordNode());
+			node = node.getNextNodes().get(word.substring(i, i+1));
 		}
 
-		// Add a new node to the dictionary for the first letter of the word if it doesn't already exist
-		if (!node.getNextNodes().containsKey(word.substring(0, 1)))
-		{
-			node.getNextNodes().put(word.substring(0, 1), new WordNode());
+		// If word is empty then node will still be the root
+		if (node != root) {
+			node.setIsWord(true);
 		}
-
-		// Add node(s) for the remaining letters in the word
-		addWord(word.substring(1), node.getNextNodes().get(word.substring(0, 1)));
 	}
 
 	/**
@@ -270,16 +251,17 @@ public class Dictionary
 	 */
 	public void displayDictionary(WordNode currentNode, String nodeName)
 	{
-		// Print the information stored in the node;
+		// Print the information stored in the current node;
 		if (currentNode.getIsWord() == true)
 		{
 			int freq = currentNode.getFrequency();
-			if (freq <= 1)
+			if (freq <= 0)
 				System.out.println(nodeName);
 			else
 				System.out.println(nodeName + " (" + freq + ")");
 		}
 		
+		// Use recursion to print the information stored in the next nodes
 		if (!currentNode.getNextNodes().isEmpty())
 		{
 			for (String letter : currentNode.getNextNodes().keySet())
@@ -294,6 +276,9 @@ public class Dictionary
 		//String tempWord = word;
 		Map<String, WordNode> nextNodeMap = node.getNextNodes();
 
+		// Convert word to lower case - FIX by BT 30/3/22
+		word = word.toLowerCase();
+		
 		while(nextNodeMap.containsKey(word.substring(0, 1)))
 		{
 			node = nextNodeMap.get(word.substring(0, 1));
@@ -310,11 +295,11 @@ public class Dictionary
 					return node;
 				}
 				//break;
-				return node;  // Return the node even if it isn't a full word (needed for prediction)
+				return node;  // FIX by BT: Return the node even if it isn't a full word (needed for prediction)
 			}
 			nextNodeMap = node.getNextNodes();
 		}
-		System.out.println("Word Does Not Exist In the Dictionary");
+		// System.out.println("Word Does Not Exist In the Dictionary");
 		return null;
 	}
 
@@ -323,7 +308,10 @@ public class Dictionary
 
 		String tempWord = word;
 		Map<String, WordNode> nextNodeMap = node.getNextNodes();
-
+		
+		// Convert word to lower case - FIX by BT 30/3/22
+		word = word.toLowerCase();
+		
 		while(nextNodeMap.containsKey(word.substring(0, 1)))
 		{
 			node = nextNodeMap.get(word.substring(0, 1));

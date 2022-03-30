@@ -89,6 +89,16 @@ public class Prediction
 		this.maxCompletions = maxComp;
 	}
 	
+	/**
+	 * Method to reset the completions lists
+	 * @author Becky Tyler (2461535)
+	 */
+	public void resetCompletions()
+	{
+		// Clear the list of completions ready for a new prediction
+		this.completions.clear();
+		this.words.clear();
+	}
 
 	public void predictText(WordNode foundTextNode, String textToComplete)
 	{
@@ -121,7 +131,7 @@ public class Prediction
 		{
 			frequency.add(Integer.valueOf(node.getFrequency()));
 		}
-		
+
 		int numCompletions = completions.size();
 
 		for(int i = 0; i < Math.min(maxCompletions, numCompletions); i++)
@@ -148,6 +158,8 @@ public class Prediction
 
 	/**
 	 * Method to predict the possible word(s) the user has started to enter
+	 * This is version 1 of this method which has since been deprecated
+	 * Please see the new version of the predictText() method.
 	 * @param dictionary The current dictionary object reference
 	 * @param textToComplete The text to be completed/predicted
 	 * @return A map of possible completions & their frequencies as a HashMap
@@ -189,6 +201,8 @@ public class Prediction
 					}
 				}
 			}
+			
+			// TODO: Sort completions by descending frequency
 		}
 		return completions;
 	}

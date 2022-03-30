@@ -2,31 +2,39 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * This class runs tests on the Dictionary class
- * 
+ * This class runs tests on the Dictionary class and also
+ * implements a text-based menu for the Predictive Text Application
  * @author Becky Tyler (2461535), Oliver Shearer (2455913)
  * @version 1.0 (17 March 2022)
  */
 public class Tester
 {
-	// Create object reference to the dictionary
-	Dictionary dictionary;
-	Dictionary dictionaryI;
+	// Create object references to the dictionaries
+	// dictionary = the current dictionary in the selected language
+	// dict_en = English dictionary, dict_it = Italian dictionary
+	Dictionary dictionary, dict_en, dict_it;
 	
 	// Object reference to the prediction
 	Prediction prediction;
 		
 	/**
 	 * Default constructor
+	 * @author Becky Tyler (2461535)
 	 */
 	public Tester()
 	{
-		// Create a new dictionary trie
-		dictionary = new Dictionary("English");
-		dictionaryI = new Dictionary("Italian");
+		// Create the new dictionaries in each language
+		dict_en = new Dictionary("English");
+		dict_it = new Dictionary("Italian");
 		
 		// Create a new prediction
 		prediction = new Prediction();
+		
+		// Select the current dictionary
+		if (prediction.getLanguage().equals("English"))
+			dictionary = dict_en;
+		else
+			dictionary = dict_it;
 	}
 	
 	/**
@@ -36,25 +44,9 @@ public class Tester
 	{
 		Tester tester = new Tester();
 		tester.processUserInput();
-
-		// Test adding words to the dictionary trie
-		//tester.runAddTests();
-				
-		// Test displaying the dictionary
-		//tester.displayTest();
 		
-		// Test finding a word
-//		tester.findTest("ten");
-		
-		// Test deleting a word from the dictionary entered by the user
-//		tester.deleteUserEnteredWord();
-		
-		// Test the prediction to get some completions
-//		tester.predictTestv1("t");
-//		tester.predictTestv1("i");
-		
-		//tester.enterSentence();
-
+		// Run automated tests
+//		tester.runAutomatedTests();
 	}
 	
 
@@ -62,38 +54,45 @@ public class Tester
 	 * Displays the menu to the user and asks them what option they would like to do and validates it and sends it to be processed
 	 * 
 	 * @return userChoice which is an integer representing the option that the user chose
+	 * @author Oliver Shearer (2455913), minor updates by Becky Tyler (2461535)
 	 */
-	private int displayMenu() {
-		
+	private int displayMenu()
+	{	
 		boolean validChoiceProvided = false;
-        int userChoice = 0;
-
-        while (!validChoiceProvided) {
+		int userChoice = 0;
+		
+		while (!validChoiceProvided)
+		{
+			System.out.println("\n----------MENU----------");
+			System.out.println("1. Enter A Word Or Phrase");
+			System.out.println("2. Change Limit Of Word Suggestions (Currently: " + 
+					   prediction.getMaxCompletions() + ")");
+			if (prediction.getAddWord())
+				System.out.println("3. Add New Words To The Dictionary (Setting: ON)");
+			else
+				System.out.println("3. Add New Words To The Dictionary (Setting: OFF)");
+			if (prediction.getLanguage().equals("English"))
+				System.out.println("4. Change Language to Italian");
+			else
+				System.out.println("4. Change Language to English");
+			System.out.println("5. Remove Word From Dictionary");
+			System.out.println("6. Display The Dictionary");
+			System.out.println("7. Save Dictionary");
+			System.out.println("8. Run Completions for Uncompleted Word File");
+			System.out.println("0. Exit");
+			userChoice = getInt("Enter Menu Option (0-8): ");
+   
+			if ((userChoice >= 0) && (userChoice <= 8))
+			{
+				validChoiceProvided = true;
+			}
+			else
+			{
+				System.out.println("\nSorry, that is not a valid choice.");
+			}
+        	}
         	
-        	System.out.println("\n----------MENU----------");
-    		System.out.println("\n1. Enter A Word Or Phrase");
-    		System.out.println("\n2. Change Limit Of Word Suggestions");
-			System.out.println("\n3. Add Unrecognised Words To The Dictionary Setting");
-			System.out.println("\n4. Change Language");
-			System.out.println("\n5. Remove Word From Dictionary");
-			System.out.println("\n6. Display The Dictionary");
-			System.out.println("\n7. Save Dictionary");
-    		System.out.println("\n8. Exit");
-    		userChoice = getInt("\nEnter The Number Of The Option You Would Like To Choose: ");
-    		
-    		if ((userChoice >= 1) && (userChoice <= 3))
-            {
-                validChoiceProvided = true;  
-            }
-            else
-            {
-                System.out.println("\nSorry, that is not a valid choice");
-            }
-        	
-        }
-        	
-        return userChoice;
-	
+		return userChoice;
 	}
 
 	private void processUserInput()
@@ -101,10 +100,9 @@ public class Tester
 
 		boolean exitChoiceSelected = false;
 			
-		while (!exitChoiceSelected) {
-				
-			Scanner s = new Scanner(System.in);
-		    int userChoice = 0;
+		while (!exitChoiceSelected)
+		{
+			int userChoice = 0;
 			userChoice = displayMenu();
 				
 			switch(userChoice) {
@@ -131,15 +129,18 @@ public class Tester
 				break;
 
 			case 4:
+				// Updated by BT to change the dictionary
 				if(prediction.getLanguage().equals("English"))
 				{
 					prediction.setLanguage("Italian");
-					System.out.println("\nLanguage Has Been Switched To Italian");
+					dictionary = dict_it;
+					System.out.println("\nLanguage Has Been Switched To Italian.");
 				}
 				else
 				{
 					prediction.setLanguage("English");
-					System.out.println("\nLanguage Has Been Switched To English");
+					dictionary = dict_en;
+					System.out.println("\nLanguage Has Been Switched To English.");
 				}
 				break;
 				
@@ -152,10 +153,15 @@ public class Tester
 				break;
 
 			case 7:
-				
+				System.out.println("Sorry, this option has not been implemented yet.");				
 				break;
 
 			case 8:
+				System.out.println("Sorry, this option has not been implemented yet.");				
+				break;
+
+			case 0:
+				System.out.println("\nGoodbye!\n");
 				exitChoiceSelected = true;
 				break;
 				
@@ -168,15 +174,44 @@ public class Tester
 			
 	}
 
+	/** 
+	* Method to automatically run the tests as defined in the test plan
+	* @author Becky Tyler (2461535)
+	*/
+	public void runAutomatedTests() 
+	{
+		// Test adding words to the dictionary trie
+		System.out.println("Testing the add word method");
+		System.out.println("===========================");
+		this.runAddTests();
+		
+		// Test deleting a word from the dictionary entered by the user
+		System.out.println("Testing the delete method");
+		System.out.println("=========================");
+//		tester.deleteUserEnteredWord();
+		this.runDeleteTest();
+		
+		// Test finding a word
+		System.out.println("Testing the find method");
+		System.out.println("=======================");
+		this.findTest("ten");
+		
+		// Test displaying the dictionary
+		System.out.println("Testing the display method");
+		System.out.println("==========================");
+		this.displayTest();
+		
+		// Test the prediction to get some completions
+//		tester.predictTestv1("t");
+//		tester.predictTestv1("i");
+	}
 
 	/**
 	 * Method to run tests to add words to the dictionary trie
+	 * @author Becky Tyler (2461535)
 	 */
 	public void runAddTests()
 	{
-		System.out.println("TESTING: Adding words to the dictionary");
-		System.out.println("=======================================");
-		
 		// Get the root of the dictionary trie
 		WordNode root = dictionary.getRoot();
 		
@@ -218,15 +253,24 @@ public class Tester
 		dictionary.printDictionary(inNode, "in");		
 	}
 	
+	/** 
+	 * Method to test deleting a word
+	 * @author Becky Tyler (2461535)
+	*/
+	public void runDeleteTest() 
+	{
+		System.out.println("Remove word 'ten' from the Dictionary");
+		dictionary.deleteNode("ten", dictionary.getRoot());	
+		dictionary.printDictionary(dictionary.getRoot(), "");
+	}
+	
 	/**
 	 * Method to test deleting a word entered by the user
 	 * @author Oliver Shearer (2455913)
 	 */
 	public void deleteUserEnteredWord()
 	{
-		Scanner s = new Scanner(System.in);
-		System.out.println("Enter A Word");
-		String word = s.nextLine();
+		String word = this.getString("Enter word to delete: ");
 		if(dictionary.wordEnteredIsNull(word))
 		{
 			System.out.println("\n");
@@ -234,25 +278,43 @@ public class Tester
 		else
 		{
 			dictionary.deleteNode(word, dictionary.getRoot());
-			dictionary.findNode(word, dictionary.getRoot());
+			// dictionary.findNode(word, dictionary.getRoot());
 		}
 	}
 
 	/**
 	 * Method to display the full dictionary trie from the root node
+	 * @author Becky Tyler (2461535)
 	 */
 	public void displayTest()
 	{
-		System.out.println("DISPLAYING THE FULL DICTIONARY:");
-		System.out.println("===============================");
-		dictionary.displayDictionary(dictionary.getRoot(), "");
-		System.out.println("===============================");
-		System.out.println();		
+		String startWord = this.getString("Enter letter(s) to display the dictionary from, or press ENTER for full dictionary: ").trim();
+
+		if (startWord.equals(""))
+		{
+			System.out.println("DISPLAYING THE FULL DICTIONARY:");
+			System.out.println("===============================");
+			dictionary.displayDictionary(dictionary.getRoot(), "");
+			System.out.println("===============================");
+			System.out.println();
+		}
+		else  // Display the part of the dictionary with words starting with startWord
+		{
+			// Find the starting node;
+			WordNode startNode = dictionary.findNode(startWord, dictionary.getRoot());
+
+			System.out.println("DISPLAYING THE DICTIONARY: Words beginning with " + startWord);
+			System.out.println("==========================");
+			// Display the dictionary from the start word
+			dictionary.displayDictionary(startNode, startWord);
+			System.out.println("===============================\n");
+		}
 	}
 
 	/**
 	 * Method to test the findNode method to search for a word and its node
 	 * @param wordToFind The word to find
+	 * @author Becky Tyler (2461535)
 	 */
 	public void findTest(String wordToFind)
 	{
@@ -270,6 +332,7 @@ public class Tester
 	/**
 	 * Method to test the prediction method
 	 * @param textToComplete The text to predict/complete
+	 * @author Becky Tyler (2461535)
 	 */
 	public void predictTestv1(String textToComplete)
 	{
@@ -288,12 +351,16 @@ public class Tester
 		}
 	}
 
-	
+	/**
+	 * Method to obtain a word or phrase from the user and get the completions
+	 * @author Oliver Shearer (2455913), updated by Becky Tyler (2461535)
+	 */
 	public void enterSentence()
 	{
-		Scanner s = new Scanner(System.in);
-		System.out.println("Enter A Word");
-		String textToComplete = s.nextLine();
+		// Clear the completions list - FIX by BT 28/03/22;
+		prediction.resetCompletions();
+		
+		String textToComplete = this.getString("Enter a word or phrase: ");
 
 		boolean empty = dictionary.wordEnteredIsNull(textToComplete);
 
@@ -302,19 +369,34 @@ public class Tester
 			return;
 		}
 
-		String[] sentence = textToComplete.split(" ");
+		// Remove multiple spaces from the words in the phrase - FIX by BT 30/3/22
+		// String[] sentence = textToComplete.split(" ");
+		String[] sentence = textToComplete.split("\\s+");
 		
 		for(int i = 0 ; i < sentence.length; i++)
 		{
+			// Get the completion for the last word in the phrase
 			if(sentence.length - 1 == i)
 			{
 				WordNode foundTextNode = dictionary.findNode(sentence[i], dictionary.getRoot());
+
+				// Check the partial word was found - FIX by BT 30/3/22
+				if (foundTextNode == null)
+				{
+					System.out.println("Sorry, there are no possible completions in the dictionary.");
+					return;
+				}
 
 				prediction.predictText(foundTextNode, textToComplete);
 				prediction.getCompletions();
 			}
 			else
 			{
+				// Add new words to the dictionary if the setting is on - update by BT 29/03/22
+				if (prediction.getAddWord() == true)
+					dictionary.addWord(sentence[i]);
+				
+				// Increase the frequency of the times this word has been used
 				dictionary.updateFrequency(sentence[i], 1);
 			}
 		}
@@ -324,9 +406,7 @@ public class Tester
 
 	public void updateWordLimit()
 	{
-		Scanner s = new Scanner(System.in);
-		System.out.println("Enter The New Limit Of Word Suggestions");
-		int limit = s.nextInt();
+		int limit = getInt("Enter The New Limit Of Word Suggestions: ");
 
 		if(limit < 1 || limit > 100)
 		{
@@ -343,7 +423,7 @@ public class Tester
 	{
 		Scanner s = new Scanner(System.in);
 		
-		System.out.print(userPrompt);
+		System.out.print("\n" + userPrompt);
 		while (!s.hasNextInt())
 		{
 			s.next();
@@ -353,6 +433,20 @@ public class Tester
 		int num = s.nextInt();
 		return num;
 	}
+	
+	/**
+	 * Method to read in a string from the user
+	 * @param userPrompt Message to prompt the user for input
+	 * @return The String entered by the user
+	 * @author Becky Tyler (2461535)
+	 */
+	public String getString(String userPrompt)
+	{
+		Scanner s = new Scanner(System.in);
+		System.out.print("\n" + userPrompt);
+		String userInput = s.nextLine();
+		return userInput.trim();
+	}
 
-
+	
 }

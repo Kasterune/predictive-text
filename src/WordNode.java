@@ -15,7 +15,7 @@ public class WordNode
 	private int     frequency;	// Number of times word has been used (if isWord is true)
 	
 	// Define a map to hold the references to the child nodes, indexed on the letters
-	Map<String, WordNode> nextNodes;
+	private Map<String, WordNode> nextNodes;
 	
 	/**
 	 * Default constructor
