@@ -134,13 +134,13 @@ public class Tester
 				{
 					prediction.setLanguage("Italian");
 					dictionary = dict_it;
-					System.out.println("\nLanguage Has Been Switched To Italian");
+					System.out.println("\nLanguage Has Been Switched To Italian.");
 				}
 				else
 				{
 					prediction.setLanguage("English");
 					dictionary = dict_en;
-					System.out.println("\nLanguage Has Been Switched To English");
+					System.out.println("\nLanguage Has Been Switched To English.");
 				}
 				break;
 				
@@ -360,16 +360,18 @@ public class Tester
 		// Clear the completions list - FIX by BT 28/03/22;
 		prediction.resetCompletions();
 		
-		String textToComplete = this.getString("Enter a word or phrase: ");
+		String textToComplete = this.getString("Enter a word or phrase: ").trim();
 
-		boolean empty = dictionary.wordEnteredIsNull(textToComplete);
+		// boolean empty = dictionary.wordEnteredIsNull(textToComplete);
 
-		if(empty == true)
+		if(textToComplete.length() == 0)
 		{
 			return;
 		}
 
-		String[] sentence = textToComplete.split(" ");
+		// Remove multiple spaces from the words in the phrase - FIX by BT 30/3/22
+		// String[] sentence = textToComplete.split(" ");
+		String[] sentence = textToComplete.split("\\s+");
 		
 		for(int i = 0 ; i < sentence.length; i++)
 		{
