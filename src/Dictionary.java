@@ -159,36 +159,17 @@ public class Dictionary
 		// Remove any leading or trailing spaces from the word and convert to lower case
 		word = word.trim().toLowerCase();
 
-		// Add the word starting at the root of the dictionary trie
-		addWord(word, this.root);
-	}
-
-	/**
-	 * Method to add a word starting at the given word node
-	 * @param word  The word to add
-	 * @param node  The starting node where the word is to be added
-	 * @author Original version by Becky Tyler (2461535), updated by Joshua Price (2481545)
-	 */
-	private void addWord(String word, WordNode node)
-	{
-		// Make sure the word contains some letters, or if fully recursed set word to true, and exit
-		if (word.length() == 0)
-		{
-			if (node != this.root)
-			{
-				node.setIsWord(true);
-			}
-			return;
+		WordNode node = root;
+		// Add a new node to the dictionary for each letter of word if it doesn't already exist
+		for (int i = 0; i < word.length(); i++) {
+			node.getNextNodes().putIfAbsent(word.substring(i, i+1), new WordNode());
+			node = node.getNextNodes().get(word.substring(i, i+1));
 		}
 
-		// Add a new node to the dictionary for the first letter of the word if it doesn't already exist
-		if (!node.getNextNodes().containsKey(word.substring(0, 1)))
-		{
-			node.getNextNodes().put(word.substring(0, 1), new WordNode());
+		// If word is empty then node will still be the root
+		if (node != root) {
+			node.setIsWord(true);
 		}
-
-		// Add node(s) for the remaining letters in the word
-		addWord(word.substring(1), node.getNextNodes().get(word.substring(0, 1)));
 	}
 
 	/**
