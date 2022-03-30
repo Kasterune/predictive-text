@@ -380,6 +380,13 @@ public class Tester
 			{
 				WordNode foundTextNode = dictionary.findNode(sentence[i], dictionary.getRoot());
 
+				// Check the partial word was found - FIX by BT 30/3/22
+				if (foundTextNode == null)
+				{
+					System.out.println("Sorry, there are no possible completions in the dictionary.");
+					return;
+				}
+
 				prediction.predictText(foundTextNode, textToComplete);
 				prediction.getCompletions();
 			}
