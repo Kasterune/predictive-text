@@ -24,14 +24,14 @@ public class Tester
 	public Tester()
 	{
 		// Create the new dictionaries in each language
-		dict_en = new Dictionary("English");
-		dict_it = new Dictionary("Italian");
+		dict_en = new Dictionary(Dictionary.Language.ENGLISH);
+		dict_it = new Dictionary(Dictionary.Language.ITALIAN);
 		
 		// Create a new prediction
 		prediction = new Prediction();
 		
 		// Select the current dictionary
-		if (prediction.getLanguage().equals("English"))
+		if (prediction.getLanguage().equals(Dictionary.Language.ENGLISH))
 			dictionary = dict_en;
 		else
 			dictionary = dict_it;

@@ -14,7 +14,7 @@ public class Prediction
 	private boolean addWord;
 	
 	// The current language/dictionary being used
-	private String language;
+	Dictionary.Language language;
 	
 	// The maximum number of completions to be predicted
 	private int maxCompletions;
@@ -29,7 +29,7 @@ public class Prediction
 	public Prediction()
 	{
 		addWord = false;
-		language = "English";
+		language = Dictionary.Language.ENGLISH;
 		maxCompletions = 7;
 		completions = new ArrayList<WordNode>();
 		words = new ArrayList<String>();
@@ -48,7 +48,7 @@ public class Prediction
 	 * Method to get the current language
 	 * @return The current language
 	 */
-	public String getLanguage()
+	public Dictionary.Language getLanguage()
 	{
 		return this.language;
 	}
@@ -75,7 +75,7 @@ public class Prediction
 	 * Method to set the current language
 	 * @param language The current language of the dictionary
 	 */
-	public void setLanguage(String language)
+	public void setLanguage(Dictionary.Language language)
 	{
 		this.language = language;
 	}
