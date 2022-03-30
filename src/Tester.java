@@ -360,11 +360,11 @@ public class Tester
 		// Clear the completions list - FIX by BT 28/03/22;
 		prediction.resetCompletions();
 		
-		String textToComplete = this.getString("Enter a word or phrase: ").trim();
+		String textToComplete = this.getString("Enter a word or phrase: ");
 
-		// boolean empty = dictionary.wordEnteredIsNull(textToComplete);
+		boolean empty = dictionary.wordEnteredIsNull(textToComplete);
 
-		if(textToComplete.length() == 0)
+		if(empty == true)
 		{
 			return;
 		}
@@ -445,7 +445,7 @@ public class Tester
 		Scanner s = new Scanner(System.in);
 		System.out.print("\n" + userPrompt);
 		String userInput = s.nextLine();
-		return userInput;
+		return userInput.trim().toLowerCase();
 	}
 
 	
