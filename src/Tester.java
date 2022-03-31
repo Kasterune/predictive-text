@@ -1,5 +1,7 @@
 import java.util.Map;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class runs tests on the Dictionary class and also
@@ -450,6 +452,18 @@ public class Tester
 		Scanner s = new Scanner(System.in);
 		System.out.print("\n" + userPrompt);
 		String userInput = s.nextLine();
+		
+		// Check that the input doesn't contain special characters
+		Pattern p = Pattern.compile("[^a-z ]", Pattern.CASE_INSENSITIVE);
+		Matcher match = p.matcher(userInput);
+		while (match.find())
+		{
+			System.out.println("Sorry, special charaters are not allowed.");
+			System.out.print("\n" + userPrompt);
+			userInput = s.nextLine();
+			match = p.matcher(userInput);
+		}
+		
 		return userInput.trim();
 	}
 
