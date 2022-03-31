@@ -154,16 +154,15 @@ public class Dictionary
 	 * @param word The word to add to the dictionary trie
 	 * @author Original version by Becky Tyler (2461535), updated by Joshua Price (2481545)
 	 */
-	public void addWord(String word)
-	{
+	public void addWord(String word) {
 		// Remove any leading or trailing spaces from the word and convert to lower case
 		word = word.trim().toLowerCase();
 
 		WordNode node = root;
 		// Add a new node to the dictionary for each letter of word if it doesn't already exist
 		for (int i = 0; i < word.length(); i++) {
-			node.getNextNodes().putIfAbsent(word.substring(i, i+1), new WordNode());
-			node = node.getNextNodes().get(word.substring(i, i+1));
+			node.getNextNodes().putIfAbsent(word.substring(i, i + 1), new WordNode());
+			node = node.getNextNodes().get(word.substring(i, i + 1));
 		}
 
 		// If word is empty then node will still be the root
