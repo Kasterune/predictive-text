@@ -458,7 +458,7 @@ public class Tester
 		Matcher match = p.matcher(userInput);
 		while (match.find())
 		{
-			System.out.println("Sorry, special charaters are not allowed.");
+			System.out.println("Sorry, numbers and special charaters are not allowed.");
 			System.out.print("\n" + userPrompt);
 			userInput = s.nextLine();
 			match = p.matcher(userInput);
