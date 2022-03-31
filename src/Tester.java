@@ -303,11 +303,16 @@ public class Tester
 			// Find the starting node;
 			WordNode startNode = dictionary.findNode(startWord, dictionary.getRoot());
 
-			System.out.println("DISPLAYING THE DICTIONARY: Words beginning with " + startWord);
-			System.out.println("==========================");
-			// Display the dictionary from the start word
-			dictionary.displayDictionary(startNode, startWord);
-			System.out.println("===============================\n");
+			if (startNode != null)
+			{
+				System.out.println("DISPLAYING THE DICTIONARY: Words beginning with " + startWord);
+				System.out.println("==========================");
+				// Display the dictionary from the start word
+				dictionary.displayDictionary(startNode, startWord);
+				System.out.println("==========================\n");
+			}
+			else
+				System.out.println("Word Does Not Exist In the Dictionary");
 		}
 	}
 
