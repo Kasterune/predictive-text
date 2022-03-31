@@ -15,21 +15,23 @@ public class Dictionary
 	// Define field to hold the reference to the root of the tree
 	private WordNode root;
 
+	enum Language {
+		ENGLISH,
+		ITALIAN
+	}
+
 	/**
 	 * Default constructor
 	 */
-	public Dictionary(String language)
+	public Dictionary(Language language)
 	{
 		// Set the root to be a blank node not referring to any other word nodes yet
 		root = new WordNode();
 
-		if(language.equals("English"))
-		{
-			loadWords("English");
-		}
-		else
-		{
-			loadWords("Italian");
+		if (language.equals(Language.ENGLISH)) {
+			loadWords(Language.ENGLISH);
+		} else {
+			loadWords(Language.ITALIAN);
 		}
 	}
 	
@@ -53,7 +55,7 @@ public class Dictionary
 	}
 
 
-	public void loadWords(String language)
+	public void loadWords(Language language)
 	{
 		File tempFile;
 		String fileName;
@@ -61,7 +63,7 @@ public class Dictionary
 	    BufferedReader bufferedReader = null;
 	    String nextLine;
 
-		if(language.equals("English"))
+		if(language.equals(Language.ENGLISH))
 		{
 			tempFile = new File("Saved_DictionaryE.txt");
 			fileName = "EnglishUK.txt";
