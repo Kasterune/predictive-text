@@ -16,10 +16,12 @@ import java.awt.event.KeyEvent;
 
 public class Menu extends JPanel implements ActionListener 
 {
-    JLabel predictLabel, wordLimitLabel, removeWordLabel, searchWordLabel, currentLanguageLabel, currentAddSettingLabel;
+    JLabel savedLabel, addWordLabel, spellingLabel, predictLabel, wordLimitLabel, removeWordLabel, searchWordLabel, currentLanguageLabel, currentAddSettingLabel;
     JTextField predictTextField, wordLimitTextField, removeWordTextField, searchWordTextField;
     JTextArea predictTextArea, wordLimitTextArea, displayDictTextArea;
-    JButton predictButton, wordLimitButton, removeWordButton, searchWordButton, displayNext, displayBack, saveDictButton, changeLanguageButton, addWordButton;
+    JButton addButton, spellCheckButton, predictButton, wordLimitButton, removeWordButton, searchWordButton, displayNext, displayBack, saveDictButton, changeLanguageButton, addWordButton;
+    JRadioButton addOnRadio, addOffRadio;
+    ButtonGroup group;
 
     public Menu() 
     {
@@ -66,7 +68,7 @@ public class Menu extends JPanel implements ActionListener
         return panel;
     }
 
-    //User manual panel
+    //User manual panel (TO BE COMPLETED)
     protected JComponent makeManualPanel() 
     {
         JPanel panel = new JPanel();
@@ -76,23 +78,45 @@ public class Menu extends JPanel implements ActionListener
 
     //Word prediction panel
     protected JComponent makePredictionPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        JPanel topPanel = new JPanel();
-        predictLabel = new JLabel("Please enter text here: ");
-        predictTextField = new JTextField();
-        predictTextField.setColumns(65);
-        predictButton = new JButton("Predict!");
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+
+        spellingLabel = new JLabel("-");
+        spellingLabel.setBounds(630, 10, 250, 20);
+        addWordLabel = new JLabel("-");
+        addWordLabel.setBounds(630, 40, 250, 20);
+        addButton = new JButton("Add Word (if enabled)");
+        addButton.setBounds(270, 70, 170, 20);
         saveDictButton = new JButton("Save Current Dictionary");
-
-        topPanel.add(predictLabel, SwingConstants.CENTER);
-        topPanel.add(predictTextField);
-        topPanel.add(predictButton);
-        predictButton.addActionListener(this);
-
-        panel.add(topPanel, BorderLayout.NORTH);
+        saveDictButton.setBounds(450, 70, 175, 20);
+        savedLabel = new JLabel("-");
+        savedLabel.setBounds(630, 70, 250, 20);
+        predictLabel = new JLabel("Please enter text below: ");
+        predictLabel.setBounds(10, 9, 150, 20);
+        predictTextField = new JTextField();
+        predictTextField.setBounds(10, 40, 615, 20);
+        predictButton = new JButton("Predict!");
+        predictButton.setBounds(10, 70, 120, 20);
+        spellCheckButton = new JButton("Check spelling");
+        spellCheckButton.setBounds(140, 70, 120, 20);
         predictTextArea = new JTextArea();
-        panel.add(predictTextArea, BorderLayout.CENTER);
-        panel.add(saveDictButton, BorderLayout.SOUTH);
+        predictTextArea.setBounds(10, 100, 860, 420);
+
+        predictButton.addActionListener(this); //this could also be implemented with the enter key perhaps?
+        spellCheckButton.addActionListener(this);
+        addButton.addActionListener(this);
+        saveDictButton.addActionListener(this);
+
+        panel.add(spellingLabel);
+        panel.add(spellCheckButton);
+        panel.add(saveDictButton);
+        panel.add(predictLabel);
+        panel.add(predictTextField);
+        panel.add(predictButton);
+        panel.add(predictTextArea);
+        panel.add(addButton);
+        panel.add(addWordLabel);
+        panel.add(savedLabel);
 
         return panel;
     }
@@ -119,24 +143,43 @@ public class Menu extends JPanel implements ActionListener
         currentLanguageLabel = new JLabel("Current Language: English");
         currentLanguageLabel.setBounds(390, 110, 200, 20);
 
-        addWordButton = new JButton("Toggle add word setting");
-        addWordButton.setBounds(150, 170, 200, 20);
-        String[] setting = {"Off", "On"};
-        JComboBox<String> addWordSettingBox = new JComboBox<>(setting);
-        addWordSettingBox.setBounds(80, 170, 60, 20);
+        JLabel text = new JLabel("Toggle Add Word Setting: ");
+        text.setBounds(80, 170, 150, 20);
+        addOnRadio = new JRadioButton("On");
+        addOffRadio = new JRadioButton("Off");
+        addOnRadio.setBounds(80, 190, 200, 20);
+        addOffRadio.setBounds(80, 210, 200, 20);
+        //addOffRadio.setSelected(true);
+        group = new ButtonGroup();
+        group.add(addOnRadio);
+        group.add(addOffRadio);
+        addOnRadio.addActionListener(this);
+        addOffRadio.addActionListener(this);
         currentAddSettingLabel = new JLabel("Off");
-        currentAddSettingLabel.setBounds(260, 170, 150, 20);
+        currentAddSettingLabel.setBounds(235, 170, 50, 20);
 
 
+        //addword but in previous interface using combobox, delete in final draft
+        //addWordButton = new JButton("Toggle add word setting");
+        //addWordButton.setBounds(150, 170, 200, 20);
+        //String[] setting = {"Off", "On"};
+        //JComboBox<String> addWordSettingBox = new JComboBox<>(setting);
+        //addWordSettingBox.setBounds(80, 170, 60, 20);
+        //currentAddSettingLabel = new JLabel("Off");
+        //currentAddSettingLabel.setBounds(260, 170, 150, 20);
+
+        panel.add(text);
         panel.add(wordLimitBox);
         panel.add(wordLimitButton);
         panel.add(wordLimitLabel);
         panel.add(languageComboBox);
         panel.add(changeLanguageButton);
         panel.add(currentLanguageLabel);
-        panel.add(addWordSettingBox);
-        panel.add(addWordButton);
+        panel.add(addOnRadio);
+        panel.add(addOffRadio);
         panel.add(currentAddSettingLabel);
+        //panel.add(addWordSettingBox);
+        //panel.add(addWordButton);
 
         wordLimitButton.addActionListener(new ActionListener() {
             @Override
@@ -155,17 +198,6 @@ public class Menu extends JPanel implements ActionListener
             {
             String selectedLanguage = "Current Language: " + languageComboBox.getItemAt(languageComboBox.getSelectedIndex());
             currentLanguageLabel.setText(selectedLanguage);
-
-            //UPDATE WITH LANGUAGE SETTING FUNCTIONS
-            }
-        });
-
-        addWordButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-            String setting = "Current Setting: " + addWordSettingBox.getItemAt(addWordSettingBox.getSelectedIndex());
-            currentAddSettingLabel.setText(setting);
 
             //UPDATE WITH LANGUAGE SETTING FUNCTIONS
             }
@@ -282,6 +314,27 @@ public class Menu extends JPanel implements ActionListener
         } else if (e.getSource() == saveDictButton)
         {
             //UPDATE WITH SAVING DICTIONARY BUTTON STUFFS
+
+            String text = "Saved!";
+            savedLabel.setText(text);
+        } else if (e.getSource() == spellCheckButton)
+        {
+            String text = "Replace with corrent or incorrect spelling";
+            spellingLabel.setText(text);
+            //UPDATE WITH SPELLCHECK STUFFS
+        } else if (e.getSource() == addButton)
+        {
+            String text = "Replace with word added confirmation";
+            addWordLabel.setText(text);
+            //UPDATE WITH ADD WORD FROM CURRENT WORD IN TEXT FIELD IN PREDICT PANEL
+        } else if (e.getSource() == addOnRadio)
+        {
+            currentAddSettingLabel.setText("On");
+            //UPDATE WITH SETTING FOR ADDING WORDS TO TURN ON
+        } else if (e.getSource() == addOffRadio)
+        {
+            currentAddSettingLabel.setText("Off");
+            //UPDATE WITH SETTING FOR ADDING WORDS TO TURN OFF
         }
     }
 
@@ -294,4 +347,3 @@ public class Menu extends JPanel implements ActionListener
         });
     }
 }
-
