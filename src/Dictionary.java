@@ -1,9 +1,11 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.ObjectOutputStream;
 import java.util.Map;
 
 /**
@@ -120,6 +122,33 @@ public class Dictionary implements Serializable
 		}
 	}
 
+	/**
+	 * Saves current dictionary to file.
+	 */
+	public void saveToFile(Language language) {
+		ObjectOutputStream out = null;
+		String saveFile = language.equals(Language.ENGLISH) ? "DictionaryE.save" : "DictionaryI.save";
+
+		try {
+			FileOutputStream fos = new FileOutputStream(saveFile);
+			out = new ObjectOutputStream(fos);
+
+			out.writeObject(this);
+
+		} catch (FileNotFoundException e) {
+			System.out.println("Error opening file: " + e);
+		} catch (IOException e) {
+			System.out.println("Error writing to file: " + e);
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					System.out.println("Error closing file: " + e);
+				}
+			}
+		}
+	}
 
 	/**
 	 * Method to check if a word is in the dictionary
