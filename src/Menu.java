@@ -399,7 +399,7 @@ public class Menu extends JPanel implements ActionListener
                         if (prediction.getAddWord() == true)
                         {
                             boolean added = dictionary.addWord(sentence[i]);
-                            if(boolean == true)
+                            if(added == true)
                             {
                                 predictTextArea.append("*" + sentence[i] + " Is Not Recognised But Has Been Added Due To AddWord Setting Being On \n"); 
                             }
@@ -407,7 +407,7 @@ public class Menu extends JPanel implements ActionListener
                         dictionary.updateFrequency(sentence[i], 1);
                         return;
                     }
-    
+                    
                     prediction.predictText(foundTextNode, textToComplete);
                     getCompletions();
                 }
@@ -416,8 +416,8 @@ public class Menu extends JPanel implements ActionListener
                     // Add new words to the dictionary if the setting is on - update by BT 29/03/22
                     if (prediction.getAddWord() == true)
                     {
-                        dictionary.addWord(sentence[i]);
-                        if(boolean == true)
+                        boolean added = dictionary.addWord(sentence[i]);
+                        if(added == true)
                         {
                             predictTextArea.append("*" + sentence[i] + " Is Not Recognised But Has Been Added Due To AddWord Setting Being On \n"); 
                         }
