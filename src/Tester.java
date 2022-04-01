@@ -240,7 +240,10 @@ public class Tester
 		// Test deleting a node and adding it back in again
 		System.out.println("\nDELETING THE WORD 'in' FROM THE DICTIONARY TRIE:");
 		WordNode inNode = dictionary.findNode("in", root);
-		dictionary.deleteNode("in", root);
+		if (dictionary.deleteNode("in", root))
+			System.out.println("'in' has been removed from the dictionary.");
+		else
+			System.out.println("Word 'in' does not exist in the dictionary.");
 		dictionary.printDictionary(inNode, "in");
 		System.out.println("\nADDING THE WORD 'in' BACK INTO THE DICTIONARY TRIE:");
 		dictionary.addWord("in");
@@ -262,24 +265,35 @@ public class Tester
 	public void runDeleteTest() 
 	{
 		System.out.println("Remove word 'ten' from the Dictionary");
-		dictionary.deleteNode("ten", dictionary.getRoot());	
+		if (dictionary.deleteNode("ten", dictionary.getRoot()))
+			System.out.println("The word 'ten' has been removed from the dictionary.");
+		else
+			System.out.println("Word 'ten' does not exist in the dictionary.");
 		dictionary.printDictionary(dictionary.getRoot(), "");
 	}
 	
 	/**
 	 * Method to test deleting a word entered by the user
-	 * @author Oliver Shearer (2455913)
+	 * @author Oliver Shearer (2455913), updated by Becky Tyler (2461535)
 	 */
 	public void deleteUserEnteredWord()
 	{
+		// Ask the user for the word to delete
 		String word = this.getString("Enter word to delete: ");
+		
+		// Make sure the word entered contains some letters
 		if(dictionary.wordEnteredIsNull(word))
 		{
 			System.out.println("\n");
 		}
+		
+		// Try removing the node for the word
 		else
 		{
-			dictionary.deleteNode(word, dictionary.getRoot());
+			if (dictionary.deleteNode(word, dictionary.getRoot()))
+				System.out.println(word + " has been removed from the dictionary.");
+			else
+				System.out.println("Word '" + word + "' does not exist in the dictionary.");
 			// dictionary.findNode(word, dictionary.getRoot());
 		}
 	}
