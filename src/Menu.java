@@ -209,8 +209,7 @@ public class Menu extends JPanel implements ActionListener
             {
             String selectedNumber = "Word Limit: " + wordLimitBox.getItemAt(wordLimitBox.getSelectedIndex());
             wordLimitLabel.setText(selectedNumber);
-
-            //UPDATE WITH WORD LIMIT SETTING FUNCTIONS
+            prediction.setMaxCompletions(wordLimitBox.getItemAt(wordLimitBox.getSelectedIndex()));
             }
         });
 
@@ -220,8 +219,16 @@ public class Menu extends JPanel implements ActionListener
             {
             String selectedLanguage = "Current Language: " + languageComboBox.getItemAt(languageComboBox.getSelectedIndex());
             currentLanguageLabel.setText(selectedLanguage);
+            if(selectedLanguage.equals("English"))
+            {
+                prediction.setLanguage(Dictionary.Language.ENGLISH); 
+            }
+            else
+            {
+                prediction.setLanguage(Dictionary.Language.ITALIAN);
+            }
+            
 
-            //UPDATE WITH LANGUAGE SETTING FUNCTIONS
             }
         });
 
@@ -320,7 +327,48 @@ public class Menu extends JPanel implements ActionListener
     {
         if (e.getSource() == predictButton)
         {
-            predictTextArea.setText("");
+            predictText();
+
+        } else if (e.getSource() == removeWordButton)
+        {
+            deleteUserEnteredWord();
+
+        } else if (e.getSource() == searchWordButton)
+        {
+            findWord();
+
+        } else if (e.getSource() == saveDictButton)
+        {
+            //UPDATE WITH SAVING DICTIONARY BUTTON STUFFS
+
+            String text = "Saved!";
+            savedLabel.setText(text);
+        } else if (e.getSource() == spellCheckButton)
+        {
+            String text = "Replace with corrent or incorrect spelling";
+            spellingLabel.setText(text);
+            //UPDATE WITH SPELLCHECK STUFFS
+        } else if (e.getSource() == addButton)
+        {
+            String text = "Replace with word added confirmation";
+            addWordLabel.setText(text);
+            //UPDATE WITH ADD WORD FROM CURRENT WORD IN TEXT FIELD IN PREDICT PANEL
+        } else if (e.getSource() == addOnRadio)
+        {
+            currentAddSettingLabel.setText("On");
+            changeAddWordSetting();
+
+        } else if (e.getSource() == addOffRadio)
+        {
+            currentAddSettingLabel.setText("Off");
+            changeAddWordSetting();
+        }
+    }
+
+
+    public void predictText()
+    {
+        predictTextArea.setText("");
             String textToComplete = predictTextField.getText();
 
             prediction.resetCompletions();
@@ -346,7 +394,12 @@ public class Menu extends JPanel implements ActionListener
                     // Check the partial word was found - FIX by BT 30/3/22
                     if (foundTextNode == null)
                     {
-                        System.out.println("Sorry, there are no possible completions in the dictionary.");
+                        predictTextArea.setText("No Completions Were Found In The Dictionary");
+                        if (prediction.getAddWord() == true)
+                        {
+                            dictionary.addWord(sentence[i]);
+                        }
+                        dictionary.updateFrequency(sentence[i], 1);
                         return;
                     }
     
@@ -357,50 +410,14 @@ public class Menu extends JPanel implements ActionListener
                 {
                     // Add new words to the dictionary if the setting is on - update by BT 29/03/22
                     if (prediction.getAddWord() == true)
+                    {
                         dictionary.addWord(sentence[i]);
+                    }
                     
                     // Increase the frequency of the times this word has been used
                     dictionary.updateFrequency(sentence[i], 1);
                 }
             }
-
-        } else if (e.getSource() == removeWordButton)
-        {
-            String text = "Replace with either removed or word not found here";
-            removeWordLabel.setText(text);
-
-            String word = removeWordTextField.getText();
-
-
-        } else if (e.getSource() == searchWordButton)
-        {
-            String text = "Replace with either word found or not found in dictionary here";
-            searchWordLabel.setText(text);
-        } else if (e.getSource() == saveDictButton)
-        {
-            //UPDATE WITH SAVING DICTIONARY BUTTON STUFFS
-
-            String text = "Saved!";
-            savedLabel.setText(text);
-        } else if (e.getSource() == spellCheckButton)
-        {
-            String text = "Replace with corrent or incorrect spelling";
-            spellingLabel.setText(text);
-            //UPDATE WITH SPELLCHECK STUFFS
-        } else if (e.getSource() == addButton)
-        {
-            String text = "Replace with word added confirmation";
-            addWordLabel.setText(text);
-            //UPDATE WITH ADD WORD FROM CURRENT WORD IN TEXT FIELD IN PREDICT PANEL
-        } else if (e.getSource() == addOnRadio)
-        {
-            currentAddSettingLabel.setText("On");
-            //UPDATE WITH SETTING FOR ADDING WORDS TO TURN ON
-        } else if (e.getSource() == addOffRadio)
-        {
-            currentAddSettingLabel.setText("Off");
-            //UPDATE WITH SETTING FOR ADDING WORDS TO TURN OFF
-        }
     }
 
 
@@ -435,6 +452,93 @@ public class Menu extends JPanel implements ActionListener
 			frequency.remove(pos);
 
 		}	
+	}
+
+
+    public void deleteUserEnteredWord()
+    {
+        String word = removeWordTextField.getText();
+
+            // Make sure the word entered contains some letters
+		    if(dictionary.wordEnteredIsNull(word))
+		    {
+			    removeWordLabel.setText("Word Entered Is Null");
+		    }
+		
+		    // Try removing the node for the word
+		    else
+		    {
+			    if (dictionary.deleteNode(word, dictionary.getRoot()))
+                    removeWordLabel.setText(word + " has been removed from the dictionary.");
+			    else
+                    removeWordLabel.setText("Word '" + word + "' does not exist in the dictionary.");
+			    // dictionary.findNode(word, dictionary.getRoot());
+		    }
+    }
+
+
+    public void findWord()
+	{
+		String wordToFind = searchWordTextField.getText();
+
+		System.out.println("SEARCHING FOR THE WORD: " + wordToFind);
+		System.out.println("=======================");
+		WordNode foundNode = dictionary.findNode(wordToFind,dictionary.getRoot());
+		if (foundNode == null)
+			searchWordLabel.setText("Node '" + wordToFind + "' not found.");
+		else
+            searchWordLabel.setText("Node '" + wordToFind + "' found! " + foundNode.printInfo());
+		System.out.println();
+	}
+
+
+    public String printInfo(WordNode word)
+	{
+		String printInfo = "";
+		printInfo = "IsWord: " + word.getIsWord() +
+			    ", Frequency: " + word.getFrequency() +
+			    ", Next Nodes:";
+		if (!word.getNextNodes().isEmpty())
+		{
+			for (String letter : word.getNextNodes().keySet())
+			{
+				printInfo = printInfo + " " + letter;
+			}
+		}
+		else
+			printInfo = printInfo + " null";
+		return printInfo;
+	}
+
+
+    public void changeAddWordSetting()
+    {
+        if(prediction.getAddWord() == false)
+		{
+			prediction.setAddWord(true);
+			System.out.println("\nAdd Word Setting Has Been Turned ON");
+		}
+		else
+		{
+			prediction.setAddWord(false);
+			System.out.println("\nAdd Word Setting Has Been Turned OFF");
+		}
+    }
+
+
+    public int getInt(String userPrompt)
+	{
+		Scanner s = new Scanner(System.in);
+		
+		System.out.print("\n" + userPrompt);
+		while (!s.hasNextInt())
+		{
+			s.next();
+			System.out.print(userPrompt);
+		}
+		
+		int num = s.nextInt();
+		return num;
 	}
 
 

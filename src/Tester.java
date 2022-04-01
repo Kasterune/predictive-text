@@ -406,6 +406,11 @@ public class Tester
 				if (foundTextNode == null)
 				{
 					System.out.println("Sorry, there are no possible completions in the dictionary.");
+					if (prediction.getAddWord() == true)
+                    {
+                        dictionary.addWord(sentence[i]);
+                    }
+                    dictionary.updateFrequency(sentence[i], 1);
 					return;
 				}
 
