@@ -304,35 +304,50 @@ public class Dictionary
 		return null;
 	}
 
-	public void deleteNode(String word, WordNode node)
+	/**
+	 * Method to delete a word from the dictionary
+	 * @param word The word to be deleted
+	 * @param node The starting node for the deletion
+	 * @return true if word was deleted, otherwise false
+	 * @author Oliver Shearer (2455913), updated by Becky Tyler (2461535)
+	 */
+	public boolean deleteNode(String word, WordNode node)
 	{
-
-		String tempWord = word;
+		// Get the map of next nodes
+		// String tempWord = word;
 		Map<String, WordNode> nextNodeMap = node.getNextNodes();
 		
 		// Convert word to lower case - FIX by BT 30/3/22
 		word = word.toLowerCase();
 		
+		// While there is a node for the next letter
 		while(nextNodeMap.containsKey(word.substring(0, 1)))
 		{
+			// Get the node for the next letter in the word
 			node = nextNodeMap.get(word.substring(0, 1));
 			word = word.substring(1);
 
+			// If this is the last letter in the word
 			if (word.length() == 0)
 			{
+				// If the word is a proper word, 'remove' it by setting isWord to false
 				if (node.getIsWord())
 				{
 					node.setIsWord(false);
 					node.setFrequency(0);
-					System.out.println(tempWord + " Has Been Removed From The Dictionary");
-					return;
+					// System.out.println(tempWord + " Has Been Removed From The Dictionary");
+					return true;
 				}
-				System.out.println("Word Does Not Exist In the Dictionary");
-				return;
+				// Otherwise the word does not exist in the dictionary
+				// System.out.println("Word Does Not Exist In the Dictionary");
+				return false;
 			}
 			nextNodeMap = node.getNextNodes();
 		}
-		System.out.println("Word Does Not Exist In the Dictionary");
+		
+		// If there are not enough nodes for all the letters the word does not exist
+		// System.out.println("Word Does Not Exist In the Dictionary");
+		return false;
 	}
 
 	public boolean wordEnteredIsNull(String word)
