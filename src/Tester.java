@@ -74,7 +74,7 @@ public class Tester
 				System.out.println("3. Add New Words To The Dictionary (Setting: ON)");
 			else
 				System.out.println("3. Add New Words To The Dictionary (Setting: OFF)");
-			if (prediction.getLanguage().equals("English"))
+			if (prediction.getLanguage().equals(Dictionary.Language.ENGLISH))
 				System.out.println("4. Change Language to Italian");
 			else
 				System.out.println("4. Change Language to English");
