@@ -155,8 +155,9 @@ public class Dictionary
 	 * NOTE: This method does not check that the input word is a proper word
 	 * @param word The word to add to the dictionary trie
 	 * @author Original version by Becky Tyler (2461535), updated by Joshua Price (2481545)
+	 * @return True if the word added is a new word, false if it was already in the dictionary.
 	 */
-	public void addWord(String word) {
+	public boolean addWord(String word) {
 		// Remove any leading or trailing spaces from the word and convert to lower case
 		word = word.trim().toLowerCase();
 
@@ -167,10 +168,12 @@ public class Dictionary
 			node = node.getNextNodes().get(word.substring(i, i + 1));
 		}
 
+		boolean wasNotWord = !node.getIsWord();
 		// If word is empty then node will still be the root
 		if (node != root) {
 			node.setIsWord(true);
 		}
+		return wasNotWord;
 	}
 
 	/**
