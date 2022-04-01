@@ -377,6 +377,7 @@ public class Menu extends JPanel implements ActionListener
     
             if(empty == true)
             {
+                predictTextArea.setText("Word Entered Is Empty\n");
                 return;
             }
     
@@ -392,12 +393,16 @@ public class Menu extends JPanel implements ActionListener
                     WordNode foundTextNode = dictionary.findNode(sentence[i], dictionary.getRoot());
     
                     // Check the partial word was found - FIX by BT 30/3/22
-                    if (foundTextNode == null)
+                    if (foundTextNode == null || foundTextNode.getNextNodes().isEmpty() == true)
                     {
-                        predictTextArea.setText("No Completions Were Found In The Dictionary");
+                        predictTextArea.setText("No Completions Were Found In The Dictionary \n");
                         if (prediction.getAddWord() == true)
                         {
-                            dictionary.addWord(sentence[i]);
+                            boolean added = dictionary.addWord(sentence[i]);
+                            if(boolean == true)
+                            {
+                                predictTextArea.append("*" + sentence[i] + " Is Not Recognised But Has Been Added Due To AddWord Setting Being On \n"); 
+                            }
                         }
                         dictionary.updateFrequency(sentence[i], 1);
                         return;
@@ -412,6 +417,10 @@ public class Menu extends JPanel implements ActionListener
                     if (prediction.getAddWord() == true)
                     {
                         dictionary.addWord(sentence[i]);
+                        if(boolean == true)
+                        {
+                            predictTextArea.append("*" + sentence[i] + " Is Not Recognised But Has Been Added Due To AddWord Setting Being On \n"); 
+                        }
                     }
                     
                     // Increase the frequency of the times this word has been used
