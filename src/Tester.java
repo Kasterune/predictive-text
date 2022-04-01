@@ -132,15 +132,15 @@ public class Tester
 
 			case 4:
 				// Updated by BT to change the dictionary
-				if(prediction.getLanguage().equals("English"))
+				if(prediction.getLanguage().equals(Dictionary.Language.ENGLISH))
 				{
-					prediction.setLanguage("Italian");
+					prediction.setLanguage(Dictionary.Language.ITALIAN);
 					dictionary = dict_it;
 					System.out.println("\nLanguage Has Been Switched To Italian.");
 				}
 				else
 				{
-					prediction.setLanguage("English");
+					prediction.setLanguage(Dictionary.Language.ENGLISH);
 					dictionary = dict_en;
 					System.out.println("\nLanguage Has Been Switched To English.");
 				}
