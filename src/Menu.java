@@ -13,6 +13,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Menu extends JPanel implements ActionListener 
 {
@@ -22,6 +26,9 @@ public class Menu extends JPanel implements ActionListener
     JButton addButton, spellCheckButton, predictButton, wordLimitButton, removeWordButton, searchWordButton, displayNext, displayBack, saveDictButton, changeLanguageButton, addWordButton;
     JRadioButton addOnRadio, addOffRadio;
     ButtonGroup group;
+
+    Dictionary dictionary, dict_en, dict_it;
+    Prediction prediction;
 
     public Menu() 
     {
@@ -55,6 +62,21 @@ public class Menu extends JPanel implements ActionListener
         add(tabbedPane);
         //allows scrolling tab usage
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+        // Create the new dictionaries in each language
+		dict_en = new Dictionary(Dictionary.Language.ENGLISH);
+		dict_it = new Dictionary(Dictionary.Language.ITALIAN);
+		
+		// Create a new prediction
+		prediction = new Prediction();
+		
+		// Select the current dictionary
+		if (prediction.getLanguage().equals(Dictionary.Language.ENGLISH))
+			dictionary = dict_en;
+		else
+			dictionary = dict_it;
+
+
     }
 
     //all panels require making, as each panel will have different layouts
@@ -298,15 +320,58 @@ public class Menu extends JPanel implements ActionListener
     {
         if (e.getSource() == predictButton)
         {
-            //UPDATE WITH PREDICTED WORDS LIST STUFFS
-            String src = predictTextField.getText();
-            predictTextArea.append(src + "\n");
+            predictTextArea.setText("");
+            String textToComplete = predictTextField.getText();
+
+            prediction.resetCompletions();
+    
+            boolean empty = dictionary.wordEnteredIsNull(textToComplete);
+    
+            if(empty == true)
+            {
+                return;
+            }
+    
+            // Remove multiple spaces from the words in the phrase - FIX by BT 30/3/22
+            // String[] sentence = textToComplete.split(" ");
+            String[] sentence = textToComplete.split("\\s+");
+            
+            for(int i = 0 ; i < sentence.length; i++)
+            {
+                // Get the completion for the last word in the phrase
+                if(sentence.length - 1 == i)
+                {
+                    WordNode foundTextNode = dictionary.findNode(sentence[i], dictionary.getRoot());
+    
+                    // Check the partial word was found - FIX by BT 30/3/22
+                    if (foundTextNode == null)
+                    {
+                        System.out.println("Sorry, there are no possible completions in the dictionary.");
+                        return;
+                    }
+    
+                    prediction.predictText(foundTextNode, textToComplete);
+                    getCompletions();
+                }
+                else
+                {
+                    // Add new words to the dictionary if the setting is on - update by BT 29/03/22
+                    if (prediction.getAddWord() == true)
+                        dictionary.addWord(sentence[i]);
+                    
+                    // Increase the frequency of the times this word has been used
+                    dictionary.updateFrequency(sentence[i], 1);
+                }
+            }
+
         } else if (e.getSource() == removeWordButton)
         {
             String text = "Replace with either removed or word not found here";
             removeWordLabel.setText(text);
 
-            //UPDATE WITH REMOVE WORD FUNCTIONS STUFFS
+            String word = removeWordTextField.getText();
+
+
         } else if (e.getSource() == searchWordButton)
         {
             String text = "Replace with either word found or not found in dictionary here";
@@ -337,6 +402,63 @@ public class Menu extends JPanel implements ActionListener
             //UPDATE WITH SETTING FOR ADDING WORDS TO TURN OFF
         }
     }
+
+
+    public void getCompletions()
+	{
+		ArrayList<Integer> frequency = new ArrayList<Integer>();
+
+		for(WordNode node : prediction.getCompletions())
+		{
+			frequency.add(Integer.valueOf(node.getFrequency()));
+		}
+
+		int numCompletions = prediction.getCompletions().size();
+
+		for(int i = 0; i < Math.min(prediction.getMaxCompletions(), numCompletions); i++)
+		{
+			int pos = 0;
+			int currentMax = frequency.get(0);
+			for(int v = 0 ; v <= frequency.size()-1 ; v++)
+			{
+				if(currentMax < frequency.get(v))
+				{
+					currentMax = frequency.get(v);
+					pos = v;
+				}
+			}
+
+            predictTextArea.append(prediction.getWords().get(pos) + "\n");
+			//System.out.println(prediction.getWords().get(pos));
+			prediction.getCompletions().remove(pos);
+			prediction.getWords().remove(pos);
+			frequency.remove(pos);
+
+		}	
+	}
+
+
+    public String getString(String userPrompt)
+	{
+		Scanner s = new Scanner(System.in);
+		System.out.print("\n" + userPrompt);
+		String userInput = s.nextLine();
+		
+		// Check that the input doesn't contain special characters
+		Pattern p = Pattern.compile("[^a-z ]", Pattern.CASE_INSENSITIVE);
+		Matcher match = p.matcher(userInput);
+		while (match.find())
+		{
+			System.out.println("Sorry, numbers and special characters are not allowed.");
+			System.out.print("\n" + userPrompt);
+			userInput = s.nextLine();
+			match = p.matcher(userInput);
+		}
+		
+		return userInput.trim();
+	}
+
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -395,7 +396,7 @@ public class Tester
 				}
 
 				prediction.predictText(foundTextNode, textToComplete);
-				prediction.getCompletions();
+				getCompletions();
 			}
 			else
 			{
@@ -410,6 +411,39 @@ public class Tester
 
 	}
 	
+
+	public void getCompletions()
+	{
+		ArrayList<Integer> frequency = new ArrayList<Integer>();
+
+		for(WordNode node : prediction.getCompletions())
+		{
+			frequency.add(Integer.valueOf(node.getFrequency()));
+		}
+
+		int numCompletions = prediction.getCompletions().size();
+
+		for(int i = 0; i < Math.min(prediction.getMaxCompletions(), numCompletions); i++)
+		{
+			int pos = 0;
+			int currentMax = frequency.get(0);
+			for(int v = 0 ; v <= frequency.size()-1 ; v++)
+			{
+				if(currentMax < frequency.get(v))
+				{
+					currentMax = frequency.get(v);
+					pos = v;
+				}
+			}
+
+			System.out.println(prediction.getWords().get(pos));
+			prediction.getCompletions().remove(pos);
+			prediction.getWords().remove(pos);
+			frequency.remove(pos);
+
+		}	
+	}
+
 
 	public void updateWordLimit()
 	{

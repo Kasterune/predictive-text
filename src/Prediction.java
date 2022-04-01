@@ -61,6 +61,19 @@ public class Prediction
 	{
 		return this.maxCompletions;
 	}
+
+
+	public ArrayList<WordNode> getCompletions()
+	{
+		return this.completions;
+	}
+
+
+	public ArrayList<String> getWords()
+	{
+		return this.words;
+	}
+
 	
 	/**
 	 * Method to set the 'addWord' setting to automatically add new words to the dictionary
@@ -120,39 +133,6 @@ public class Prediction
 			words.add(textToComplete);
 		}
 
-	}
-
-
-	public void getCompletions()
-	{
-		ArrayList<Integer> frequency = new ArrayList<Integer>();
-
-		for(WordNode node : completions)
-		{
-			frequency.add(Integer.valueOf(node.getFrequency()));
-		}
-
-		int numCompletions = completions.size();
-
-		for(int i = 0; i < Math.min(maxCompletions, numCompletions); i++)
-		{
-			int pos = 0;
-			int currentMax = frequency.get(0);
-			for(int v = 0 ; v <= frequency.size()-1 ; v++)
-			{
-				if(currentMax < frequency.get(v))
-				{
-					currentMax = frequency.get(v);
-					pos = v;
-				}
-			}
-
-			System.out.println(words.get(pos));
-			completions.remove(pos);
-			words.remove(pos);
-			frequency.remove(pos);
-
-		}	
 	}
 
 
