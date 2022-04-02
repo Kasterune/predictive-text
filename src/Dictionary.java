@@ -1,10 +1,12 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Map;
 
@@ -119,6 +121,32 @@ public class Dictionary implements Serializable
 	                }
 	            }
 	        }
+		} else {
+			ObjectInputStream in = null;
+			String loadFile = language.equals(Language.ENGLISH) ? "DictionaryE.save" : "DictionaryI.save";
+
+			try {
+				FileInputStream fis = new FileInputStream(loadFile);
+				in = new ObjectInputStream(fis);
+
+				Dictionary dict = (Dictionary) in.readObject();
+				root = dict.root;
+
+			} catch (FileNotFoundException e) {
+				System.out.println("Error opening file: " + e);
+				System.exit(1);
+			} catch (IOException | ClassNotFoundException e) {
+				System.out.println("Error reading from file: " + e);
+				System.exit(1);
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (IOException e) {
+						System.out.println("Error closing file: " + e);
+					}
+				}
+			}
 		}
 	}
 
