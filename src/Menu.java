@@ -206,8 +206,10 @@ public class Menu extends JPanel implements ActionListener {
                 currentLanguageLabel.setText(selectedLanguage);
                 if (selectedLanguage.equals("English")) {
                     prediction.setLanguage(Dictionary.Language.ENGLISH);
+                    dictionary = dict_en;
                 } else {
                     prediction.setLanguage(Dictionary.Language.ITALIAN);
+                    dictionary = dict_it;
                 }
 
             }
