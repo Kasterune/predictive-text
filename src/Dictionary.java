@@ -70,12 +70,12 @@ public class Dictionary implements Serializable
 
 		if(language.equals(Language.ENGLISH))
 		{
-			tempFile = new File("Saved_DictionaryE.txt");
+			tempFile = new File("DictionaryE.save");
 			fileName = "EnglishUK.txt";
 		}
 		else
 		{
-			tempFile = new File("Saved_DictionaryI.txt");
+			tempFile = new File("DictionaryI.save");
 			fileName = "ItalianItaly.txt";
 		}
 		boolean exists = tempFile.exists();
