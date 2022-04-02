@@ -22,8 +22,8 @@ public class Menu extends JPanel implements ActionListener
 {
     JLabel savedLabel, addWordLabel, spellingLabel, predictLabel, wordLimitLabel, removeWordLabel, searchWordLabel, currentLanguageLabel, currentAddSettingLabel;
     JTextField predictTextField, wordLimitTextField, removeWordTextField, searchWordTextField;
-    JTextArea predictTextArea, wordLimitTextArea, displayDictTextArea;
-    JButton addButton, spellCheckButton, predictButton, wordLimitButton, removeWordButton, searchWordButton, displayNext, displayBack, saveDictButton, changeLanguageButton, addWordButton;
+    JTextArea predictTextArea, wordLimitTextArea, searchWordTextArea;
+    JButton addButton, spellCheckButton, predictButton, wordLimitButton, removeWordButton, searchWordButton, saveDictButton, changeLanguageButton, addWordButton;
     JRadioButton addOnRadio, addOffRadio;
     ButtonGroup group;
 
@@ -55,10 +55,6 @@ public class Menu extends JPanel implements ActionListener
         tabbedPane.addTab("Search For Word", panel5);
         tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
 
-        JComponent panel6 = displayDictPanel();
-        tabbedPane.addTab("Display Dictionary", panel6);
-        tabbedPane.setMnemonicAt(5, KeyEvent.VK_6);
-
         add(tabbedPane);
         //allows scrolling tab usage
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -79,8 +75,6 @@ public class Menu extends JPanel implements ActionListener
 
     }
 
-    //all panels require making, as each panel will have different layouts
-    //and textfields/buttons/etc.
     protected JComponent makeFillerPanel(String text) {
         JPanel panel = new JPanel(false);
         JLabel filler = new JLabel(text);
@@ -180,16 +174,6 @@ public class Menu extends JPanel implements ActionListener
         currentAddSettingLabel = new JLabel("Off");
         currentAddSettingLabel.setBounds(235, 170, 50, 20);
 
-
-        //addword but in previous interface using combobox, delete in final draft
-        //addWordButton = new JButton("Toggle add word setting");
-        //addWordButton.setBounds(150, 170, 200, 20);
-        //String[] setting = {"Off", "On"};
-        //JComboBox<String> addWordSettingBox = new JComboBox<>(setting);
-        //addWordSettingBox.setBounds(80, 170, 60, 20);
-        //currentAddSettingLabel = new JLabel("Off");
-        //currentAddSettingLabel.setBounds(260, 170, 150, 20);
-
         panel.add(text);
         panel.add(wordLimitBox);
         panel.add(wordLimitButton);
@@ -200,8 +184,6 @@ public class Menu extends JPanel implements ActionListener
         panel.add(addOnRadio);
         panel.add(addOffRadio);
         panel.add(currentAddSettingLabel);
-        //panel.add(addWordSettingBox);
-        //panel.add(addWordButton);
 
         wordLimitButton.addActionListener(new ActionListener() {
             @Override
@@ -259,14 +241,14 @@ public class Menu extends JPanel implements ActionListener
 
     protected JComponent searchWordPanel()
     {
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(new BorderLayout());
         JPanel topPanel = new JPanel();
         JLabel text = new JLabel("Enter word to search for in dictionary: ");
         
-        searchWordLabel = new JLabel("-");
         searchWordTextField = new JTextField();
         searchWordTextField.setColumns(56);
         searchWordButton = new JButton("Search");
+        searchWordTextArea = new JTextArea();
 
         topPanel.add(text);
         topPanel.add(searchWordTextField);
@@ -274,41 +256,7 @@ public class Menu extends JPanel implements ActionListener
         searchWordButton.addActionListener(this);
 
         panel.add(topPanel, BorderLayout.NORTH);
-        panel.add(searchWordLabel, BorderLayout.CENTER);
-
-        return panel;
-    }
-
-    protected JComponent displayDictPanel()
-    {
-        JPanel panel = new JPanel(new BorderLayout());
-        JLabel text = new JLabel("Displaying dictionary contents:", SwingConstants.CENTER);
-
-        displayDictTextArea = new JTextArea();
-        displayNext = new JButton("Next");
-        displayBack = new JButton("Back");
-
-        panel.add(text, BorderLayout.NORTH);
-        panel.add(displayDictTextArea, BorderLayout.CENTER);
-        panel.add(displayBack, BorderLayout.WEST);
-        panel.add(displayNext, BorderLayout.EAST);
-
-        displayBack.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-            //UPDATE WITH DISPLAY BACK FUNCTION (MAYBE SWAP THIS TO MAIN
-            //ACTIONLISTENER METHOD)
-            }
-        });
-
-        displayNext.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-            //UPDATE WITH DISPLAY NEXT FUNCTION
-            }
-        });
+        panel.add(searchWordTextArea, BorderLayout.CENTER);
 
         return panel;
     }
