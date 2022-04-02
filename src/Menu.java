@@ -204,12 +204,13 @@ public class Menu extends JPanel implements ActionListener {
                 String selectedLanguage = "Current Language: "
                         + languageComboBox.getItemAt(languageComboBox.getSelectedIndex());
                 currentLanguageLabel.setText(selectedLanguage);
-                if (selectedLanguage.equals("English")) {
+                String language = languageComboBox.getItemAt(languageComboBox.getSelectedIndex());
+                if (language.equals("English")) {
                     prediction.setLanguage(Dictionary.Language.ENGLISH);
-                    dictionary = dict_en;
+		            dictionary = dict_en;
                 } else {
                     prediction.setLanguage(Dictionary.Language.ITALIAN);
-                    dictionary = dict_it;
+		            dictionary = dict_it;
                 }
 
             }
@@ -275,7 +276,7 @@ public class Menu extends JPanel implements ActionListener {
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("Prediction");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(900, 600);
+        frame.setSize(1200, 600);
 
         frame.add(new Menu(), BorderLayout.CENTER);
         frame.setVisible(true);
@@ -305,9 +306,33 @@ public class Menu extends JPanel implements ActionListener {
             String text = "Replace with corrent or incorrect spelling";
             spellingLabel.setText(text);
             // UPDATE WITH SPELLCHECK STUFFS
+
         } else if (e.getSource() == addButton) {
-            String text = "Replace with word added confirmation";
-            addWordLabel.setText(text);
+            if(prediction.getAddWord())
+            {
+                String text = predictTextField.getText();
+                if(text.indexOf(" ") > 0 || text.equals(""))
+                {
+                    addWordLabel.setText("The Word Entered Is Not Valid As It Contains A Space Or Is Empty");
+                } 
+                else 
+                {
+                    boolean added = dictionary.addWord(text);
+                    if(added == true)
+                    {
+                        addWordLabel.setText(text + " Has Been Added To The Dictionary");
+                    }
+                    else
+                    {
+                        addWordLabel.setText(text + " Already Exists In The Dictionary");
+                    }
+                }
+            }
+            else
+            {
+                addWordLabel.setText("The Add Word Setting Is Not Turned On");
+            }
+
             // UPDATE WITH ADD WORD FROM CURRENT WORD IN TEXT FIELD IN PREDICT PANEL
         } else if (e.getSource() == addOnRadio) {
             currentAddSettingLabel.setText("On");
@@ -373,7 +398,12 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
-    public void getCompletions() {
+    public void getCompletions() 
+    {
+        if(prediction.getCompletions().isEmpty())
+        {
+            predictTextArea.setText("No Completions Were Found In The Dictionary \n");
+        }
         ArrayList<Integer> frequency = new ArrayList<Integer>();
 
         for (WordNode node : prediction.getCompletions()) {
