@@ -433,60 +433,58 @@ public class Menu extends JPanel implements ActionListener
 		    }
     }
 
-
     /**
-	 * Method to display the full dictionary trie from the root node
-	 * @author Becky Tyler (2461535)
-	 */
-	public void displayTest()
-	{
-        searchWordTextArea.setText("");
-		//String startWord = this.getString("Enter letter(s) to display the dictionary from, or press ENTER for full dictionary: ").trim();
-        String startWord = searchWordTextField.getText();
+     * Method to display the full dictionary trie from the root node
+     * @author Becky Tyler (2461535)
+     */
+    public void displayTest()
+    {
+    	searchWordTextArea.setText("");
 
-		if (startWord.equals(""))
-		{
-			dictionary.displayDictionary(dictionary.getRoot(), "");
-		}
-		else  // Display the part of the dictionary with words starting with startWord
-		{
-			// Find the starting node;
-			WordNode startNode = dictionary.findNode(startWord, dictionary.getRoot());
+    	String startWord = searchWordTextField.getText();
 
-			if (startNode != null)
-			{
-				searchWordTextArea.append("DISPLAYING THE DICTIONARY: Words beginning with " + startWord);
-				//System.out.println("==========================");
-				// Display the dictionary from the start word
-				dictionary.displayDictionary(startNode, startWord);
-				//System.out.println("==========================\n");
-			}
-			else
-                searchWordTextArea.append("Word Does Not Exist In the Dictionary");
-		}
-	}
+    	if (startWord.equals(""))
+    	{
+    		this.displayDictionary(dictionary.getRoot(), "");
+    	}
+    	else  // Display the part of the dictionary with words starting with startWord
+    	{
+    		// Find the starting node;
+    		WordNode startNode = dictionary.findNode(startWord, dictionary.getRoot());
+
+    		if (startNode != null)
+    		{
+    			searchWordTextArea.append("DISPLAYING THE DICTIONARY: Words beginning with " + startWord + "\n");
+
+    			// Display the dictionary from the start word
+    			this.displayDictionary(startNode, startWord);
+    		}
+    		else
+    			searchWordTextArea.append("Word Does Not Exist In the Dictionary");
+    	}
+    }
 
 
     public void displayDictionary(WordNode currentNode, String nodeName)
     {
-        // Print the information stored in the current node;
-		if (currentNode.getIsWord() == true)
-		{
-			int freq = currentNode.getFrequency();
-			if (freq <= 0)
-                searchWordTextArea.append(nodeName);
-			else
-                searchWordTextArea.append(nodeName + " (" + freq + ")");
-		}
-		
-		// Use recursion to print the information stored in the next nodes
-		if (!currentNode.getNextNodes().isEmpty())
-		{
-			for (String letter : currentNode.getNextNodes().keySet())
-			{
-				displayDictionary(currentNode.getNextNodes().get(letter), nodeName + letter);	
-			}
-		}
+    	// Print the information stored in the current node;
+    	if (currentNode.getIsWord() == true)
+    	{
+    		int freq = currentNode.getFrequency();
+    		if (freq <= 0)
+    			searchWordTextArea.append(nodeName + "\n");
+    		else
+    			searchWordTextArea.append(nodeName + " (" + freq + ")\n");
+    	}
+
+    	// Use recursion to print the information stored in the next nodes
+    	if (!currentNode.getNextNodes().isEmpty())
+    	{
+    		for (String letter : currentNode.getNextNodes().keySet())
+    		{
+    			this.displayDictionary(currentNode.getNextNodes().get(letter), nodeName + letter);	
+    		}
+    	}
     }
 
 
