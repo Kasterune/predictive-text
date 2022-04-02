@@ -14,15 +14,16 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-    /**
-     * Menu class containing all methods in regards to GUI
-     */
-public class Menu extends JPanel implements ActionListener 
-{
-    JLabel savedLabel, addWordLabel, spellingLabel, predictLabel, wordLimitLabel, removeWordLabel, searchWordLabel, currentLanguageLabel, currentAddSettingLabel;
+/**
+ * Menu class containing all methods in regards to GUI
+ */
+public class Menu extends JPanel implements ActionListener {
+    JLabel savedLabel, addWordLabel, spellingLabel, predictLabel, wordLimitLabel, removeWordLabel, searchWordLabel,
+            currentLanguageLabel, currentAddSettingLabel;
     JTextField predictTextField, wordLimitTextField, removeWordTextField, searchWordTextField;
     JTextArea predictTextArea, wordLimitTextArea, searchWordTextArea;
-    JButton addButton, spellCheckButton, predictButton, wordLimitButton, removeWordButton, searchWordButton, saveDictButton, changeLanguageButton, addWordButton;
+    JButton addButton, spellCheckButton, predictButton, wordLimitButton, removeWordButton, searchWordButton,
+            saveDictButton, changeLanguageButton, addWordButton;
     JRadioButton addOnRadio, addOffRadio;
     static JScrollPane scroll;
     ButtonGroup group;
@@ -33,12 +34,11 @@ public class Menu extends JPanel implements ActionListener
     /**
      * Menu default constructor to set up tabbed pane containing all panels
      */
-    public Menu() 
-    {
+    public Menu() {
         super(new GridLayout(1, 1));
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        JComponent panel1 = makeFillerPanel("PANEL FOR USER MANUAL");
+        JComponent panel1 = makeManualPanel();
         tabbedPane.addTab("How To Use", panel1);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
@@ -59,43 +59,35 @@ public class Menu extends JPanel implements ActionListener
         tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
 
         add(tabbedPane);
-        //allows scrolling tab usage
+        // allows scrolling tab usage
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         // Create the new dictionaries in each language
-		dict_en = new Dictionary(Dictionary.Language.ENGLISH);
-		dict_it = new Dictionary(Dictionary.Language.ITALIAN);
-		
-		// Create a new prediction
-		prediction = new Prediction();
-		
-		// Select the current dictionary
-		if (prediction.getLanguage().equals(Dictionary.Language.ENGLISH))
-			dictionary = dict_en;
-		else
-			dictionary = dict_it;
+        dict_en = new Dictionary(Dictionary.Language.ENGLISH);
+        dict_it = new Dictionary(Dictionary.Language.ITALIAN);
 
+        // Create a new prediction
+        prediction = new Prediction();
 
-    }
-
-    /**
-     * Filler panel for testing
-     */
-    protected JComponent makeFillerPanel(String text) {
-        JPanel panel = new JPanel(false);
-        JLabel filler = new JLabel(text);
-        filler.setHorizontalAlignment(JLabel.CENTER);
-        panel.setLayout(new GridLayout(1, 1));
-        panel.add(filler);
-        return panel;
+        // Select the current dictionary
+        if (prediction.getLanguage().equals(Dictionary.Language.ENGLISH))
+            dictionary = dict_en;
+        else
+            dictionary = dict_it;
     }
 
     /**
      * User panel containing instructions on using predictions
      */
-    protected JComponent makeManualPanel() 
-    {
-        JPanel panel = new JPanel();
+    protected JComponent makeManualPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        JTextArea text = new JTextArea();
+
+        String instructions = " You can navigate through all the tabs above by clicking on them. \n\n In the word prediction screen, enter a sentence and once the predict button is clicked, a list of possible predictions will appear on the screen. \n You can also check for spelling mistakes, and words are added if there is no such entry in the dictionary and the setting to add words is enabled, or once the add \n word button is pressed. \n You can also then save the dictionary so that any added/removed words are saved for the next time the program is loaded. \n\n The setting screen allows you to choose the maximum number of words shown as predictions (default is 7 words), to change the language, and also to toggle the \n add word setting. \n\n You can also remove words, which upon entering a word, the program will display if the word has been successfully deleted or the word has not been found in the \n dictionary.\n\n Users can also search for a specific words, as well as displaying the whole dictionary when the search button is clicked with the text field empty.";
+        text.append(instructions);
+        text.setEditable(false);
+
+        panel.add(text, BorderLayout.CENTER);
 
         return panel;
     }
@@ -129,7 +121,7 @@ public class Menu extends JPanel implements ActionListener
         predictTextArea.setBounds(10, 100, 860, 420);
         predictTextArea.setEditable(false);
 
-        predictButton.addActionListener(this); //this could also be implemented with the enter key perhaps?
+        predictButton.addActionListener(this); // this could also be implemented with the enter key perhaps?
         spellCheckButton.addActionListener(this);
         addButton.addActionListener(this);
         saveDictButton.addActionListener(this);
@@ -151,22 +143,21 @@ public class Menu extends JPanel implements ActionListener
     /**
      * Panel for prediction settings
      */
-    protected JComponent changeSettingPanel()
-    {
+    protected JComponent changeSettingPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(null);
 
-        Integer[] wordLimitOptions = {1,2,3,4,5,6,7,8,9,10};
+        Integer[] wordLimitOptions = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         JComboBox<Integer> wordLimitBox = new JComboBox<>(wordLimitOptions);
         wordLimitBox.setBounds(80, 50, 50, 20);
-        wordLimitButton  = new JButton("Set Word Limit");
+        wordLimitButton = new JButton("Set Word Limit");
         wordLimitButton.setBounds(140, 50, 120, 20);
         wordLimitLabel = new JLabel("Default Word Limit: 7");
         wordLimitLabel.setBounds(270, 50, 150, 20);
 
         changeLanguageButton = new JButton("Change language of dictionary");
         changeLanguageButton.setBounds(80, 110, 210, 20);
-        String[] language = {"English", "Italian"};
+        String[] language = { "English", "Italian" };
         JComboBox<String> languageComboBox = new JComboBox<>(language);
         languageComboBox.setBounds(300, 110, 80, 20);
         currentLanguageLabel = new JLabel("Current Language: English");
@@ -200,29 +191,24 @@ public class Menu extends JPanel implements ActionListener
 
         wordLimitButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-            String selectedNumber = "Word Limit: " + wordLimitBox.getItemAt(wordLimitBox.getSelectedIndex());
-            wordLimitLabel.setText(selectedNumber);
-            prediction.setMaxCompletions(wordLimitBox.getItemAt(wordLimitBox.getSelectedIndex()));
+            public void actionPerformed(ActionEvent e) {
+                String selectedNumber = "Word Limit: " + wordLimitBox.getItemAt(wordLimitBox.getSelectedIndex());
+                wordLimitLabel.setText(selectedNumber);
+                prediction.setMaxCompletions(wordLimitBox.getItemAt(wordLimitBox.getSelectedIndex()));
             }
         });
 
         changeLanguageButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-            String selectedLanguage = "Current Language: " + languageComboBox.getItemAt(languageComboBox.getSelectedIndex());
-            currentLanguageLabel.setText(selectedLanguage);
-            if(selectedLanguage.equals("English"))
-            {
-                prediction.setLanguage(Dictionary.Language.ENGLISH); 
-            }
-            else
-            {
-                prediction.setLanguage(Dictionary.Language.ITALIAN);
-            }
-            
+            public void actionPerformed(ActionEvent e) {
+                String selectedLanguage = "Current Language: "
+                        + languageComboBox.getItemAt(languageComboBox.getSelectedIndex());
+                currentLanguageLabel.setText(selectedLanguage);
+                if (selectedLanguage.equals("English")) {
+                    prediction.setLanguage(Dictionary.Language.ENGLISH);
+                } else {
+                    prediction.setLanguage(Dictionary.Language.ITALIAN);
+                }
 
             }
         });
@@ -233,12 +219,11 @@ public class Menu extends JPanel implements ActionListener
     /**
      * Panel for removing words
      */
-    protected JComponent removeWordPanel()
-    {
+    protected JComponent removeWordPanel() {
         JPanel panel = new JPanel();
         JPanel topPanel = new JPanel();
         JLabel text = new JLabel("Enter word to remove: ");
-        
+
         removeWordLabel = new JLabel("-");
         removeWordTextField = new JTextField();
         removeWordTextField.setColumns(65);
@@ -258,12 +243,11 @@ public class Menu extends JPanel implements ActionListener
     /**
      * Panel for searching for a specific word
      */
-    protected JComponent searchWordPanel()
-    {
+    protected JComponent searchWordPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         JPanel topPanel = new JPanel();
         JLabel text = new JLabel("Enter word to search for in dictionary: ");
-        
+
         searchWordTextField = new JTextField();
         searchWordTextField.setColumns(56);
         searchWordButton = new JButton("Search");
@@ -280,7 +264,6 @@ public class Menu extends JPanel implements ActionListener
         panel.add(topPanel, BorderLayout.NORTH);
         panel.add(scroll, BorderLayout.CENTER);
 
-
         return panel;
     }
 
@@ -290,7 +273,7 @@ public class Menu extends JPanel implements ActionListener
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("Prediction");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(900,600);
+        frame.setSize(900, 600);
 
         frame.add(new Menu(), BorderLayout.CENTER);
         frame.setVisible(true);
@@ -300,308 +283,252 @@ public class Menu extends JPanel implements ActionListener
      * Contains action listener events and functions
      */
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        if (e.getSource() == predictButton)
-        {
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == predictButton) {
             predictText();
 
-        } else if (e.getSource() == removeWordButton)
-        {
+        } else if (e.getSource() == removeWordButton) {
             deleteUserEnteredWord();
 
-        } else if (e.getSource() == searchWordButton)
-        {
+        } else if (e.getSource() == searchWordButton) {
             displayTest();
             searchWordTextArea.select(0, 0);
 
-        } else if (e.getSource() == saveDictButton)
-        {
-            //UPDATE WITH SAVING DICTIONARY BUTTON STUFFS
+        } else if (e.getSource() == saveDictButton) {
+            // UPDATE WITH SAVING DICTIONARY BUTTON STUFFS
 
             String text = "Saved!";
             savedLabel.setText(text);
-        } else if (e.getSource() == spellCheckButton)
-        {
+        } else if (e.getSource() == spellCheckButton) {
             String text = "Replace with corrent or incorrect spelling";
             spellingLabel.setText(text);
-            //UPDATE WITH SPELLCHECK STUFFS
-        } else if (e.getSource() == addButton)
-        {
+            // UPDATE WITH SPELLCHECK STUFFS
+        } else if (e.getSource() == addButton) {
             String text = "Replace with word added confirmation";
             addWordLabel.setText(text);
-            //UPDATE WITH ADD WORD FROM CURRENT WORD IN TEXT FIELD IN PREDICT PANEL
-        } else if (e.getSource() == addOnRadio)
-        {
+            // UPDATE WITH ADD WORD FROM CURRENT WORD IN TEXT FIELD IN PREDICT PANEL
+        } else if (e.getSource() == addOnRadio) {
             currentAddSettingLabel.setText("On");
             changeAddWordSetting();
 
-        } else if (e.getSource() == addOffRadio)
-        {
+        } else if (e.getSource() == addOffRadio) {
             currentAddSettingLabel.setText("Off");
             changeAddWordSetting();
         }
     }
 
-
-    public void predictText()
-    {
+    public void predictText() {
         predictTextArea.setText("");
-            String textToComplete = predictTextField.getText();
+        String textToComplete = predictTextField.getText();
 
-            prediction.resetCompletions();
-    
-            boolean empty = dictionary.wordEnteredIsNull(textToComplete);
-    
-            if(empty == true)
-            {
-                predictTextArea.setText("Word Entered Is Empty\n");
-                return;
-            }
-    
-            // Remove multiple spaces from the words in the phrase - FIX by BT 30/3/22
-            // String[] sentence = textToComplete.split(" ");
-            String[] sentence = textToComplete.split("\\s+");
-            
-            for(int i = 0 ; i < sentence.length; i++)
-            {
-                // Get the completion for the last word in the phrase
-                if(sentence.length - 1 == i)
-                {
-                    WordNode foundTextNode = dictionary.findNode(sentence[i], dictionary.getRoot());
-    
-                    // Check the partial word was found - FIX by BT 30/3/22
-                    if (foundTextNode == null || foundTextNode.getNextNodes().isEmpty() == true)
-                    {
-                        predictTextArea.setText("No Completions Were Found In The Dictionary \n");
-                        if (prediction.getAddWord() == true)
-                        {
-                            boolean added = dictionary.addWord(sentence[i]);
-                            if(added == true)
-                            {
-                                predictTextArea.append("*" + sentence[i] + " Is Not Recognised But Has Been Added Due To AddWord Setting Being On \n"); 
-                            }
-                        }
-                        dictionary.updateFrequency(sentence[i], 1);
-                        return;
-                    }
-                    
-                    prediction.predictText(foundTextNode, textToComplete);
-                    getCompletions();
-                }
-                else
-                {
-                    // Add new words to the dictionary if the setting is on - update by BT 29/03/22
-                    if (prediction.getAddWord() == true)
-                    {
+        prediction.resetCompletions();
+
+        boolean empty = dictionary.wordEnteredIsNull(textToComplete);
+
+        if (empty == true) {
+            predictTextArea.setText("Word Entered Is Empty\n");
+            return;
+        }
+
+        // Remove multiple spaces from the words in the phrase - FIX by BT 30/3/22
+        // String[] sentence = textToComplete.split(" ");
+        String[] sentence = textToComplete.split("\\s+");
+
+        for (int i = 0; i < sentence.length; i++) {
+            // Get the completion for the last word in the phrase
+            if (sentence.length - 1 == i) {
+                WordNode foundTextNode = dictionary.findNode(sentence[i], dictionary.getRoot());
+
+                // Check the partial word was found - FIX by BT 30/3/22
+                if (foundTextNode == null || foundTextNode.getNextNodes().isEmpty() == true) {
+                    predictTextArea.setText("No Completions Were Found In The Dictionary \n");
+                    if (prediction.getAddWord() == true) {
                         boolean added = dictionary.addWord(sentence[i]);
-                        if(added == true)
-                        {
-                            predictTextArea.append("*" + sentence[i] + " Is Not Recognised But Has Been Added Due To AddWord Setting Being On \n"); 
+                        if (added == true) {
+                            predictTextArea.append("*" + sentence[i]
+                                    + " Is Not Recognised But Has Been Added Due To AddWord Setting Being On \n");
                         }
                     }
-                    
-                    // Increase the frequency of the times this word has been used
                     dictionary.updateFrequency(sentence[i], 1);
+                    return;
                 }
+
+                prediction.predictText(foundTextNode, textToComplete);
+                getCompletions();
+            } else {
+                // Add new words to the dictionary if the setting is on - update by BT 29/03/22
+                if (prediction.getAddWord() == true) {
+                    boolean added = dictionary.addWord(sentence[i]);
+                    if (added == true) {
+                        predictTextArea.append("*" + sentence[i]
+                                + " Is Not Recognised But Has Been Added Due To AddWord Setting Being On \n");
+                    }
+                }
+
+                // Increase the frequency of the times this word has been used
+                dictionary.updateFrequency(sentence[i], 1);
             }
+        }
     }
 
+    public void getCompletions() {
+        ArrayList<Integer> frequency = new ArrayList<Integer>();
 
-    public void getCompletions()
-	{
-		ArrayList<Integer> frequency = new ArrayList<Integer>();
+        for (WordNode node : prediction.getCompletions()) {
+            frequency.add(Integer.valueOf(node.getFrequency()));
+        }
 
-		for(WordNode node : prediction.getCompletions())
-		{
-			frequency.add(Integer.valueOf(node.getFrequency()));
-		}
+        int numCompletions = prediction.getCompletions().size();
 
-		int numCompletions = prediction.getCompletions().size();
-
-		for(int i = 0; i < Math.min(prediction.getMaxCompletions(), numCompletions); i++)
-		{
-			int pos = 0;
-			int currentMax = frequency.get(0);
-			for(int v = 0 ; v <= frequency.size()-1 ; v++)
-			{
-				if(currentMax < frequency.get(v))
-				{
-					currentMax = frequency.get(v);
-					pos = v;
-				}
-			}
+        for (int i = 0; i < Math.min(prediction.getMaxCompletions(), numCompletions); i++) {
+            int pos = 0;
+            int currentMax = frequency.get(0);
+            for (int v = 0; v <= frequency.size() - 1; v++) {
+                if (currentMax < frequency.get(v)) {
+                    currentMax = frequency.get(v);
+                    pos = v;
+                }
+            }
 
             predictTextArea.append(prediction.getWords().get(pos) + "\n");
-			//System.out.println(prediction.getWords().get(pos));
-			prediction.getCompletions().remove(pos);
-			prediction.getWords().remove(pos);
-			frequency.remove(pos);
+            // System.out.println(prediction.getWords().get(pos));
+            prediction.getCompletions().remove(pos);
+            prediction.getWords().remove(pos);
+            frequency.remove(pos);
 
-		}	
-	}
+        }
+    }
 
-
-    public void deleteUserEnteredWord()
-    {
+    public void deleteUserEnteredWord() {
         String word = removeWordTextField.getText();
 
-            // Make sure the word entered contains some letters
-		    if(dictionary.wordEnteredIsNull(word))
-		    {
-			    removeWordLabel.setText("Word Entered Is Null");
-		    }
-		
-		    // Try removing the node for the word
-		    else
-		    {
-			    if (dictionary.deleteNode(word, dictionary.getRoot()))
-                    removeWordLabel.setText(word + " has been removed from the dictionary.");
-			    else
-                    removeWordLabel.setText("Word '" + word + "' does not exist in the dictionary.");
-			    // dictionary.findNode(word, dictionary.getRoot());
-		    }
+        // Make sure the word entered contains some letters
+        if (dictionary.wordEnteredIsNull(word)) {
+            removeWordLabel.setText("Word Entered Is Null");
+        }
+
+        // Try removing the node for the word
+        else {
+            if (dictionary.deleteNode(word, dictionary.getRoot()))
+                removeWordLabel.setText(word + " has been removed from the dictionary.");
+            else
+                removeWordLabel.setText("Word '" + word + "' does not exist in the dictionary.");
+            // dictionary.findNode(word, dictionary.getRoot());
+        }
     }
 
     /**
      * Method to display the full dictionary trie from the root node
+     * 
      * @author Becky Tyler (2461535)
      */
-    public void displayTest()
-    {
-    	searchWordTextArea.setText("");
+    public void displayTest() {
+        searchWordTextArea.setText("");
 
-    	String startWord = searchWordTextField.getText();
+        String startWord = searchWordTextField.getText();
 
-    	if (startWord.equals(""))
-    	{
-    		this.displayDictionary(dictionary.getRoot(), "");
-    	}
-    	else  // Display the part of the dictionary with words starting with startWord
-    	{
-    		// Find the starting node;
-    		WordNode startNode = dictionary.findNode(startWord, dictionary.getRoot());
+        if (startWord.equals("")) {
+            this.displayDictionary(dictionary.getRoot(), "");
+        } else // Display the part of the dictionary with words starting with startWord
+        {
+            // Find the starting node;
+            WordNode startNode = dictionary.findNode(startWord, dictionary.getRoot());
 
-    		if (startNode != null)
-    		{
-    			searchWordTextArea.append("DISPLAYING THE DICTIONARY: Words beginning with " + startWord + "\n");
+            if (startNode != null) {
+                searchWordTextArea.append("DISPLAYING THE DICTIONARY: Words beginning with " + startWord + "\n");
 
-    			// Display the dictionary from the start word
-    			this.displayDictionary(startNode, startWord);
-    		}
-    		else
-    			searchWordTextArea.append("Word Does Not Exist In the Dictionary");
-    	}
+                // Display the dictionary from the start word
+                this.displayDictionary(startNode, startWord);
+            } else
+                searchWordTextArea.append("Word Does Not Exist In the Dictionary");
+        }
     }
 
+    public void displayDictionary(WordNode currentNode, String nodeName) {
+        // Print the information stored in the current node;
+        if (currentNode.getIsWord() == true) {
+            int freq = currentNode.getFrequency();
+            if (freq <= 0)
+                searchWordTextArea.append(nodeName + "\n");
+            else
+                searchWordTextArea.append(nodeName + " (" + freq + ")\n");
+        }
 
-    public void displayDictionary(WordNode currentNode, String nodeName)
-    {
-    	// Print the information stored in the current node;
-    	if (currentNode.getIsWord() == true)
-    	{
-    		int freq = currentNode.getFrequency();
-    		if (freq <= 0)
-    			searchWordTextArea.append(nodeName + "\n");
-    		else
-    			searchWordTextArea.append(nodeName + " (" + freq + ")\n");
-    	}
-
-    	// Use recursion to print the information stored in the next nodes
-    	if (!currentNode.getNextNodes().isEmpty())
-    	{
-    		for (String letter : currentNode.getNextNodes().keySet())
-    		{
-    			this.displayDictionary(currentNode.getNextNodes().get(letter), nodeName + letter);	
-    		}
-    	}
+        // Use recursion to print the information stored in the next nodes
+        if (!currentNode.getNextNodes().isEmpty()) {
+            for (String letter : currentNode.getNextNodes().keySet()) {
+                this.displayDictionary(currentNode.getNextNodes().get(letter), nodeName + letter);
+            }
+        }
     }
 
+    public void findWord() {
+        String wordToFind = searchWordTextField.getText();
 
-    public void findWord()
-	{
-		String wordToFind = searchWordTextField.getText();
-
-		System.out.println("SEARCHING FOR THE WORD: " + wordToFind);
-		System.out.println("=======================");
-		WordNode foundNode = dictionary.findNode(wordToFind,dictionary.getRoot());
-		if (foundNode == null)
-			searchWordTextArea.setText("Node '" + wordToFind + "' not found.");
-		else
+        System.out.println("SEARCHING FOR THE WORD: " + wordToFind);
+        System.out.println("=======================");
+        WordNode foundNode = dictionary.findNode(wordToFind, dictionary.getRoot());
+        if (foundNode == null)
+            searchWordTextArea.setText("Node '" + wordToFind + "' not found.");
+        else
             searchWordTextArea.setText("Node '" + wordToFind + "' found! " + foundNode.printInfo());
-		System.out.println();
-	}
-
-
-    public String printInfo(WordNode word)
-	{
-		String printInfo = "";
-		printInfo = "IsWord: " + word.getIsWord() +
-			    ", Frequency: " + word.getFrequency() +
-			    ", Next Nodes:";
-		if (!word.getNextNodes().isEmpty())
-		{
-			for (String letter : word.getNextNodes().keySet())
-			{
-				printInfo = printInfo + " " + letter;
-			}
-		}
-		else
-			printInfo = printInfo + " null";
-		return printInfo;
-	}
-
-
-    public void changeAddWordSetting()
-    {
-        if(prediction.getAddWord() == false)
-		{
-			prediction.setAddWord(true);
-			System.out.println("\nAdd Word Setting Has Been Turned ON");
-		}
-		else
-		{
-			prediction.setAddWord(false);
-			System.out.println("\nAdd Word Setting Has Been Turned OFF");
-		}
+        System.out.println();
     }
 
+    public String printInfo(WordNode word) {
+        String printInfo = "";
+        printInfo = "IsWord: " + word.getIsWord() +
+                ", Frequency: " + word.getFrequency() +
+                ", Next Nodes:";
+        if (!word.getNextNodes().isEmpty()) {
+            for (String letter : word.getNextNodes().keySet()) {
+                printInfo = printInfo + " " + letter;
+            }
+        } else
+            printInfo = printInfo + " null";
+        return printInfo;
+    }
 
-    public int getInt(String userPrompt)
-	{
-		Scanner s = new Scanner(System.in);
-		
-		System.out.print("\n" + userPrompt);
-		while (!s.hasNextInt())
-		{
-			s.next();
-			System.out.print(userPrompt);
-		}
-		
-		int num = s.nextInt();
-		return num;
-	}
+    public void changeAddWordSetting() {
+        if (prediction.getAddWord() == false) {
+            prediction.setAddWord(true);
+            System.out.println("\nAdd Word Setting Has Been Turned ON");
+        } else {
+            prediction.setAddWord(false);
+            System.out.println("\nAdd Word Setting Has Been Turned OFF");
+        }
+    }
 
+    public int getInt(String userPrompt) {
+        Scanner s = new Scanner(System.in);
 
-    public String getString(String userPrompt)
-	{
-		Scanner s = new Scanner(System.in);
-		System.out.print("\n" + userPrompt);
-		String userInput = s.nextLine();
-		
-		// Check that the input doesn't contain special characters
-		Pattern p = Pattern.compile("[^a-z ]", Pattern.CASE_INSENSITIVE);
-		Matcher match = p.matcher(userInput);
-		while (match.find())
-		{
-			System.out.println("Sorry, numbers and special characters are not allowed.");
-			System.out.print("\n" + userPrompt);
-			userInput = s.nextLine();
-			match = p.matcher(userInput);
-		}
-		
-		return userInput.trim();
-	}
+        System.out.print("\n" + userPrompt);
+        while (!s.hasNextInt()) {
+            s.next();
+            System.out.print(userPrompt);
+        }
+
+        int num = s.nextInt();
+        return num;
+    }
+
+    public String getString(String userPrompt) {
+        Scanner s = new Scanner(System.in);
+        System.out.print("\n" + userPrompt);
+        String userInput = s.nextLine();
+
+        // Check that the input doesn't contain special characters
+        Pattern p = Pattern.compile("[^a-z ]", Pattern.CASE_INSENSITIVE);
+        Matcher match = p.matcher(userInput);
+        while (match.find()) {
+            System.out.println("Sorry, numbers and special characters are not allowed.");
+            System.out.print("\n" + userPrompt);
+            userInput = s.nextLine();
+            match = p.matcher(userInput);
+        }
+
+        return userInput.trim();
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
