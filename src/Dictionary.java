@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Map;
  * @author Becky Tyler (2461535), Joshua Price (2481545), Oliver Shearer (2455913)
  * @version 2.0 (25 March 2022)
  */
-public class Dictionary
+public class Dictionary implements Serializable
 {
 	// Define field to hold the reference to the root of the tree
 	private WordNode root;

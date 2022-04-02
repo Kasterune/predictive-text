@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ import java.util.Map;
  * @version 2.0 (16 March 2022)
  */
 
-public class WordNode
+public class WordNode implements Serializable
 {
 	// Define class variables/fields
 	private boolean isWord;		// Is the current node the end of a proper word? 
