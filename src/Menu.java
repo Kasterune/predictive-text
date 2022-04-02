@@ -24,6 +24,7 @@ public class Menu extends JPanel implements ActionListener
     JTextArea predictTextArea, wordLimitTextArea, searchWordTextArea;
     JButton addButton, spellCheckButton, predictButton, wordLimitButton, removeWordButton, searchWordButton, saveDictButton, changeLanguageButton, addWordButton;
     JRadioButton addOnRadio, addOffRadio;
+    static JScrollPane scroll;
     ButtonGroup group;
 
     Dictionary dictionary, dict_en, dict_it;
@@ -268,7 +269,7 @@ public class Menu extends JPanel implements ActionListener
         searchWordButton = new JButton("Search");
         searchWordTextArea = new JTextArea();
         searchWordTextArea.setEditable(false);
-        JScrollPane scroll = new JScrollPane(searchWordTextArea);
+        scroll = new JScrollPane(searchWordTextArea);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         topPanel.add(text);
@@ -312,6 +313,7 @@ public class Menu extends JPanel implements ActionListener
         } else if (e.getSource() == searchWordButton)
         {
             displayTest();
+            searchWordTextArea.select(0, 0);
 
         } else if (e.getSource() == saveDictButton)
         {
