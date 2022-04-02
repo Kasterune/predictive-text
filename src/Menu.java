@@ -1,16 +1,12 @@
-import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -18,6 +14,9 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+    /**
+     * Menu class containing all methods in regards to GUI
+     */
 public class Menu extends JPanel implements ActionListener 
 {
     JLabel savedLabel, addWordLabel, spellingLabel, predictLabel, wordLimitLabel, removeWordLabel, searchWordLabel, currentLanguageLabel, currentAddSettingLabel;
@@ -30,6 +29,9 @@ public class Menu extends JPanel implements ActionListener
     Dictionary dictionary, dict_en, dict_it;
     Prediction prediction;
 
+    /**
+     * Menu default constructor to set up tabbed pane containing all panels
+     */
     public Menu() 
     {
         super(new GridLayout(1, 1));
@@ -75,6 +77,9 @@ public class Menu extends JPanel implements ActionListener
 
     }
 
+    /**
+     * Filler panel for testing
+     */
     protected JComponent makeFillerPanel(String text) {
         JPanel panel = new JPanel(false);
         JLabel filler = new JLabel(text);
@@ -84,7 +89,9 @@ public class Menu extends JPanel implements ActionListener
         return panel;
     }
 
-    //User manual panel (TO BE COMPLETED)
+    /**
+     * User panel containing instructions on using predictions
+     */
     protected JComponent makeManualPanel() 
     {
         JPanel panel = new JPanel();
@@ -92,7 +99,9 @@ public class Menu extends JPanel implements ActionListener
         return panel;
     }
 
-    //Word prediction panel
+    /**
+     * Panel for word predictions
+     */
     protected JComponent makePredictionPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(null);
@@ -117,6 +126,7 @@ public class Menu extends JPanel implements ActionListener
         spellCheckButton.setBounds(140, 70, 120, 20);
         predictTextArea = new JTextArea();
         predictTextArea.setBounds(10, 100, 860, 420);
+        predictTextArea.setEditable(false);
 
         predictButton.addActionListener(this); //this could also be implemented with the enter key perhaps?
         spellCheckButton.addActionListener(this);
@@ -137,7 +147,9 @@ public class Menu extends JPanel implements ActionListener
         return panel;
     }
 
-    //Update word limit panel
+    /**
+     * Panel for prediction settings
+     */
     protected JComponent changeSettingPanel()
     {
         JPanel panel = new JPanel();
@@ -148,7 +160,7 @@ public class Menu extends JPanel implements ActionListener
         wordLimitBox.setBounds(80, 50, 50, 20);
         wordLimitButton  = new JButton("Set Word Limit");
         wordLimitButton.setBounds(140, 50, 120, 20);
-        wordLimitLabel = new JLabel("Default Word Limit: -");
+        wordLimitLabel = new JLabel("Default Word Limit: 7");
         wordLimitLabel.setBounds(270, 50, 150, 20);
 
         changeLanguageButton = new JButton("Change language of dictionary");
@@ -165,7 +177,7 @@ public class Menu extends JPanel implements ActionListener
         addOffRadio = new JRadioButton("Off");
         addOnRadio.setBounds(80, 190, 200, 20);
         addOffRadio.setBounds(80, 210, 200, 20);
-        //addOffRadio.setSelected(true);
+        addOffRadio.setSelected(true);
         group = new ButtonGroup();
         group.add(addOnRadio);
         group.add(addOffRadio);
@@ -217,6 +229,9 @@ public class Menu extends JPanel implements ActionListener
         return panel;
     }
 
+    /**
+     * Panel for removing words
+     */
     protected JComponent removeWordPanel()
     {
         JPanel panel = new JPanel();
@@ -239,6 +254,9 @@ public class Menu extends JPanel implements ActionListener
         return panel;
     }
 
+    /**
+     * Panel for searching for a specific word
+     */
     protected JComponent searchWordPanel()
     {
         JPanel panel = new JPanel(new BorderLayout());
@@ -249,6 +267,9 @@ public class Menu extends JPanel implements ActionListener
         searchWordTextField.setColumns(56);
         searchWordButton = new JButton("Search");
         searchWordTextArea = new JTextArea();
+        searchWordTextArea.setEditable(false);
+        JScrollPane scroll = new JScrollPane(searchWordTextArea);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         topPanel.add(text);
         topPanel.add(searchWordTextField);
@@ -256,11 +277,15 @@ public class Menu extends JPanel implements ActionListener
         searchWordButton.addActionListener(this);
 
         panel.add(topPanel, BorderLayout.NORTH);
-        panel.add(searchWordTextArea, BorderLayout.CENTER);
+        panel.add(scroll, BorderLayout.CENTER);
+
 
         return panel;
     }
 
+    /**
+     * Method to set up the frame and initialise menu object
+     */
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("Prediction");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -270,6 +295,9 @@ public class Menu extends JPanel implements ActionListener
         frame.setVisible(true);
     }
 
+    /**
+     * Contains action listener events and functions
+     */
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -572,8 +600,6 @@ public class Menu extends JPanel implements ActionListener
 		
 		return userInput.trim();
 	}
-
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
