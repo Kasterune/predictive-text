@@ -147,7 +147,9 @@ public class Menu extends JPanel implements ActionListener {
         JPanel panel = new JPanel();
         panel.setLayout(null);
 
-        Integer[] wordLimitOptions = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	// Increase word limit range to 1-100
+	// Integer[] wordLimitOptions = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        Integer[] wordLimitOptions = IntStream.of(IntStream.rangeClosed(1, 100).toArray()).boxed().toArray(Integer[]::new);
         JComboBox<Integer> wordLimitBox = new JComboBox<>(wordLimitOptions);
         wordLimitBox.setBounds(80, 50, 50, 20);
         wordLimitButton = new JButton("Set Word Limit");
@@ -524,10 +526,10 @@ public class Menu extends JPanel implements ActionListener {
     public void changeAddWordSetting() {
         if (prediction.getAddWord() == false) {
             prediction.setAddWord(true);
-            System.out.println("\nAdd Word Setting Has Been Turned ON");
+            // System.out.println("\nAdd Word Setting Has Been Turned ON");
         } else {
             prediction.setAddWord(false);
-            System.out.println("\nAdd Word Setting Has Been Turned OFF");
+            // System.out.println("\nAdd Word Setting Has Been Turned OFF");
         }
     }
 
