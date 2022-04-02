@@ -83,7 +83,7 @@ public class Menu extends JPanel implements ActionListener {
         JPanel panel = new JPanel(new BorderLayout());
         JTextArea text = new JTextArea();
 
-        String instructions = " You can navigate through all the tabs above by clicking on them. \n\n In the word prediction screen, enter a sentence and once the predict button is clicked, a list of possible predictions will appear on the screen. \n You can also check for spelling mistakes, and words are added if there is no such entry in the dictionary and the setting to add words is enabled, or once the add \n word button is pressed. \n You can also then save the dictionary so that any added/removed words are saved for the next time the program is loaded. \n\n The setting screen allows you to choose the maximum number of words shown as predictions (default is 7 words), to change the language, and also to toggle the \n add word setting. \n\n You can also remove words, which upon entering a word, the program will display if the word has been successfully deleted or the word has not been found in the \n dictionary.\n\n Users can also search for a specific words, as well as displaying the whole dictionary when the search button is clicked with the text field empty.";
+        String instructions = " You can navigate through all the tabs above by clicking on them. \n\n In the word prediction screen, enter a sentence and once the predict button is clicked, a list of possible predictions will appear on the screen. \n You can also check for spelling mistakes, and words are added if there is no such entry in the dictionary and the setting to add words is enabled, or once the add \n word button is pressed. \n You can then save the dictionary so that any added/removed words are saved for the next time the program is loaded. \n\n The setting screen allows you to choose the maximum number of words shown as predictions (default is 7 words), to change the language, and also to toggle the \n add word setting. \n\n You can also remove words, which upon entering a word, the program will display if the word has been successfully deleted or the word has not been found in the \n dictionary.\n\n Users can also search for a specific words, as well as displaying the whole dictionary when the search button is clicked with the text field empty.\n Note that the frequency count of the words used are shown in brackets after the words as shown below. ";
         text.append(instructions);
         text.setEditable(false);
 
@@ -156,10 +156,10 @@ public class Menu extends JPanel implements ActionListener {
         wordLimitLabel.setBounds(270, 50, 150, 20);
 
         changeLanguageButton = new JButton("Change language of dictionary");
-        changeLanguageButton.setBounds(80, 110, 210, 20);
+        changeLanguageButton.setBounds(170, 110, 210, 20);
         String[] language = { "English", "Italian" };
         JComboBox<String> languageComboBox = new JComboBox<>(language);
-        languageComboBox.setBounds(300, 110, 80, 20);
+        languageComboBox.setBounds(80, 110, 80, 20);
         currentLanguageLabel = new JLabel("Current Language: English");
         currentLanguageLabel.setBounds(390, 110, 200, 20);
 
