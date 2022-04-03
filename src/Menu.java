@@ -380,6 +380,24 @@ public class Menu extends JPanel implements ActionListener {
             if (sentence.length - 1 == i) {
                 WordNode foundTextNode = dictionary.findNode(sentence[i], dictionary.getRoot());
 
+                if(foundTextNode != null && foundTextNode.getIsWord() == true)
+                {
+
+                    for(int v = 0; v < sentence.length; v++)
+                    {
+                        String phrase = "";
+                        for(int p = v + 1; p < sentence.length; p++)
+                        {
+                            phrase = phrase + sentence[p] + " ";
+                        }
+                        WordNode word = dictionary.findNode(sentence[v], dictionary.getRoot());
+                        if(word.getIsWord() == true && word.getPhrases().contains(phrase) == false)
+                        {
+                            word.getPhrases().add(phrase);
+                        }
+                    }
+                }
+
                 // Check the partial word was found - FIX by BT 30/3/22
                 if (foundTextNode == null || foundTextNode.getNextNodes().isEmpty() == true) {
                     predictTextArea.setText("No Completions Were Found In The Dictionary \n");
@@ -391,11 +409,14 @@ public class Menu extends JPanel implements ActionListener {
                         }
                     }
                     dictionary.updateFrequency(sentence[i], 1);
+                    getPhrase(foundTextNode, textToComplete);
                     return;
                 }
 
                 prediction.predictText(foundTextNode, textToComplete);
                 getCompletions();
+                getPhrase(foundTextNode, textToComplete);
+
             } else {
                 // Add new words to the dictionary if the setting is on - update by BT 29/03/22
                 if (prediction.getAddWord() == true) {
@@ -443,6 +464,29 @@ public class Menu extends JPanel implements ActionListener {
             frequency.remove(pos);
 
         }
+    }
+
+    public void getPhrase(WordNode foundTextNode, String sentence)
+    {
+        predictTextArea.append("\n\n Phrases:");
+        if(foundTextNode != null)
+        {
+            foundTextNode.getPhrases().remove("");
+            if(foundTextNode.getIsWord() == true && foundTextNode.getPhrases().isEmpty() == false)
+            {
+                for (String phrase : foundTextNode.getPhrases())
+                {
+                    phrase.trim();
+                    sentence.trim();
+                    predictTextArea.append("\n" + sentence + " " + phrase);
+                }
+                System.out.println(foundTextNode.getPhrases());
+                return;
+            }
+            predictTextArea.append("\n There Are No Phrases To Continue From This Word:");
+            return;
+        }
+        predictTextArea.append("\n There Are No Phrases To Continue From This Word:");
     }
 
     /**

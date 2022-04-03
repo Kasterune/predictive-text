@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ public class WordNode implements Serializable
 	// Define class variables/fields
 	private boolean isWord;		// Is the current node the end of a proper word? 
 	private int     frequency;	// Number of times word has been used (if isWord is true)
+	private ArrayList<String> phrases; // Pharses that could be used after this nodes word
 	
 	// Define a map to hold the references to the child nodes, indexed on the letters
 	private Map<String, WordNode> nextNodes;
@@ -26,6 +28,7 @@ public class WordNode implements Serializable
 		// Initialise field values
 		isWord     = false;
 		frequency  = 0;
+		phrases = new ArrayList<String>();
 		
 		// Initialise the hash map for the next nodes
 		nextNodes  = new HashMap<String, WordNode>();
@@ -63,6 +66,15 @@ public class WordNode implements Serializable
 	{
 		return this.frequency;
 	}
+
+	/**
+	 * Method to get the phrases that could occur after the word (if isWord is true)
+	 * @return phrases The array list of phrases for that word
+	 */
+	public ArrayList<String> getPhrases()
+	{
+		return this.phrases;
+	}
 	
 	/**
 	 * Method to get the map of child nodes
@@ -89,6 +101,15 @@ public class WordNode implements Serializable
 	public void setFrequency(int frequency)
 	{
 		this.frequency = frequency;
+	}
+
+	/**
+	 * Method to set the phrases for the word node
+	 * @param phrases which is a list of phrases that could occur after the word in that node 
+	 */
+	public void setPhrases(ArrayList<String> phrases)
+	{
+		this.phrases = phrases;
 	}
 	
 	/**
