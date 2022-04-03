@@ -162,7 +162,7 @@ public class Tester
 				break;
 
 			case 8:
-				System.out.println("Sorry, this option has not been implemented yet.");				
+				dictionary.benchmark(prediction.getLanguage());
 				break;
 
 			case 0:
