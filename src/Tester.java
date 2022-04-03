@@ -158,7 +158,7 @@ public class Tester
 				break;
 
 			case 7:
-				System.out.println("Sorry, this option has not been implemented yet.");				
+				dictionary.saveToFile(prediction.getLanguage());
 				break;
 
 			case 8:
