@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -251,28 +252,36 @@ public class Menu extends JPanel implements ActionListener {
      * Panel for searching for a specific word
      */
     protected JComponent searchWordPanel() {
+        JPanel topPanel = new JPanel();
         JPanel panel = new JPanel();
-        panel.setLayout(null);
+        JPanel textAreaPanel = new JPanel();
 
-        JLabel text = new JLabel("Enter word to search for in dictionary: ");
-        text.setBounds(300, 15, 250, 20);
+        JPanel panelHolderSouth = new JPanel();
+        
+        panel.setLayout(new BorderLayout());
+
+        JLabel text = new JLabel("Enter word to search for in dictionary: ", JLabel.CENTER);
 
         searchWordTextField = new JTextField();
-        searchWordTextField.setBounds(520, 15, 250, 20);
+        searchWordTextField.setColumns(20);
         searchWordButton = new JButton("Search");
-        searchWordButton.setBounds(780, 15, 80, 20);
         searchWordButton.addActionListener(this);
         searchWordTextArea = new JTextArea();
         
         searchWordTextArea.setEditable(false);
         scroll = new JScrollPane(searchWordTextArea);
-        scroll.setBounds(300, 50, 560, 470);
+        scroll.setPreferredSize(new Dimension(600, 480));
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        panel.add(text);
-        panel.add(searchWordTextField);
-        panel.add(searchWordButton);
-        panel.add(scroll);
+        topPanel.add(text);
+        topPanel.add(searchWordTextField);
+        topPanel.add(searchWordButton);
+
+        textAreaPanel.add(scroll);
+
+        panel.add(topPanel, BorderLayout.NORTH);
+        panel.add(textAreaPanel, BorderLayout.CENTER);
+        panel.add(panelHolderSouth, BorderLayout.SOUTH);
 
         return panel;
     }
