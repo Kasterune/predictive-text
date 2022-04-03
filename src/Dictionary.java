@@ -226,12 +226,12 @@ public class Dictionary implements Serializable
 			node = node.getNextNodes().get(word.substring(i, i + 1));
 		}
 
-		boolean wasNotWord = !node.getIsWord();
+		boolean wasWord = node.getIsWord();
 		// If word is empty then node will still be the root
 		if (node != root) {
 			node.setIsWord(true);
 		}
-		return wasNotWord;
+		return !wasWord;
 	}
 
 	/**
