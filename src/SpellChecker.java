@@ -121,6 +121,7 @@ public class SpellChecker
 			return spellings;
 
 		// Find words in the dictionary starting with the same letter and with the same length
+		prediction.resetCompletions();
 		prediction.predictText(firstLetterNode, firstLetter);
 
 		// Assume the word being checked has the correct number of letters
