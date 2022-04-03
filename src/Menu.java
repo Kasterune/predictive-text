@@ -321,9 +321,9 @@ public class Menu extends JPanel implements ActionListener {
             if(prediction.getAddWord())
             {
                 String text = predictTextField.getText();
-                if(text.indexOf(" ") > 0 || text.equals(""))
+                if(text.indexOf(" ") >= 0 || text.equals("") || text.equals(" "))
                 {
-                    addWordLabel.setText("The Word Entered Is Not Valid As It Contains A Space Or Is Empty");
+                    addWordLabel.setText("The Word Not Valid As It Contains A Space");
                 } 
                 else 
                 {
