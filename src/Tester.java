@@ -50,9 +50,11 @@ public class Tester
 		
 		// Run automated tests
 //		tester.runAutomatedTests();
+		
+		// Test spell checker
+//		tester.testSpellCheck();
 	}
 	
-
 	/**
 	 * Displays the menu to the user and asks them what option they would like to do and validates it and sends it to be processed
 	 * 
@@ -156,7 +158,7 @@ public class Tester
 				break;
 
 			case 7:
-				System.out.println("Sorry, this option has not been implemented yet.");				
+				dictionary.saveToFile(prediction.getLanguage());
 				break;
 
 			case 8:
@@ -519,6 +521,20 @@ public class Tester
 		
 		return userInput.trim();
 	}
-
 	
+	/**
+	 * Method to test the spell checker
+	 * @author Becky Tyler (2461535)
+	 */
+	public void testSpellCheck()
+	{
+		SpellChecker spellcheck = new SpellChecker(dictionary, prediction);
+		String phraseToCheck = getString("Enter a phrase: ");
+		ArrayList<String> output = spellcheck.checkSpelling(phraseToCheck);
+		for (String newline : output)
+		{
+			System.out.println(newline);
+		}
+	}
+
 }

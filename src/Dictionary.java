@@ -1,8 +1,13 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Map;
 
 /**
@@ -10,7 +15,7 @@ import java.util.Map;
  * @author Becky Tyler (2461535), Joshua Price (2481545), Oliver Shearer (2455913)
  * @version 2.0 (25 March 2022)
  */
-public class Dictionary
+public class Dictionary implements Serializable
 {
 	// Define field to hold the reference to the root of the tree
 	private WordNode root;
@@ -65,12 +70,12 @@ public class Dictionary
 
 		if(language.equals(Language.ENGLISH))
 		{
-			tempFile = new File("Saved_DictionaryE.txt");
+			tempFile = new File("DictionaryE.save");
 			fileName = "EnglishUK.txt";
 		}
 		else
 		{
-			tempFile = new File("Saved_DictionaryI.txt");
+			tempFile = new File("DictionaryI.save");
 			fileName = "ItalianItaly.txt";
 		}
 		boolean exists = tempFile.exists();
@@ -116,9 +121,62 @@ public class Dictionary
 	                }
 	            }
 	        }
+		} else {
+			ObjectInputStream in = null;
+			String loadFile = language.equals(Language.ENGLISH) ? "DictionaryE.save" : "DictionaryI.save";
+
+			try {
+				FileInputStream fis = new FileInputStream(loadFile);
+				in = new ObjectInputStream(fis);
+
+				Dictionary dict = (Dictionary) in.readObject();
+				root = dict.root;
+
+			} catch (FileNotFoundException e) {
+				System.out.println("Error opening file: " + e);
+				System.exit(1);
+			} catch (IOException | ClassNotFoundException e) {
+				System.out.println("Error reading from file: " + e);
+				System.exit(1);
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (IOException e) {
+						System.out.println("Error closing file: " + e);
+					}
+				}
+			}
 		}
 	}
 
+	/**
+	 * Saves current dictionary to file.
+	 */
+	public void saveToFile(Language language) {
+		ObjectOutputStream out = null;
+		String saveFile = language.equals(Language.ENGLISH) ? "DictionaryE.save" : "DictionaryI.save";
+
+		try {
+			FileOutputStream fos = new FileOutputStream(saveFile);
+			out = new ObjectOutputStream(fos);
+
+			out.writeObject(this);
+
+		} catch (FileNotFoundException e) {
+			System.out.println("Error opening file: " + e);
+		} catch (IOException e) {
+			System.out.println("Error writing to file: " + e);
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					System.out.println("Error closing file: " + e);
+				}
+			}
+		}
+	}
 
 	/**
 	 * Method to check if a word is in the dictionary
