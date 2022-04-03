@@ -187,23 +187,4 @@ public class Prediction
 		return completions;
 	}
 	
-	/**
-	 * Method to check the spelling of a word
-	 * @param wordToCheck The word to check the spelling of
-	 * @return The correct spelling of the word
-	 */
-	public String checkSpelling(String wordToCheck)
-	{
-		return null;		
-	}
-	
-	/**
-	 * Method to check the grammar of a phrase
-	 * @param phraseToCheck The phrase to check the grammar for
-	 * @return The corrected grammar of the phrase
-	 */
-	public String checkGrammar(String phraseToCheck)
-	{
-		return null;	
-	}
 }
