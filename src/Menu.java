@@ -297,6 +297,12 @@ public class Menu extends JPanel implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+    	
+    	// Reset the information labels
+        spellingLabel.setText("-");
+        addWordLabel.setText("-");
+        savedLabel.setText("-");
+
         if (e.getSource() == predictButton) {
             predictText();
             predictTextArea.select(0, 0);
@@ -305,7 +311,7 @@ public class Menu extends JPanel implements ActionListener {
             deleteUserEnteredWord();
 
         } else if (e.getSource() == searchWordButton) {
-            displayTest();
+            displayText();
             searchWordTextArea.select(0, 0);
 
         } else if (e.getSource() == saveDictButton) {
@@ -313,10 +319,10 @@ public class Menu extends JPanel implements ActionListener {
 
             String text = "Saved!";
             savedLabel.setText(text);
+            
         } else if (e.getSource() == spellCheckButton) {
-            String text = "Replace with corrent or incorrect spelling";
-            spellingLabel.setText(text);
-            // UPDATE WITH SPELLCHECK STUFFS
+            this.getSpellings();
+            
         } else if (e.getSource() == addButton) {
             if(prediction.getAddWord())
             {
@@ -439,6 +445,37 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Method to do the spell checking on the user-entered phrase
+     * @author Becky Tyler (2461535)
+     */
+    public void getSpellings()
+    {
+    	// Get a spell checker for the current dictionary and prediction object
+    	SpellChecker spellChecker = new SpellChecker(this.dictionary,this.prediction);
+ 
+    	// Create an ArrayList to store the output
+    	ArrayList<String> spellingOutput;
+    	
+    	// Reset the text display area
+        predictTextArea.setText("");
+        
+        // Get the user's phrase to spell check
+        String phraseToCheck = predictTextField.getText();
+ 
+        // Spell check the user's phrase
+		spellingOutput = spellChecker.checkSpelling(phraseToCheck);
+
+		// Display the output in the text area
+		for (String newline : spellingOutput)
+		{
+			predictTextArea.append(newline + "\n");
+		}
+
+    	String text = "See text area for spelling suggestions.";
+        spellingLabel.setText(text);
+    }
+
     public void deleteUserEnteredWord() {
         String word = removeWordTextField.getText();
 
@@ -462,7 +499,7 @@ public class Menu extends JPanel implements ActionListener {
      * 
      * @author Becky Tyler (2461535)
      */
-    public void displayTest() {
+    public void displayText() {
         searchWordTextArea.setText("");
 
         String startWord = searchWordTextField.getText();
@@ -502,33 +539,6 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
-    public void findWord() {
-        String wordToFind = searchWordTextField.getText();
-
-        System.out.println("SEARCHING FOR THE WORD: " + wordToFind);
-        System.out.println("=======================");
-        WordNode foundNode = dictionary.findNode(wordToFind, dictionary.getRoot());
-        if (foundNode == null)
-            searchWordTextArea.setText("Node '" + wordToFind + "' not found.");
-        else
-            searchWordTextArea.setText("Node '" + wordToFind + "' found! " + foundNode.printInfo());
-        System.out.println();
-    }
-
-    public String printInfo(WordNode word) {
-        String printInfo = "";
-        printInfo = "IsWord: " + word.getIsWord() +
-                ", Frequency: " + word.getFrequency() +
-                ", Next Nodes:";
-        if (!word.getNextNodes().isEmpty()) {
-            for (String letter : word.getNextNodes().keySet()) {
-                printInfo = printInfo + " " + letter;
-            }
-        } else
-            printInfo = printInfo + " null";
-        return printInfo;
-    }
-
     public void changeAddWordSetting() {
         if (prediction.getAddWord() == false) {
             prediction.setAddWord(true);
@@ -537,37 +547,6 @@ public class Menu extends JPanel implements ActionListener {
             prediction.setAddWord(false);
             // System.out.println("\nAdd Word Setting Has Been Turned OFF");
         }
-    }
-
-    public int getInt(String userPrompt) {
-        Scanner s = new Scanner(System.in);
-
-        System.out.print("\n" + userPrompt);
-        while (!s.hasNextInt()) {
-            s.next();
-            System.out.print(userPrompt);
-        }
-
-        int num = s.nextInt();
-        return num;
-    }
-
-    public String getString(String userPrompt) {
-        Scanner s = new Scanner(System.in);
-        System.out.print("\n" + userPrompt);
-        String userInput = s.nextLine();
-
-        // Check that the input doesn't contain special characters
-        Pattern p = Pattern.compile("[^a-z ]", Pattern.CASE_INSENSITIVE);
-        Matcher match = p.matcher(userInput);
-        while (match.find()) {
-            System.out.println("Sorry, numbers and special characters are not allowed.");
-            System.out.print("\n" + userPrompt);
-            userInput = s.nextLine();
-            match = p.matcher(userInput);
-        }
-
-        return userInput.trim();
     }
 
     public static void main(String[] args) {
