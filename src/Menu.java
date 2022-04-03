@@ -10,9 +10,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 /**
@@ -315,10 +312,26 @@ public class Menu extends JPanel implements ActionListener {
             searchWordTextArea.select(0, 0);
 
         } else if (e.getSource() == saveDictButton) {
-            // UPDATE WITH SAVING DICTIONARY BUTTON STUFFS
-
-            String text = "Saved!";
-            savedLabel.setText(text);
+            savedLabel.setText("-");
+            if (prediction.getLanguage().equals(Dictionary.Language.ENGLISH)) {
+                if (dict_en.saveToFile(Dictionary.Language.ENGLISH))
+                {
+                    String text = "Saved!";
+                    savedLabel.setText(text);
+                } else {
+                    String text = "Save unsuccessful";
+                    savedLabel.setText(text);
+                }
+            } else {
+                if (dict_it.saveToFile(Dictionary.Language.ITALIAN))
+                {
+                    String text = "Saved!";
+                    savedLabel.setText(text);
+                } else {
+                    String text = "Save unsuccessful";
+                    savedLabel.setText(text);
+                }
+            }
             
         } else if (e.getSource() == spellCheckButton) {
             this.getSpellings();

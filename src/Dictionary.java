@@ -153,7 +153,7 @@ public class Dictionary implements Serializable
 	/**
 	 * Saves current dictionary to file.
 	 */
-	public void saveToFile(Language language) {
+	public boolean saveToFile(Language language) {
 		ObjectOutputStream out = null;
 		String saveFile = language.equals(Language.ENGLISH) ? "DictionaryE.save" : "DictionaryI.save";
 
@@ -165,17 +165,21 @@ public class Dictionary implements Serializable
 
 		} catch (FileNotFoundException e) {
 			System.out.println("Error opening file: " + e);
+			return false;
 		} catch (IOException e) {
 			System.out.println("Error writing to file: " + e);
+			return false;
 		} finally {
 			if (out != null) {
 				try {
 					out.close();
 				} catch (IOException e) {
 					System.out.println("Error closing file: " + e);
+					return false;
 				}
 			}
 		}
+		return true;
 	}
 
 	/**
