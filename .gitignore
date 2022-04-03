@@ -2,3 +2,7 @@
 /.settings/
 /.classpath
 /.project
+
+# Ignore program's self saved dictionary
+DictionaryE.save
+DictionaryI.save
