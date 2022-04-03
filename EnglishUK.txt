@@ -211,6 +211,7 @@ Hispanics
 Hollywood
 Holocaust
 House
+I
 ID
 IDs
 INS
@@ -580,6 +581,7 @@ Yanks
 Yiddish
 Yuletide
 Yuletides
+a
 aardvark
 aback
 abacus
