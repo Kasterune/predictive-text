@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -180,6 +181,68 @@ public class Dictionary implements Serializable
 			}
 		}
 		return true;
+	}
+
+	public void benchmark(Language lang) {
+		if (!lang.equals(Language.ENGLISH)) {
+			throw new IllegalArgumentException("English is the only supported language for the benchmark.");
+		}
+
+		BufferedReader bufferedReader = null;
+
+		try {
+			FileReader fileReader = new FileReader("test_words.txt");
+			bufferedReader = new BufferedReader(fileReader);
+			Prediction prediction = new Prediction();
+
+			String nextLine;
+			nextLine = bufferedReader.readLine();
+			while (nextLine != null) {
+				prediction.predictText(findNode(nextLine, root), nextLine);
+
+
+				// TODO: Dedupe this as it's mostly a duplicate of the two other getPredictions methods.
+				ArrayList<Integer> frequency = new ArrayList<Integer>();
+
+				for (WordNode node : prediction.getCompletions()) {
+					frequency.add(Integer.valueOf(node.getFrequency()));
+				}
+
+				int numCompletions = prediction.getCompletions().size();
+
+				for (int i = 0; i < Math.min(prediction.getMaxCompletions(), numCompletions); i++) {
+					int pos = 0;
+					int currentMax = frequency.get(0);
+					for (int v = 0; v <= frequency.size() - 1; v++) {
+						if (currentMax < frequency.get(v)) {
+							currentMax = frequency.get(v);
+							pos = v;
+						}
+					}
+
+					// System.out.println(prediction.getWords().get(pos));
+					prediction.getCompletions().remove(pos);
+					prediction.getWords().remove(pos);
+					frequency.remove(pos);
+
+				}
+
+
+				nextLine = bufferedReader.readLine();
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("Sorry, your file was not found.");
+		} catch (IOException e) {
+			System.out.println("Sorry, there has been a problem opening or reading from the file");
+		} finally {
+			if (bufferedReader != null) {
+				try {
+					bufferedReader.close();
+				} catch (IOException e) {
+					System.out.println("Sorry, there has been a problem closing the file");
+				}
+			}
+		}
 	}
 
 	/**
