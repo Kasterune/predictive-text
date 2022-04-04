@@ -444,40 +444,6 @@ public class Menu extends JPanel implements ActionListener {
     }
 
     /**
-     * Will loop through the whole completions array to find the best suited completions for that word, for instance, the words that are used more often will be displayed first.
-     */
-    public void getCompletions() {
-        if (prediction.getCompletions().isEmpty()) {
-            predictTextArea.setText("No Completions Were Found In The Dictionary \n");
-        }
-        ArrayList<Integer> frequency = new ArrayList<Integer>();
-
-        for (WordNode node : prediction.getCompletions()) {
-            frequency.add(Integer.valueOf(node.getFrequency()));
-        }
-
-        int numCompletions = prediction.getCompletions().size();
-
-        for (int i = 0; i < Math.min(prediction.getMaxCompletions(), numCompletions); i++) {
-            int pos = 0;
-            int currentMax = frequency.get(0);
-            for (int v = 0; v <= frequency.size() - 1; v++) {
-                if (currentMax < frequency.get(v)) {
-                    currentMax = frequency.get(v);
-                    pos = v;
-                }
-            }
-
-            predictTextArea.append(prediction.getWords().get(pos) + "\n");
-            // System.out.println(prediction.getWords().get(pos));
-            prediction.getCompletions().remove(pos);
-            prediction.getWords().remove(pos);
-            frequency.remove(pos);
-
-        }
-    }
-
-    /**
      * This method will loop through the phrases and will display them to the user if there is any and will display that there arent any if the array is empty.
      * @param foundTextNode which is the node that the word is stored in
      * @param sentence which is the sentence that the user typed in and is stored so it can be used to display it with the phrases added on
