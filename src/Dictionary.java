@@ -247,30 +247,21 @@ public class Dictionary implements Serializable
 
 	/**
 	 * Method to check if a word is in the dictionary
-	 * @param word String to search for in the dictionary
+	 * @param word Word to search for in the dictionary
 	 * @return True if the word is in the dictionary, else false
 	 */
-	public boolean isInDictionary(String word)
-	{
-		return isInDictionary(word, root);
-	}
+	public boolean contains(String word) {
+		word = word.trim().toLowerCase();
 
-	private boolean isInDictionary(String word, WordNode node)
-	{
-		if (word.length() == 0)
-		{
-			if (node.getIsWord())
-			{
-				return true;
+		WordNode node = root;
+		// Attempt to reach the node for the completed word
+		for (int i = 0; i < word.length(); i++) {
+			if ((node = node.getNextNodes().get(word.substring(i, i + 1))) == null) {
+				return false;
 			}
-			return false;
 		}
 
-		if (node.getNextNodes().containsKey(word.substring(0, 1)))
-		{
-			return isInDictionary(word.substring(1), node.getNextNodes().get(word.substring(0, 1)));
-		}
-		return false;
+		return node.getIsWord();
 	}
 
 	/**
