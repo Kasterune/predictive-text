@@ -293,6 +293,7 @@ public class Menu extends JPanel implements ActionListener {
 
     /**
      * Contains action listener events and functions
+     * @param ActionEvent The event that has occurred
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -338,12 +339,15 @@ public class Menu extends JPanel implements ActionListener {
 
         } else if (e.getSource() == addOnRadio) {
             getSelectedButton();
-            
+
         } else if (e.getSource() == addOffRadio) {
             getSelectedButton();
         }
     }
 
+    /**
+     * Detects which radio button has been selected
+     */
     public void getSelectedButton() {
         for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
