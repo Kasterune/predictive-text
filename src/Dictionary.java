@@ -189,6 +189,7 @@ public class Dictionary implements Serializable
 		}
 
 		BufferedReader bufferedReader = null;
+		long startTime = 0;
 
 		try {
 			FileReader fileReader = new FileReader("test_words.txt");
@@ -196,8 +197,8 @@ public class Dictionary implements Serializable
 			Prediction prediction = new Prediction();
 
 			String nextLine;
-			nextLine = bufferedReader.readLine();
-			while (nextLine != null) {
+			startTime = System.nanoTime();
+			while ((nextLine = bufferedReader.readLine()) != null) {
 				prediction.predictText(findNode(nextLine), nextLine);
 
 
@@ -228,7 +229,6 @@ public class Dictionary implements Serializable
 				}
 
 
-				nextLine = bufferedReader.readLine();
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("Sorry, your file was not found.");
@@ -243,6 +243,8 @@ public class Dictionary implements Serializable
 				}
 			}
 		}
+		long endTime = System.nanoTime();
+		System.out.println("24215 completions took " + (endTime - startTime) / 1_000_000 + "milliseconds to complete");
 	}
 
 	/**
