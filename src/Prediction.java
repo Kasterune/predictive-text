@@ -64,6 +64,30 @@ public class Prediction
 		return this.maxCompletions;
 	}
 
+	/**
+	 * Return a string arraylist of completions.
+	 *
+	 * @param node The WordNode to start searching for completions at.
+	 * @param word The currently entered word to find completions for.
+	 * @return Completions as a string arraylist. This arraylist can be variable
+	 *         size, including 0.
+	 */
+	public ArrayList<String> getCompletions(WordNode node, String word) {
+		resetCompletions();
+
+		predictWords(node, word);
+
+		return words;
+	}
+
+	/**
+	 * Save a string arraylist of completions to completions and words fields.
+	 * Performed by doing a depth first pre-order search and saving only the max
+	 * frequency values found.
+	 *
+	 * @param node The WordNode to start searching for completions at.
+	 * @param word The currently entered word to find completions for.
+	 */
 	private void predictWords(WordNode node, String word) {
 		if (node.getIsWord()) {
 			if (completions.size() < maxCompletions) {
