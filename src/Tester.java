@@ -439,8 +439,9 @@ public class Tester
                     return;
                 }
 
-				prediction.predictText(foundTextNode, textToComplete);
-				getCompletions();
+				for (String word : prediction.getCompletions(foundTextNode, textToComplete)) {
+					System.out.println(word);
+				}
 				getPhrase(foundTextNode, textToComplete);
 
 			} else {
