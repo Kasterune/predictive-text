@@ -422,8 +422,9 @@ public class Menu extends JPanel implements ActionListener {
                     return;
                 }
 
-                prediction.predictText(foundTextNode, textToComplete);
-                getCompletions();
+                for (String word : prediction.getCompletions(foundTextNode, textToComplete)) {
+                    predictTextArea.append(word + "\n");
+                }
                 getPhrase(foundTextNode, textToComplete);
 
             } else {
