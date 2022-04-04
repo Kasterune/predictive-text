@@ -417,7 +417,8 @@ public class Menu extends JPanel implements ActionListener {
                 WordNode foundTextNode = dictionary.findNode(sentence[i]);
 
                 if (foundTextNode != null && foundTextNode.getIsWord() == true) {
-
+                    
+                    dictionary.updateFrequency(sentence[i], 1);
                     for (int v = 0; v < sentence.length; v++) {
                         String phrase = "";
                         for (int p = v + 1; p < sentence.length; p++) {
