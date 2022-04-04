@@ -189,6 +189,7 @@ public class Dictionary implements Serializable
 		}
 
 		BufferedReader bufferedReader = null;
+		long startTime = 0;
 
 		try {
 			FileReader fileReader = new FileReader("test_words.txt");
@@ -197,6 +198,7 @@ public class Dictionary implements Serializable
 
 			String nextLine;
 			nextLine = bufferedReader.readLine();
+			startTime = System.nanoTime();
 			while (nextLine != null) {
 				prediction.predictText(findNode(nextLine), nextLine);
 
@@ -243,6 +245,8 @@ public class Dictionary implements Serializable
 				}
 			}
 		}
+		long endTime = System.nanoTime();
+		System.out.println("24215 completions took " + (endTime - startTime) / 1_000_000 + "milliseconds to complete");
 	}
 
 	/**
