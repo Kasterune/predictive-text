@@ -247,7 +247,7 @@ public class Dictionary implements Serializable
 
 	/**
 	 * Method to check if a word is in the dictionary
-	 * @param word String to search for in the dictionary
+	 * @param word Word to search for in the dictionary
 	 * @return True if the word is in the dictionary, else false
 	 */
 	public boolean contains(String word) {
