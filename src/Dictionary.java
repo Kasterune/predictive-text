@@ -40,11 +40,11 @@ public class Dictionary implements Serializable
 			loadWords(Language.ITALIAN);
 		}
 	}
-	
+
 	/**
 	 * Get the root node which is at the top of the trie
 	 * @return root The reference to the WordNode object at the top of the trie
-	 *         (or null if the trie is empty).    
+	 *         (or null if the trie is empty).
 	 */
 	public WordNode getRoot()
 	{
@@ -53,7 +53,7 @@ public class Dictionary implements Serializable
 
 	/**
 	 * Set the root of the tree to the given node
-	 * @param newRoot WordNode reference to the node which will be the root of the trie. 
+	 * @param newRoot WordNode reference to the node which will be the root of the trie.
 	 */
 	public void setRoot(WordNode newRoot)
 	{
@@ -80,37 +80,37 @@ public class Dictionary implements Serializable
 			fileName = "ItalianItaly.txt";
 		}
 		boolean exists = tempFile.exists();
-		
+
 		if(exists == false)
 		{
 			try {
 				fileReader = new FileReader(fileName);
-			
+
 				bufferedReader = new BufferedReader(fileReader);
-	        
+
 				nextLine = bufferedReader.readLine();
 				while (nextLine != null) {
 					addWord(nextLine);
 					nextLine = bufferedReader.readLine();
 				}
 	        }
-	        
+
 	        catch (FileNotFoundException e)
 	        {
 	            System.out.println("Sorry, your file was not found.");
 	        }
-	        
+
 	        catch (IOException e)
 	        {
 	            System.out.println("Sorry, there has been a problem opening or reading from the file");
 	        }
-	        
+
 	        finally
 	        {
 	            // if the file was opened
 	            if (bufferedReader != null)
 	            {
-	                try 
+	                try
 	                {
 	                    // try to close it
 	                    bufferedReader.close();
@@ -303,7 +303,7 @@ public class Dictionary implements Serializable
 	{
 		// Remove any leading or trailing spaces from the word and convert to lower case
 		word = word.trim().toLowerCase();
-		
+
 		// Find the node for the end of the word
 		WordNode foundNode = this.findNode(word, root);
 
@@ -313,12 +313,12 @@ public class Dictionary implements Serializable
 			foundNode.setFrequency(foundNode.getFrequency() + upNo);
 			return true;
 		}
-		
+
 		// Node not found so frequency not updated
 		else
 			return false;
 	}
-	
+
 	/**
 	 * Method to print out one of the word nodes in the trie
 	 * This is just for testing and debugging purposes
@@ -327,7 +327,7 @@ public class Dictionary implements Serializable
 	 * @author Becky Tyler (2461535)
 	 */
 	public void printWordNode(WordNode node, String prefix)
-	{		 
+	{
 		// Print out the prefix for the node
 		if ((node == this.root) && (prefix.equals("")))
 			System.out.println("Node: *ROOT*");
@@ -337,7 +337,7 @@ public class Dictionary implements Serializable
 		// Print the information stored in the node;
 		System.out.println(node.printInfo() + "\n");
 	}
-	
+
 	/**
 	 * Method to print the dictionary trie from the current node down
 	 * This is just for testing and debugging purposes
@@ -362,7 +362,7 @@ public class Dictionary implements Serializable
 			}
 		}
 	}
-	
+
 	/**
 	 * Method to display the words in the dictionary from the current node down
 	 * @param currentNode  The node to start the display from
@@ -380,17 +380,17 @@ public class Dictionary implements Serializable
 			else
 				System.out.println(nodeName + " (" + freq + ")");
 		}
-		
+
 		// Use recursion to print the information stored in the next nodes
 		if (!currentNode.getNextNodes().isEmpty())
 		{
 			for (String letter : currentNode.getNextNodes().keySet())
 			{
-				this.displayDictionary(currentNode.getNextNodes().get(letter), nodeName + letter);		
+				this.displayDictionary(currentNode.getNextNodes().get(letter), nodeName + letter);
 			}
 		}
 	}
-	
+
 	public WordNode findNode(String word, WordNode node)
 	{
 		//String tempWord = word;
@@ -398,7 +398,7 @@ public class Dictionary implements Serializable
 
 		// Convert word to lower case - FIX by BT 30/3/22
 		word = word.toLowerCase();
-		
+
 		while(nextNodeMap.containsKey(word.substring(0, 1)))
 		{
 			node = nextNodeMap.get(word.substring(0, 1));
@@ -435,10 +435,10 @@ public class Dictionary implements Serializable
 		// Get the map of next nodes
 		// String tempWord = word;
 		Map<String, WordNode> nextNodeMap = node.getNextNodes();
-		
+
 		// Convert word to lower case - FIX by BT 30/3/22
 		word = word.toLowerCase();
-		
+
 		// While there is a node for the next letter
 		while(nextNodeMap.containsKey(word.substring(0, 1)))
 		{
@@ -463,7 +463,7 @@ public class Dictionary implements Serializable
 			}
 			nextNodeMap = node.getNextNodes();
 		}
-		
+
 		// If there are not enough nodes for all the letters the word does not exist
 		// System.out.println("Word Does Not Exist In the Dictionary");
 		return false;
@@ -473,7 +473,7 @@ public class Dictionary implements Serializable
 	{
 		// Remove any leading or trailing spaces from the word
 		word = word.trim();
-		
+
 		// Make sure the word contains some letters
 		if (word.length() == 0)
 		{

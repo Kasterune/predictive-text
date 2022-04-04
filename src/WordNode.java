@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * This class stores the data for a node in the dictionary Trie
- * 
+ *
  * @author Becky Tyler (2461535), Joshua Price (2481545)
  * @version 2.0 (16 March 2022)
  */
@@ -13,27 +13,27 @@ import java.util.Map;
 public class WordNode implements Serializable
 {
 	// Define class variables/fields
-	private boolean isWord;		// Is the current node the end of a proper word? 
+	private boolean isWord;		// Is the current node the end of a proper word?
 	private int     frequency;	// Number of times word has been used (if isWord is true)
 	private ArrayList<String> phrases; // Pharses that could be used after this nodes word
-	
+
 	// Define a map to hold the references to the child nodes, indexed on the letters
 	private Map<String, WordNode> nextNodes;
-	
+
 	/**
 	 * Default constructor
-	 */  
+	 */
 	public WordNode()
 	{
 		// Initialise field values
 		isWord     = false;
 		frequency  = 0;
 		phrases = new ArrayList<String>();
-		
+
 		// Initialise the hash map for the next nodes
 		nextNodes  = new HashMap<String, WordNode>();
 	}
-	
+
 	/**
 	 * Alternative constructor to set fields to given values.
 	 * @param isWord  Do the letters make a proper word
@@ -41,23 +41,23 @@ public class WordNode implements Serializable
 	 */
 	public WordNode(boolean isWord, int frequency)
 	{
-		// Set data value to value provided       
+		// Set data value to value provided
 		this.frequency = frequency;
 		this.isWord = isWord;
-		
+
 		// Initialise the hash map for the next nodes
 		nextNodes  = new HashMap<String, WordNode>();
 	}
 
 	/**
-	 * Method to get the value of the 'isWord' field 
+	 * Method to get the value of the 'isWord' field
 	 * @return isWord Whether the letters are a valid word or not
 	 */
 	public boolean getIsWord()
 	{
 		return this.isWord;
 	}
-	
+
 	/**
 	 * Method to get the frequency of the word (if isWord is true)
 	 * @return frequency The number of times the user has used this word
@@ -75,7 +75,7 @@ public class WordNode implements Serializable
 	{
 		return this.phrases;
 	}
-	
+
 	/**
 	 * Method to get the map of child nodes
 	 * @return nextNodes The map containing the references to the child nodes
@@ -93,7 +93,7 @@ public class WordNode implements Serializable
 	{
 		this.isWord = isWord;
 	}
-	
+
 	/**
 	 * Method to set the frequency of the word (if isWord is true)
 	 * @param frequency  The new frequency of the word
@@ -105,13 +105,13 @@ public class WordNode implements Serializable
 
 	/**
 	 * Method to set the phrases for the word node
-	 * @param phrases which is a list of phrases that could occur after the word in that node 
+	 * @param phrases which is a list of phrases that could occur after the word in that node
 	 */
 	public void setPhrases(ArrayList<String> phrases)
 	{
 		this.phrases = phrases;
 	}
-	
+
 	/**
 	 * Method to set the map of references to the child nodes
 	 * @param nextNodes The map of references to the child nodes
@@ -120,7 +120,7 @@ public class WordNode implements Serializable
 	{
 		this.nextNodes = nextNodes;
 	}
-	
+
 	/**
 	 * Method to get the information about the node ready for printing
 	 * @return String containing the letters, if these are a word, and the frequency
