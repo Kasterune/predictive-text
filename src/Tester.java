@@ -241,7 +241,7 @@ public class Tester
 
 		// Test deleting a node and adding it back in again
 		System.out.println("\nDELETING THE WORD 'in' FROM THE DICTIONARY TRIE:");
-		WordNode inNode = dictionary.findNode("in", root);
+		WordNode inNode = dictionary.findNode("in");
 		if (dictionary.deleteNode("in", root))
 			System.out.println("'in' has been removed from the dictionary.");
 		else
@@ -319,7 +319,7 @@ public class Tester
 		else  // Display the part of the dictionary with words starting with startWord
 		{
 			// Find the starting node;
-			WordNode startNode = dictionary.findNode(startWord, dictionary.getRoot());
+			WordNode startNode = dictionary.findNode(startWord);
 
 			if (startNode != null)
 			{
@@ -344,7 +344,7 @@ public class Tester
 		// Search for a word
 		System.out.println("SEARCHING FOR THE WORD: " + wordToFind);
 		System.out.println("=======================");
-		WordNode foundNode = dictionary.findNode(wordToFind,dictionary.getRoot());
+		WordNode foundNode = dictionary.findNode(wordToFind);
 		if (foundNode == null)
 			System.out.println("Node '" + wordToFind + "' not found.");
 		else
@@ -401,7 +401,7 @@ public class Tester
 			// Get the completion for the last word in the phrase
 			if(sentence.length - 1 == i)
 			{
-				WordNode foundTextNode = dictionary.findNode(sentence[i], dictionary.getRoot());
+				WordNode foundTextNode = dictionary.findNode(sentence[i]);
 
 				// Check the partial word was found - FIX by BT 30/3/22
 				if (foundTextNode == null)

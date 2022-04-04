@@ -148,7 +148,7 @@ public class Prediction
 	public Map<String, Integer> predictTextv1(Dictionary dictionary, String textToComplete)
 	{
 		// Find the node at the end of the word in the trie
-		WordNode foundTextNode = dictionary.findNode(textToComplete,dictionary.getRoot());
+		WordNode foundTextNode = dictionary.findNode(textToComplete);
 
 		//If the text does not exist in the trie, there are no completions
 		if(foundTextNode == null)

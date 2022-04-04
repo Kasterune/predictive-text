@@ -198,7 +198,7 @@ public class Dictionary implements Serializable
 			String nextLine;
 			nextLine = bufferedReader.readLine();
 			while (nextLine != null) {
-				prediction.predictText(findNode(nextLine, root), nextLine);
+				prediction.predictText(findNode(nextLine), nextLine);
 
 
 				// TODO: Dedupe this as it's mostly a duplicate of the two other getPredictions methods.
@@ -305,7 +305,7 @@ public class Dictionary implements Serializable
 		word = word.trim().toLowerCase();
 
 		// Find the node for the end of the word
-		WordNode foundNode = this.findNode(word, root);
+		WordNode foundNode = findNode(word);
 
 		// If the node exists, update the frequency
 		if (foundNode != null)
@@ -391,36 +391,19 @@ public class Dictionary implements Serializable
 		}
 	}
 
-	public WordNode findNode(String word, WordNode node)
-	{
-		//String tempWord = word;
-		Map<String, WordNode> nextNodeMap = node.getNextNodes();
+	public WordNode findNode(String word) {
+		word = word.trim().toLowerCase();
 
-		// Convert word to lower case - FIX by BT 30/3/22
-		word = word.toLowerCase();
-
-		while(nextNodeMap.containsKey(word.substring(0, 1)))
-		{
-			node = nextNodeMap.get(word.substring(0, 1));
-			word = word.substring(1);
-
-			if (word.length() == 0)
-			{
-				if (node.getIsWord())
-				{
-					//System.out.println("Word Exists In the Dictionary");
-					//System.out.println("Word - " + tempWord);
-					//System.out.println("Is It A Real Word - " + node.getIsWord());
-					//System.out.println("Times Word Has Been Used - " + node.getFrequency() + " Times");
-					return node;
-				}
-				//break;
-				return node;  // FIX by BT: Return the node even if it isn't a full word (needed for prediction)
+		WordNode node = root;
+		// Attempt to reach the node for word
+		for (int i = 0; i < word.length(); i++) {
+			if ((node = node.getNextNodes().get(word.substring(i, i + 1))) == null) {
+				return null;
 			}
-			nextNodeMap = node.getNextNodes();
 		}
-		// System.out.println("Word Does Not Exist In the Dictionary");
-		return null;
+
+		// Return the node even if it isn't a full word (needed for prediction)
+		return node;
 	}
 
 	/**

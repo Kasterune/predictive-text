@@ -400,7 +400,7 @@ public class Menu extends JPanel implements ActionListener {
         for (int i = 0; i < sentence.length; i++) {
             // Get the completion for the last word in the phrase
             if (sentence.length - 1 == i) {
-                WordNode foundTextNode = dictionary.findNode(sentence[i], dictionary.getRoot());
+                WordNode foundTextNode = dictionary.findNode(sentence[i]);
 
                 if(foundTextNode != null && foundTextNode.getIsWord() == true)
                 {
@@ -412,7 +412,7 @@ public class Menu extends JPanel implements ActionListener {
                         {
                             phrase = phrase + sentence[p] + " ";
                         }
-                        WordNode word = dictionary.findNode(sentence[v], dictionary.getRoot());
+                        WordNode word = dictionary.findNode(sentence[v]);
                         if(word.getIsWord() == true && word.getPhrases().contains(phrase) == false)
                         {
                             word.getPhrases().add(phrase);
@@ -575,7 +575,7 @@ public class Menu extends JPanel implements ActionListener {
         } else // Display the part of the dictionary with words starting with startWord
         {
             // Find the starting node;
-            WordNode startNode = dictionary.findNode(startWord, dictionary.getRoot());
+            WordNode startNode = dictionary.findNode(startWord);
 
             if (startNode != null) {
                 searchWordTextArea.append("DISPLAYING THE DICTIONARY: Words beginning with " + startWord + "\n");
