@@ -113,7 +113,7 @@ public class SpellChecker
 		// Find the node in the dictionary for the first letter
 		word = word.trim().toLowerCase();
 		String firstLetter = word.substring(0, 1);
-		WordNode firstLetterNode = dictionary.findNode(firstLetter, dictionary.getRoot());
+		WordNode firstLetterNode = dictionary.findNode(firstLetter);
 
 		// If there are no nodes starting with the first letter then
 		// no spelling suggestions can be made

@@ -198,7 +198,7 @@ public class Dictionary implements Serializable
 			String nextLine;
 			nextLine = bufferedReader.readLine();
 			while (nextLine != null) {
-				prediction.predictText(findNode(nextLine, root), nextLine);
+				prediction.predictText(findNode(nextLine), nextLine);
 
 
 				// TODO: Dedupe this as it's mostly a duplicate of the two other getPredictions methods.
@@ -305,7 +305,7 @@ public class Dictionary implements Serializable
 		word = word.trim().toLowerCase();
 
 		// Find the node for the end of the word
-		WordNode foundNode = this.findNode(word, root);
+		WordNode foundNode = findNode(word);
 
 		// If the node exists, update the frequency
 		if (foundNode != null)
