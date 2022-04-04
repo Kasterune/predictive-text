@@ -241,6 +241,7 @@ public class Dictionary implements Serializable
 
 				}
 
+				prediction.resetCompletions();
 
 			}
 		} catch (FileNotFoundException e) {
