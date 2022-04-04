@@ -212,37 +212,7 @@ public class Dictionary implements Serializable
 			String nextLine;
 			startTime = System.nanoTime();
 			while ((nextLine = bufferedReader.readLine()) != null) {
-				prediction.predictText(findNode(nextLine), nextLine);
-
-
-				// TODO: Dedupe this as it's mostly a duplicate of the two other getPredictions methods.
-				ArrayList<Integer> frequency = new ArrayList<Integer>();
-
-				for (WordNode node : prediction.getCompletions()) {
-					frequency.add(Integer.valueOf(node.getFrequency()));
-				}
-
-				int numCompletions = prediction.getCompletions().size();
-
-				for (int i = 0; i < Math.min(prediction.getMaxCompletions(), numCompletions); i++) {
-					int pos = 0;
-					int currentMax = frequency.get(0);
-					for (int v = 0; v <= frequency.size() - 1; v++) {
-						if (currentMax < frequency.get(v)) {
-							currentMax = frequency.get(v);
-							pos = v;
-						}
-					}
-
-					// System.out.println(prediction.getWords().get(pos));
-					prediction.getCompletions().remove(pos);
-					prediction.getWords().remove(pos);
-					frequency.remove(pos);
-
-				}
-
-				prediction.resetCompletions();
-
+				prediction.getCompletions(findNode(nextLine), nextLine).size();
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("Sorry, your file was not found.");
