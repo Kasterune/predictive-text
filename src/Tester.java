@@ -439,8 +439,9 @@ public class Tester
                     return;
                 }
 
-				prediction.predictText(foundTextNode, textToComplete);
-				getCompletions();
+				for (String word : prediction.getCompletions(foundTextNode, textToComplete)) {
+					System.out.println(word);
+				}
 				getPhrase(foundTextNode, textToComplete);
 
 			} else {
@@ -459,42 +460,6 @@ public class Tester
 		}
 
 	}
-
-	/**
-	 * Will loop through the whole completions array to find the best suited completions for that word, for instance, the words that are used more often will be displayed first.
-	 */
-	public void getCompletions()
-	{
-		ArrayList<Integer> frequency = new ArrayList<Integer>();
-
-		for(WordNode node : prediction.getCompletions())
-		{
-			frequency.add(Integer.valueOf(node.getFrequency()));
-		}
-
-		int numCompletions = prediction.getCompletions().size();
-
-		for(int i = 0; i < Math.min(prediction.getMaxCompletions(), numCompletions); i++)
-		{
-			int pos = 0;
-			int currentMax = frequency.get(0);
-			for(int v = 0 ; v <= frequency.size()-1 ; v++)
-			{
-				if(currentMax < frequency.get(v))
-				{
-					currentMax = frequency.get(v);
-					pos = v;
-				}
-			}
-
-			System.out.println(prediction.getWords().get(pos));
-			prediction.getCompletions().remove(pos);
-			prediction.getWords().remove(pos);
-			frequency.remove(pos);
-
-		}
-	}
-
 
 	/**
      * This method will loop through the phrases and will display them to the user if there is any and will display that there arent any if the array is empty.

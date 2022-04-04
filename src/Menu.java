@@ -422,8 +422,9 @@ public class Menu extends JPanel implements ActionListener {
                     return;
                 }
 
-                prediction.predictText(foundTextNode, textToComplete);
-                getCompletions();
+                for (String word : prediction.getCompletions(foundTextNode, textToComplete)) {
+                    predictTextArea.append(word + "\n");
+                }
                 getPhrase(foundTextNode, textToComplete);
 
             } else {
@@ -439,40 +440,6 @@ public class Menu extends JPanel implements ActionListener {
                 // Increase the frequency of the times this word has been used
                 dictionary.updateFrequency(sentence[i], 1);
             }
-        }
-    }
-
-    /**
-     * Will loop through the whole completions array to find the best suited completions for that word, for instance, the words that are used more often will be displayed first.
-     */
-    public void getCompletions() {
-        if (prediction.getCompletions().isEmpty()) {
-            predictTextArea.setText("No Completions Were Found In The Dictionary \n");
-        }
-        ArrayList<Integer> frequency = new ArrayList<Integer>();
-
-        for (WordNode node : prediction.getCompletions()) {
-            frequency.add(Integer.valueOf(node.getFrequency()));
-        }
-
-        int numCompletions = prediction.getCompletions().size();
-
-        for (int i = 0; i < Math.min(prediction.getMaxCompletions(), numCompletions); i++) {
-            int pos = 0;
-            int currentMax = frequency.get(0);
-            for (int v = 0; v <= frequency.size() - 1; v++) {
-                if (currentMax < frequency.get(v)) {
-                    currentMax = frequency.get(v);
-                    pos = v;
-                }
-            }
-
-            predictTextArea.append(prediction.getWords().get(pos) + "\n");
-            // System.out.println(prediction.getWords().get(pos));
-            prediction.getCompletions().remove(pos);
-            prediction.getWords().remove(pos);
-            frequency.remove(pos);
-
         }
     }
 
