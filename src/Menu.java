@@ -100,15 +100,9 @@ public class Menu extends JPanel implements ActionListener {
         panel.setLayout(null);
 
         spellingLabel = new JLabel("-");
-        // spellingLabel.setBounds(660, 10, 250, 20);
         spellingLabel.setBounds(660, 40, 250, 20);
-        // addWordLabel = new JLabel("-");
-        // addWordLabel.setBounds(660, 40, 250, 20);
-        // addButton = new JButton("Add Word (if enabled)");
-        // addButton.setBounds(270, 70, 170, 20);
         saveDictButton = new JButton("Save Current Dictionary");
         saveDictButton.setBounds(270, 70, 170, 20);
-        // saveDictButton.setBounds(450, 70, 175, 20);
         savedLabel = new JLabel("-");
         savedLabel.setBounds(660, 70, 250, 20);
         predictLabel = new JLabel("Please enter text below: ");
@@ -128,7 +122,6 @@ public class Menu extends JPanel implements ActionListener {
 
         predictButton.addActionListener(this);
         spellCheckButton.addActionListener(this);
-        // addButton.addActionListener(this);
         saveDictButton.addActionListener(this);
 
         panel.add(spellingLabel);
@@ -138,8 +131,6 @@ public class Menu extends JPanel implements ActionListener {
         panel.add(predictTextField);
         panel.add(predictButton);
         panel.add(predictScroll);
-        // panel.add(addButton);
-        // panel.add(addWordLabel);
         panel.add(savedLabel);
 
         return panel;
@@ -153,7 +144,6 @@ public class Menu extends JPanel implements ActionListener {
         panel.setLayout(null);
 
         // Increase word limit range to 1-100
-        // Integer[] wordLimitOptions = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         Integer[] wordLimitOptions = IntStream.of(IntStream.rangeClosed(1, 100).toArray()).boxed()
                 .toArray(Integer[]::new);
         JComboBox<Integer> wordLimitBox = new JComboBox<>(wordLimitOptions);
@@ -345,35 +335,10 @@ public class Menu extends JPanel implements ActionListener {
 
         } else if (e.getSource() == spellCheckButton) {
             this.getSpellings();
-        }
 
-        // } else if (e.getSource() == addButton) {
-        // if(prediction.getAddWord())
-        // {
-        // String text = predictTextField.getText();
-        // if(text.indexOf(" ") >= 0 || text.equals("") || text.equals(" "))
-        // {
-        // addWordLabel.setText("The Word Not Valid As It Contains A Space");
-        // }
-        // else
-        // {
-        // boolean added = dictionary.addWord(text);
-        // if(added == true)
-        // {
-        // addWordLabel.setText(text + " Has Been Added To The Dictionary");
-        // }
-        // else
-        // {
-        // addWordLabel.setText(text + " Already Exists In The Dictionary");
-        // }
-        // }
-        // }
-        // else
-        // {
-        // addWordLabel.setText("The Add Word Setting Is Not Turned On");
-        // }
-        else if (e.getSource() == addOnRadio) {
+        } else if (e.getSource() == addOnRadio) {
             getSelectedButton();
+            
         } else if (e.getSource() == addOffRadio) {
             getSelectedButton();
         }
@@ -609,10 +574,16 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Method to turn on add word setting
+     */
     public void turnOnSetting() {
         prediction.setAddWord(true);
     }
 
+    /**
+     * Method to turn off add word setting
+     */
     public void turnOffSetting() {
         prediction.setAddWord(false);
     }
