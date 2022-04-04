@@ -601,22 +601,14 @@ public class Menu extends JPanel implements ActionListener {
     }
 
     /**
-<<<<<<< HEAD
      * turns the addWord setting on
-=======
-     * Method to turn on add word setting
->>>>>>> b7ed60a640be1176a6826cec9225d8e48a2bdbb1
      */
     public void turnOnSetting() {
         prediction.setAddWord(true);
     }
 
     /**
-<<<<<<< HEAD
      * turns the addWord setting off
-=======
-     * Method to turn off add word setting
->>>>>>> b7ed60a640be1176a6826cec9225d8e48a2bdbb1
      */
     public void turnOffSetting() {
         prediction.setAddWord(false);
