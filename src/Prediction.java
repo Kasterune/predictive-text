@@ -64,6 +64,30 @@ public class Prediction
 		return this.maxCompletions;
 	}
 
+	private void predictWords(WordNode node, String word) {
+		if (node.getIsWord()) {
+			if (completions.size() < maxCompletions) {
+				completions.add(node);
+				words.add(word);
+			} else {
+				for (int i = 0; i < completions.size(); i++) {
+					if (node.getFrequency() > completions.get(i).getFrequency()) {
+						completions.add(i, node);
+						words.add(i, word);
+
+						completions.remove(completions.size() - 1);
+						words.remove(words.size() - 1);
+						break;
+					}
+				}
+			}
+		}
+
+		for (String letter : node.getNextNodes().keySet()) {
+			predictWords(node.getNextNodes().get(letter), word + letter);
+		}
+	}
+
 	/**
 	 * Method to get the list of completions for a certain partial word
 	 * @return the Array List completions which holds the word nodes that can complete a word
