@@ -161,7 +161,10 @@ public class Tester
 				break;
 
 			case 7:
-				dictionary.saveToFile(prediction.getLanguage());
+				boolean saved = dictionary.saveToFile(prediction.getLanguage());
+				if(saved == true){
+					System.out.println("Save Was Successful");
+				}
 				break;
 
 			case 8:
