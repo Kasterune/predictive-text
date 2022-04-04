@@ -254,7 +254,7 @@ public class Dictionary implements Serializable
 		word = word.trim().toLowerCase();
 
 		WordNode node = root;
-		// Attempt to reach the node for the completed word
+		// Attempt to reach the node for word
 		for (int i = 0; i < word.length(); i++) {
 			if ((node = node.getNextNodes().get(word.substring(i, i + 1))) == null) {
 				return false;
