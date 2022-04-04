@@ -19,8 +19,10 @@ public class Prediction
 	// The maximum number of completions to be predicted
 	private int maxCompletions;
 
+	// The arrayList that stores the completions nodes to the partial word entered by the user
 	private ArrayList<WordNode> completions;
 
+	//The arrayList that stores the actual words that are completions to the partial word entered by the user
 	private	ArrayList<String> words;
 
 	/**
@@ -62,13 +64,19 @@ public class Prediction
 		return this.maxCompletions;
 	}
 
-
+	/**
+	 * Method to get the list of completions for a certain partial word
+	 * @return the Array List completions which holds the word nodes that can complete a word
+	 */
 	public ArrayList<WordNode> getCompletions()
 	{
 		return this.completions;
 	}
 
-
+	/**
+	 * Method to get the list of words that are asociated with the completions, the two arrays go hand in hand
+	 * @return the Array List of words that can complete a word
+	 */
 	public ArrayList<String> getWords()
 	{
 		return this.words;
@@ -113,6 +121,11 @@ public class Prediction
 		this.words.clear();
 	}
 
+	/**
+	 * Is the method that will get the completions for a word entered by the user and will store them in the Completions and Words Array Lists
+	 * @param foundTextNode node that the word is stored in
+	 * @param textToComplete the word the user wants to be completed
+	 */
 	public void predictText(WordNode foundTextNode, String textToComplete)
 	{
 		//WordNode foundTextNode = dictionary.findNode(textToComplete, node);

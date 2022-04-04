@@ -100,6 +100,9 @@ public class Tester
 		return userChoice;
 	}
 
+	/**
+	 * Will process the input entered by the user at the menu stage and will run a specific method depending on what number the user entered.
+	 */
 	private void processUserInput()
 	{
 
@@ -403,35 +406,60 @@ public class Tester
 			{
 				WordNode foundTextNode = dictionary.findNode(sentence[i]);
 
+				if (foundTextNode != null && foundTextNode.getIsWord() == true) {
+                    
+                    dictionary.updateFrequency(sentence[i], 1);
+                    for (int v = 0; v < sentence.length; v++) {
+                        String phrase = "";
+                        for (int p = v + 1; p < sentence.length; p++) {
+                            phrase = phrase + sentence[p] + " ";
+                        }
+                        WordNode word = dictionary.findNode(sentence[v]);
+                        if (word.getIsWord() == true && word.getPhrases().contains(phrase) == false) {
+                            word.getPhrases().add(phrase);
+                        }
+                    }
+                }
+
 				// Check the partial word was found - FIX by BT 30/3/22
-				if (foundTextNode == null)
-				{
-					System.out.println("Sorry, there are no possible completions in the dictionary.");
-					if (prediction.getAddWord() == true)
-                    {
-                        dictionary.addWord(sentence[i]);
+				if (foundTextNode == null || foundTextNode.getNextNodes().isEmpty() == true) {
+                    System.out.println("No Completions Were Found In The Dictionary \n");
+                    if (prediction.getAddWord() == true) {
+                        boolean added = dictionary.addWord(sentence[i]);
+                        if (added == true) {
+                            System.out.println("*" + sentence[i]
+                                    + " Is Not Recognised But Has Been Added Due To AddWord Setting Being On \n");
+                        }
                     }
                     dictionary.updateFrequency(sentence[i], 1);
-					return;
-				}
+                    getPhrase(foundTextNode, textToComplete);
+                    return;
+                }
 
 				prediction.predictText(foundTextNode, textToComplete);
 				getCompletions();
-			}
-			else
-			{
-				// Add new words to the dictionary if the setting is on - update by BT 29/03/22
-				if (prediction.getAddWord() == true)
-					dictionary.addWord(sentence[i]);
+				getPhrase(foundTextNode, textToComplete);
 
-				// Increase the frequency of the times this word has been used
-				dictionary.updateFrequency(sentence[i], 1);
-			}
+			} else {
+                // Add new words to the dictionary if the setting is on - update by BT 29/03/22
+                if (prediction.getAddWord() == true) {
+                    boolean added = dictionary.addWord(sentence[i]);
+                    if (added == true) {
+                        System.out.println("*" + sentence[i]
+                                + " Is Not Recognised But Has Been Added Due To AddWord Setting Being On \n");
+                    }
+                }
+
+                // Increase the frequency of the times this word has been used
+                dictionary.updateFrequency(sentence[i], 1);
+            }
 		}
 
 	}
 
-
+	/**
+	 * Will loop through the whole completions array to find the best suited completions for that word, for instance, the words that are used more often will be displayed first.
+	 */
 	public void getCompletions()
 	{
 		ArrayList<Integer> frequency = new ArrayList<Integer>();
@@ -465,6 +493,33 @@ public class Tester
 	}
 
 
+	/**
+     * This method will loop through the phrases and will display them to the user if there is any and will display that there arent any if the array is empty.
+     * @param foundTextNode which is the node that the word is stored in
+     * @param sentence which is the sentence that the user typed in and is stored so it can be used to display it with the phrases added on
+     */
+    public void getPhrase(WordNode foundTextNode, String sentence) {
+        System.out.println("\n\n Phrases:");
+        if (foundTextNode != null) {
+            foundTextNode.getPhrases().remove("");
+            if (foundTextNode.getIsWord() == true && foundTextNode.getPhrases().isEmpty() == false) {
+                for (String phrase : foundTextNode.getPhrases()) {
+                    phrase.trim();
+                    sentence.trim();
+                    System.out.println("\n" + sentence + " " + phrase);
+                }
+                return;
+            }
+            System.out.println("\n There Are No Phrases To Continue From This Word:");
+            return;
+        }
+        System.out.println("\n There Are No Phrases To Continue From This Word:");
+    }
+
+
+	/**
+	 * This method will change the word suggestion limit to whatever the user enters as long as it is between 1 and 100 inclusive
+	 */
 	public void updateWordLimit()
 	{
 		int limit = getInt("Enter The New Limit Of Word Suggestions: ");
@@ -480,6 +535,11 @@ public class Tester
 	}
 
 
+	/**
+	 * This method will parse a user prompt and expects a integer in return so the number entered will be taken in and sent back to where this method was called
+	 * @param userPrompt is the question to be asked to the user
+	 * @return an int that the user enters
+	 */
 	public int getInt(String userPrompt)
 	{
 		Scanner s = new Scanner(System.in);

@@ -28,7 +28,9 @@ public class Menu extends JPanel implements ActionListener {
     JScrollPane scroll, predictScroll;
     ButtonGroup group;
 
+    // Reference to the current two dictionaries
     Dictionary dictionary, dict_en, dict_it;
+    // Reference to the current prediction object
     Prediction prediction;
 
     /**
@@ -379,6 +381,9 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * This method will read in the option chosen by the user in the radio buttons and will change the field to on or off
+     */
     public void getSelectedButton() {
         for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
@@ -394,6 +399,11 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * This method will find all the predictions for a word entered by the user and will display them to the user.
+     * It will also add the word if no completions can be found (if addWord setting is on).
+     * And it will take note of the sentences entered by the user and will store them as a phrase so when it is typed again, it will appear as a phrase underneathe the potential completions.
+     */
     public void predictText() {
         predictTextArea.setText("");
         String textToComplete = predictTextField.getText();
@@ -466,6 +476,9 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Will loop through the whole completions array to find the best suited completions for that word, for instance, the words that are used more often will be displayed first.
+     */
     public void getCompletions() {
         if (prediction.getCompletions().isEmpty()) {
             predictTextArea.setText("No Completions Were Found In The Dictionary \n");
@@ -497,6 +510,11 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * This method will loop through the phrases and will display them to the user if there is any and will display that there arent any if the array is empty.
+     * @param foundTextNode which is the node that the word is stored in
+     * @param sentence which is the sentence that the user typed in and is stored so it can be used to display it with the phrases added on
+     */
     public void getPhrase(WordNode foundTextNode, String sentence) {
         predictTextArea.append("\n\n Phrases:");
         if (foundTextNode != null) {
@@ -507,7 +525,6 @@ public class Menu extends JPanel implements ActionListener {
                     sentence.trim();
                     predictTextArea.append("\n" + sentence + " " + phrase);
                 }
-                System.out.println(foundTextNode.getPhrases());
                 return;
             }
             predictTextArea.append("\n There Are No Phrases To Continue From This Word:");
@@ -546,6 +563,9 @@ public class Menu extends JPanel implements ActionListener {
         spellingLabel.setText(text);
     }
 
+    /**
+     * This method will remove the word entered by the user in the text field
+     */
     public void deleteUserEnteredWord() {
         String word = removeWordTextField.getText();
 
@@ -591,6 +611,11 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * This method will display the current version of the dictionary from a specific node in the tree and will show the frequency of those words too
+     * @param currentNode is the node to start displaying from
+     * @param nodeName is the word asociated with that starting node so each word displayed will be made up from it
+     */
     public void displayDictionary(WordNode currentNode, String nodeName) {
         // Print the information stored in the current node;
         if (currentNode.getIsWord() == true) {
@@ -609,14 +634,24 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * turns the addWord setting on
+     */
     public void turnOnSetting() {
         prediction.setAddWord(true);
     }
 
+    /**
+     * turns the addWord setting off
+     */
     public void turnOffSetting() {
         prediction.setAddWord(false);
     }
 
+    /**
+     * Is the main method to start the GUI and display it
+     * @param args
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

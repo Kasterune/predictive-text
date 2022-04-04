@@ -21,6 +21,7 @@ public class Dictionary implements Serializable
 	// Define field to hold the reference to the root of the tree
 	private WordNode root;
 
+	// Define field to hold the two separate dictionaries
 	enum Language {
 		ENGLISH,
 		ITALIAN
@@ -61,6 +62,11 @@ public class Dictionary implements Serializable
 	}
 
 
+	/**
+	 * Load words method that will take the data from the files in the same folder and will load that data into the program when started by the user.
+	 * If the saved files dont exist then a new file will be created so that the dictionary data can be saved to it.
+	 * @param language is the language currently being used in the program
+	 */
 	public void loadWords(Language language)
 	{
 		File tempFile;
@@ -71,7 +77,7 @@ public class Dictionary implements Serializable
 
 		if(language.equals(Language.ENGLISH))
 		{
-			tempFile = new File("DictionaryE.save");
+			tempFile = new File("DictionaryE.save");		// Checks to see if there are saved files in the same folder
 			fileName = "EnglishUK.txt";
 		}
 		else
@@ -81,7 +87,7 @@ public class Dictionary implements Serializable
 		}
 		boolean exists = tempFile.exists();
 
-		if(exists == false)
+		if(exists == false)									// If the saved files dont exist then the words are loaded in from the word file 
 		{
 			try {
 				fileReader = new FileReader(fileName);
@@ -122,7 +128,7 @@ public class Dictionary implements Serializable
 	                }
 	            }
 	        }
-		} else {
+		} else {															// If the files do exist then the data from the file will be loaded in so that the user can use there saved dictionary
 			ObjectInputStream in = null;
 			String loadFile = language.equals(Language.ENGLISH) ? "DictionaryE.save" : "DictionaryI.save";
 
@@ -153,6 +159,8 @@ public class Dictionary implements Serializable
 
 	/**
 	 * Saves current dictionary to file.
+	 * @param language is the language currently being used in the program
+	 * @return true or false depending on whether the save was successful
 	 */
 	public boolean saveToFile(Language language) {
 		ObjectOutputStream out = null;
@@ -183,6 +191,11 @@ public class Dictionary implements Serializable
 		return true;
 	}
 
+
+	/**
+	 * Checks the benchmark of our program
+	 * @param lang is the current dictionary being used 
+	 */
 	public void benchmark(Language lang) {
 		if (!lang.equals(Language.ENGLISH)) {
 			throw new IllegalArgumentException("English is the only supported language for the benchmark.");
@@ -393,6 +406,12 @@ public class Dictionary implements Serializable
 		}
 	}
 
+
+	/**
+	 * Will find the node of the word that was passed in
+	 * @param word is the word that is going to be searched for in the tree
+	 * @return the node of the word or null if the word does not exist in the dictionary.
+	 */
 	public WordNode findNode(String word) {
 		word = word.trim().toLowerCase();
 
@@ -454,6 +473,12 @@ public class Dictionary implements Serializable
 		return false;
 	}
 
+
+	/**
+	 * This method will check to see if the word entered by a user is empty
+	 * @param word is the word entered by the user that is to be checked
+	 * @return false if it is empty and true if it is empty
+	 */
 	public boolean wordEnteredIsNull(String word)
 	{
 		// Remove any leading or trailing spaces from the word
