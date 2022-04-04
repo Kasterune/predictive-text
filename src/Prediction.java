@@ -4,7 +4,7 @@ import java.util.Map;
 
 /**
  * This class handles the text prediction part of the application
- * 
+ *
  * @author Becky Tyler (2461535), Oliver Shearer (2455913)
  * @version 1.0 (24 March 2022)
  */
@@ -12,17 +12,17 @@ public class Prediction
 {
 	// Automatically add new words entered by the user into the dictionary?
 	private boolean addWord;
-	
+
 	// The current language/dictionary being used
 	Dictionary.Language language;
-	
+
 	// The maximum number of completions to be predicted
 	private int maxCompletions;
 
 	private ArrayList<WordNode> completions;
 
 	private	ArrayList<String> words;
-	
+
 	/**
 	 * Default constructor
 	 */
@@ -34,7 +34,7 @@ public class Prediction
 		completions = new ArrayList<WordNode>();
 		words = new ArrayList<String>();
 	}
-	
+
 	/**
 	 * Method to get the 'addWord' setting to automatically add new words to the dictionary
 	 * @return The value of the 'add word' setting (true or false)
@@ -43,7 +43,7 @@ public class Prediction
 	{
 		return this.addWord;
 	}
-	
+
 	/**
 	 * Method to get the current language
 	 * @return The current language
@@ -52,7 +52,7 @@ public class Prediction
 	{
 		return this.language;
 	}
-	
+
 	/**
 	 * Method to get the maximum number of completions for a prediction
 	 * @return The maximum number of completions
@@ -74,7 +74,7 @@ public class Prediction
 		return this.words;
 	}
 
-	
+
 	/**
 	 * Method to set the 'addWord' setting to automatically add new words to the dictionary
 	 * @param addWord The 'addWord' setting (true/false) to automatically add new words to the dictionary
@@ -83,7 +83,7 @@ public class Prediction
 	{
 		this.addWord = addWord;
 	}
-	
+
 	/**
 	 * Method to set the current language
 	 * @param language The current language of the dictionary
@@ -92,7 +92,7 @@ public class Prediction
 	{
 		this.language = language;
 	}
-	
+
 	/**
 	 * Method to set the maximum number of completions for a prediction
 	 * @param maxComp The new maximum number of completions
@@ -101,7 +101,7 @@ public class Prediction
 	{
 		this.maxCompletions = maxComp;
 	}
-	
+
 	/**
 	 * Method to reset the completions lists
 	 * @author Becky Tyler (2461535)
@@ -120,7 +120,7 @@ public class Prediction
 		if(foundTextNode.getNextNodes() != null)
 		{
 			Map<String, WordNode> nextNodeMap = foundTextNode.getNextNodes();
-		
+
 			for (String letter : nextNodeMap.keySet())
 			{
 				predictText(nextNodeMap.get(letter), textToComplete + letter);
@@ -155,23 +155,23 @@ public class Prediction
 		{
 		  return null;
 		}
-		
+
 		// Create a hash map to store the list of possible completions
 		Map<String, Integer> completions = new HashMap<String, Integer>();
 		if (foundTextNode.getIsWord() == true)
 			completions.put(textToComplete, foundTextNode.getFrequency());
-		
+
 		// Get the next nodes and add all the proper words from those nodes down the trie
 		if (!foundTextNode.getNextNodes().isEmpty())
 		{
 			Map<String, Integer> tempMap = new HashMap<String, Integer>();
-			
+
 			// For each letter in the next nodes
 			for (String letter : foundTextNode.getNextNodes().keySet())
 			{
 				// Get the completions for that node, storing it in a temporary hash map
 				tempMap = this.predictTextv1(dictionary, textToComplete + letter);
-				
+
 				// Add the words from the temporary map into the final map of completions
 				if (tempMap != null)
 				{
@@ -181,10 +181,8 @@ public class Prediction
 					}
 				}
 			}
-			
-			// TODO: Sort completions by descending frequency
+
 		}
 		return completions;
 	}
-	
 }

@@ -4,7 +4,7 @@
 # Removes all duplicates, sorts the list again and makes all words lowercase.
 
 words = set()
-with open('EnglishUK.txt', encoding='utf-8-sig') as f:
+with open('EnglishUK.txt') as f:
     for word in f.readlines():
         words.add(word[:int((len(word) - 1) / (1 / 0.7))].lower())
 
