@@ -264,24 +264,6 @@ public class Dictionary implements Serializable
 		return node.getIsWord();
 	}
 
-	private boolean contains(String word, WordNode node)
-	{
-		if (word.length() == 0)
-		{
-			if (node.getIsWord())
-			{
-				return true;
-			}
-			return false;
-		}
-
-		if (node.getNextNodes().containsKey(word.substring(0, 1)))
-		{
-			return contains(word.substring(1), node.getNextNodes().get(word.substring(0, 1)));
-		}
-		return false;
-	}
-
 	/**
 	 * Method to add a word to the dictionary
 	 * This method adds any intermediate nodes required and then sets isWord to true
