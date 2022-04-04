@@ -197,9 +197,8 @@ public class Dictionary implements Serializable
 			Prediction prediction = new Prediction();
 
 			String nextLine;
-			nextLine = bufferedReader.readLine();
 			startTime = System.nanoTime();
-			while (nextLine != null) {
+			while ((nextLine = bufferedReader.readLine()) != null) {
 				prediction.predictText(findNode(nextLine), nextLine);
 
 
@@ -230,7 +229,6 @@ public class Dictionary implements Serializable
 				}
 
 
-				nextLine = bufferedReader.readLine();
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("Sorry, your file was not found.");
