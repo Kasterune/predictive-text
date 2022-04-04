@@ -391,6 +391,21 @@ public class Dictionary implements Serializable
 		}
 	}
 
+	public WordNode findNode(String word) {
+		word = word.trim().toLowerCase();
+
+		WordNode node = root;
+		// Attempt to reach the node for word
+		for (int i = 0; i < word.length(); i++) {
+			if ((node = node.getNextNodes().get(word.substring(i, i + 1))) == null) {
+				return null;
+			}
+		}
+
+		// Return the node even if it isn't a full word (needed for prediction)
+		return node;
+	}
+
 	public WordNode findNode(String word, WordNode node)
 	{
 		//String tempWord = word;
