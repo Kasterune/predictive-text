@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.stream.IntStream;
 
 /**
@@ -99,15 +100,15 @@ public class Menu extends JPanel implements ActionListener {
         panel.setLayout(null);
 
         spellingLabel = new JLabel("-");
-        //spellingLabel.setBounds(660, 10, 250, 20);
+        // spellingLabel.setBounds(660, 10, 250, 20);
         spellingLabel.setBounds(660, 40, 250, 20);
-        //addWordLabel = new JLabel("-");
-        //addWordLabel.setBounds(660, 40, 250, 20);
-        //addButton = new JButton("Add Word (if enabled)");
-        //addButton.setBounds(270, 70, 170, 20);
+        // addWordLabel = new JLabel("-");
+        // addWordLabel.setBounds(660, 40, 250, 20);
+        // addButton = new JButton("Add Word (if enabled)");
+        // addButton.setBounds(270, 70, 170, 20);
         saveDictButton = new JButton("Save Current Dictionary");
         saveDictButton.setBounds(270, 70, 170, 20);
-        //saveDictButton.setBounds(450, 70, 175, 20);
+        // saveDictButton.setBounds(450, 70, 175, 20);
         savedLabel = new JLabel("-");
         savedLabel.setBounds(660, 70, 250, 20);
         predictLabel = new JLabel("Please enter text below: ");
@@ -127,7 +128,7 @@ public class Menu extends JPanel implements ActionListener {
 
         predictButton.addActionListener(this);
         spellCheckButton.addActionListener(this);
-        //addButton.addActionListener(this);
+        // addButton.addActionListener(this);
         saveDictButton.addActionListener(this);
 
         panel.add(spellingLabel);
@@ -137,8 +138,8 @@ public class Menu extends JPanel implements ActionListener {
         panel.add(predictTextField);
         panel.add(predictButton);
         panel.add(predictScroll);
-        //panel.add(addButton);
-        //panel.add(addWordLabel);
+        // panel.add(addButton);
+        // panel.add(addWordLabel);
         panel.add(savedLabel);
 
         return panel;
@@ -151,9 +152,10 @@ public class Menu extends JPanel implements ActionListener {
         JPanel panel = new JPanel();
         panel.setLayout(null);
 
-	// Increase word limit range to 1-100
-	// Integer[] wordLimitOptions = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-        Integer[] wordLimitOptions = IntStream.of(IntStream.rangeClosed(1, 100).toArray()).boxed().toArray(Integer[]::new);
+        // Increase word limit range to 1-100
+        // Integer[] wordLimitOptions = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        Integer[] wordLimitOptions = IntStream.of(IntStream.rangeClosed(1, 100).toArray()).boxed()
+                .toArray(Integer[]::new);
         JComboBox<Integer> wordLimitBox = new JComboBox<>(wordLimitOptions);
         wordLimitBox.setBounds(80, 50, 50, 20);
         wordLimitButton = new JButton("Set Word Limit");
@@ -258,7 +260,7 @@ public class Menu extends JPanel implements ActionListener {
         JPanel textAreaPanel = new JPanel();
 
         JPanel panelHolderSouth = new JPanel();
-        
+
         panel.setLayout(new BorderLayout());
 
         JLabel text = new JLabel("Enter word to search for in dictionary: ", JLabel.CENTER);
@@ -268,7 +270,7 @@ public class Menu extends JPanel implements ActionListener {
         searchWordButton = new JButton("Search");
         searchWordButton.addActionListener(this);
         searchWordTextArea = new JTextArea();
-        
+
         searchWordTextArea.setEditable(false);
         scroll = new JScrollPane(searchWordTextArea);
         scroll.setPreferredSize(new Dimension(600, 480));
@@ -304,10 +306,10 @@ public class Menu extends JPanel implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-    	
-    	// Reset the information labels
+
+        // Reset the information labels
         spellingLabel.setText("-");
-        //addWordLabel.setText("-");
+        // addWordLabel.setText("-");
         savedLabel.setText("-");
 
         if (e.getSource() == predictButton) {
@@ -324,8 +326,7 @@ public class Menu extends JPanel implements ActionListener {
         } else if (e.getSource() == saveDictButton) {
             savedLabel.setText("-");
             if (prediction.getLanguage().equals(Dictionary.Language.ENGLISH)) {
-                if (dict_en.saveToFile(Dictionary.Language.ENGLISH))
-                {
+                if (dict_en.saveToFile(Dictionary.Language.ENGLISH)) {
                     String text = "Saved!";
                     savedLabel.setText(text);
                 } else {
@@ -333,8 +334,7 @@ public class Menu extends JPanel implements ActionListener {
                     savedLabel.setText(text);
                 }
             } else {
-                if (dict_it.saveToFile(Dictionary.Language.ITALIAN))
-                {
+                if (dict_it.saveToFile(Dictionary.Language.ITALIAN)) {
                     String text = "Saved!";
                     savedLabel.setText(text);
                 } else {
@@ -342,42 +342,55 @@ public class Menu extends JPanel implements ActionListener {
                     savedLabel.setText(text);
                 }
             }
-            
+
         } else if (e.getSource() == spellCheckButton) {
             this.getSpellings();
-            
-        // } else if (e.getSource() == addButton) {
-        //     if(prediction.getAddWord())
-        //     {
-        //         String text = predictTextField.getText();
-        //         if(text.indexOf(" ") >= 0 || text.equals("") || text.equals(" "))
-        //         {
-        //             addWordLabel.setText("The Word Not Valid As It Contains A Space");
-        //         } 
-        //         else 
-        //         {
-        //             boolean added = dictionary.addWord(text);
-        //             if(added == true)
-        //             {
-        //                 addWordLabel.setText(text + " Has Been Added To The Dictionary");
-        //             }
-        //             else
-        //             {
-        //                 addWordLabel.setText(text + " Already Exists In The Dictionary");
-        //             }
-        //         }
-        //     }
-        //     else
-        //     {
-        //         addWordLabel.setText("The Add Word Setting Is Not Turned On");
-        //     }
-        } else if (e.getSource() == addOnRadio) {
-            currentAddSettingLabel.setText("On");
-            changeAddWordSetting();
+        }
 
+        // } else if (e.getSource() == addButton) {
+        // if(prediction.getAddWord())
+        // {
+        // String text = predictTextField.getText();
+        // if(text.indexOf(" ") >= 0 || text.equals("") || text.equals(" "))
+        // {
+        // addWordLabel.setText("The Word Not Valid As It Contains A Space");
+        // }
+        // else
+        // {
+        // boolean added = dictionary.addWord(text);
+        // if(added == true)
+        // {
+        // addWordLabel.setText(text + " Has Been Added To The Dictionary");
+        // }
+        // else
+        // {
+        // addWordLabel.setText(text + " Already Exists In The Dictionary");
+        // }
+        // }
+        // }
+        // else
+        // {
+        // addWordLabel.setText("The Add Word Setting Is Not Turned On");
+        // }
+        else if (e.getSource() == addOnRadio) {
+            getSelectedButton();
         } else if (e.getSource() == addOffRadio) {
-            currentAddSettingLabel.setText("Off");
-            changeAddWordSetting();
+            getSelectedButton();
+        }
+    }
+
+    public void getSelectedButton() {
+        for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+                if (button.getText() == "On") {
+                    currentAddSettingLabel.setText("On");
+                    turnOnSetting();
+                } else {
+                    currentAddSettingLabel.setText("Off");
+                    turnOffSetting();
+                }
+            }
         }
     }
 
@@ -403,19 +416,15 @@ public class Menu extends JPanel implements ActionListener {
             if (sentence.length - 1 == i) {
                 WordNode foundTextNode = dictionary.findNode(sentence[i]);
 
-                if(foundTextNode != null && foundTextNode.getIsWord() == true)
-                {
+                if (foundTextNode != null && foundTextNode.getIsWord() == true) {
 
-                    for(int v = 0; v < sentence.length; v++)
-                    {
+                    for (int v = 0; v < sentence.length; v++) {
                         String phrase = "";
-                        for(int p = v + 1; p < sentence.length; p++)
-                        {
+                        for (int p = v + 1; p < sentence.length; p++) {
                             phrase = phrase + sentence[p] + " ";
                         }
                         WordNode word = dictionary.findNode(sentence[v]);
-                        if(word.getIsWord() == true && word.getPhrases().contains(phrase) == false)
-                        {
+                        if (word.getIsWord() == true && word.getPhrases().contains(phrase) == false) {
                             word.getPhrases().add(phrase);
                         }
                     }
@@ -456,10 +465,8 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
-    public void getCompletions() 
-    {
-        if(prediction.getCompletions().isEmpty())
-        {
+    public void getCompletions() {
+        if (prediction.getCompletions().isEmpty()) {
             predictTextArea.setText("No Completions Were Found In The Dictionary \n");
         }
         ArrayList<Integer> frequency = new ArrayList<Integer>();
@@ -489,16 +496,12 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
-    public void getPhrase(WordNode foundTextNode, String sentence)
-    {
+    public void getPhrase(WordNode foundTextNode, String sentence) {
         predictTextArea.append("\n\n Phrases:");
-        if(foundTextNode != null)
-        {
+        if (foundTextNode != null) {
             foundTextNode.getPhrases().remove("");
-            if(foundTextNode.getIsWord() == true && foundTextNode.getPhrases().isEmpty() == false)
-            {
-                for (String phrase : foundTextNode.getPhrases())
-                {
+            if (foundTextNode.getIsWord() == true && foundTextNode.getPhrases().isEmpty() == false) {
+                for (String phrase : foundTextNode.getPhrases()) {
                     phrase.trim();
                     sentence.trim();
                     predictTextArea.append("\n" + sentence + " " + phrase);
@@ -514,32 +517,31 @@ public class Menu extends JPanel implements ActionListener {
 
     /**
      * Method to do the spell checking on the user-entered phrase
+     * 
      * @author Becky Tyler (2461535)
      */
-    public void getSpellings()
-    {
-    	// Get a spell checker for the current dictionary and prediction object
-    	SpellChecker spellChecker = new SpellChecker(this.dictionary,this.prediction);
- 
-    	// Create an ArrayList to store the output
-    	ArrayList<String> spellingOutput;
-    	
-    	// Reset the text display area
+    public void getSpellings() {
+        // Get a spell checker for the current dictionary and prediction object
+        SpellChecker spellChecker = new SpellChecker(this.dictionary, this.prediction);
+
+        // Create an ArrayList to store the output
+        ArrayList<String> spellingOutput;
+
+        // Reset the text display area
         predictTextArea.setText("");
-        
+
         // Get the user's phrase to spell check
         String phraseToCheck = predictTextField.getText();
- 
+
         // Spell check the user's phrase
-		spellingOutput = spellChecker.checkSpelling(phraseToCheck);
+        spellingOutput = spellChecker.checkSpelling(phraseToCheck);
 
-		// Display the output in the text area
-		for (String newline : spellingOutput)
-		{
-			predictTextArea.append(newline + "\n");
-		}
+        // Display the output in the text area
+        for (String newline : spellingOutput) {
+            predictTextArea.append(newline + "\n");
+        }
 
-    	String text = "See text area for spelling suggestions.";
+        String text = "See text area for spelling suggestions.";
         spellingLabel.setText(text);
     }
 
@@ -606,14 +608,12 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
-    public void changeAddWordSetting() {
-        if (prediction.getAddWord() == false) {
-            prediction.setAddWord(true);
-            // System.out.println("\nAdd Word Setting Has Been Turned ON");
-        } else {
-            prediction.setAddWord(false);
-            // System.out.println("\nAdd Word Setting Has Been Turned OFF");
-        }
+    public void turnOnSetting() {
+        prediction.setAddWord(true);
+    }
+
+    public void turnOffSetting() {
+        prediction.setAddWord(false);
     }
 
     public static void main(String[] args) {
