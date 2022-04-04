@@ -96,7 +96,7 @@ public class SpellChecker
 	public boolean checkWord(String word)
 	{
 		word = word.trim().toLowerCase();
-		return dictionary.isInDictionary(word);
+		return dictionary.contains(word);
 	}
 
 	/**
