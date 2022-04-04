@@ -406,38 +406,6 @@ public class Dictionary implements Serializable
 		return node;
 	}
 
-	public WordNode findNode(String word, WordNode node)
-	{
-		//String tempWord = word;
-		Map<String, WordNode> nextNodeMap = node.getNextNodes();
-
-		// Convert word to lower case - FIX by BT 30/3/22
-		word = word.toLowerCase();
-
-		while(nextNodeMap.containsKey(word.substring(0, 1)))
-		{
-			node = nextNodeMap.get(word.substring(0, 1));
-			word = word.substring(1);
-
-			if (word.length() == 0)
-			{
-				if (node.getIsWord())
-				{
-					//System.out.println("Word Exists In the Dictionary");
-					//System.out.println("Word - " + tempWord);
-					//System.out.println("Is It A Real Word - " + node.getIsWord());
-					//System.out.println("Times Word Has Been Used - " + node.getFrequency() + " Times");
-					return node;
-				}
-				//break;
-				return node;  // FIX by BT: Return the node even if it isn't a full word (needed for prediction)
-			}
-			nextNodeMap = node.getNextNodes();
-		}
-		// System.out.println("Word Does Not Exist In the Dictionary");
-		return null;
-	}
-
 	/**
 	 * Method to delete a word from the dictionary
 	 * @param word The word to be deleted
