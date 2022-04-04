@@ -244,7 +244,7 @@ public class Dictionary implements Serializable
 			}
 		}
 		long endTime = System.nanoTime();
-		System.out.println("24215 completions took " + (endTime - startTime) / 1_000_000 + "milliseconds to complete");
+		System.out.println("24215 completions took " + (endTime - startTime) / 1_000_000 + " milliseconds to complete");
 	}
 
 	/**
